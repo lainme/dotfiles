@@ -1,0 +1,20 @@
+"xterm"
+    Control+Alt+t
+
+"$HOME/bin/screenshot"
+    Print
+
+"$HOME/bin/screenshot -s"
+    Alt+Print
+   
+"$HOME/bin/multipaste"
+    Control+Alt+p
+
+"$HOME/bin/multiquery"
+    Control+Alt+q
+
+"$HOME/bin/multiquery -d"
+    Control+Alt+w
+
+"$HOME/bin/multiopen"
+    Control+Alt+o

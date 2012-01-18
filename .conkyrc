@@ -1,0 +1,78 @@
+#基本桌面设置
+update_interval 4.0
+out_to_console no
+total_run_times 0
+background yes
+own_window yes
+own_window_type desktop
+own_window_argb_visual true
+own_window_transparent true
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+draw_shades no
+draw_outline no
+draw_borders no
+double_buffer yes
+no_buffers yes
+alignment top_middle
+use_spacer none
+minimum_size 1260 50
+gap_y 40
+if_up_strictness address
+
+#基本字体设置
+use_xft yes
+xftalpha 0.1
+uppercase no
+override_utf8_locale yes
+font WenQuanYi Micro Hei:size=10
+xftfont WenQuanYi Micro Hei:size=10
+default_color white
+default_shade_color white
+default_outline_color black
+
+#图片设置
+draw_graph_borders no
+show_graph_scale no
+show_graph_range no
+
+#mpd 
+mpd_host localhost
+mpd_port 6600 
+music_player_interval 2.0
+
+#其他显示设置
+cpu_avg_samples 4
+net_avg_samples 2
+
+#LUAbin
+lua_load ~/bin/conky_widgets.lua
+lua_draw_hook_pre widgets
+
+TEXT
+${voffset 85}${goto 125}${hr 2}
+${voffset -80}${goto 200}CPU: $cpu%    ${freq} MHz   ${platform coretemp.0 temp 1}°C${goto 400}MEMORY: $memperc%    $swapperc%${goto 560}DISK: ${hddtemp /dev/sda}°C    / ${fs_bar 10,50 /} ${fs_used_perc /}%    /home ${fs_bar 10,50 /home} ${fs_used_perc /home}%${goto 900}BATTERY: $acpiacadapter $battery_percent%
+${voffset 25}${goto 200}${font Poky:size=14}p${font WenQuanYi Micro Hei:size=16}WEATHER${goto 460}${font Poky:size=14}H${font WenQuanYi Micro Hei:size=16}MUSIC${goto 700}${font Poky:size=14}w${font WenQuanYi Micro Hei:size=16}NETWORK${goto 920}${font Poky:size=14}S${font WenQuanYi Micro Hei:size=16}PROCESSES${font}
+${voffset -70}${font WenQuanYi Micro Hei:size=50}${alignr}${time %l:%M}${font}
+${voffset 12}${goto 200}${execi 3600 python ~/bin/conkyForecast --location=CHXX0049 --datatype=CN}
+${goto 200}${font Weather:size=44}${execi 3600 python ~/bin/conkyForecast --location=CHXX0049 --datatype=WF}${font}
+${voffset -40}${goto 260}${execi 3600 python ~/bin/conkyForecast --location=CHXX0049 --datatype=CC}${offset 10}${execi 3600 python ~/bin/conkyForecast --location=CHXX0049 --datatype=HT}
+${goto 200}${goto 260}High/Low: ${execi 3600 python ~/bin/conkyForecast --location=CHXX0049 --startday=0 --datatype=HL}
+${goto 200}${font Weather:size=26}${execi 3600 python ~/bin/conkyForecast --location=CHXX0049 --datatype=WF --startday=1 --endday=4 --spaces=2}${font}
+${goto 200}${execi 3600 python ~/bin/conkyForecast --location=CHXX0049 --datatype=HL --hidedegreesymbol --hideunits --startday=1 --endday=4 --spaces=6}
+${goto 460}${voffset -112}Status: $mpd_status
+${goto 460}Title: $mpd_title
+${goto 460}Artist: $mpd_artist
+${goto 460}Album: $mpd_album
+${goto 460}Length: $mpd_elapsed/$mpd_length
+${goto 460}Percent: ${mpd_bar 10,100} $mpd_percent%
+${goto 700}${voffset -104}In: ${tcp_portmon 1 32767 count}  Out: ${tcp_portmon 32768 61000 count}  Total: ${tcp_portmon 1 65535 count}
+${goto 700}Download: ${if_up eth0}${downspeed eth0}${endif}${if_up wlan0}${downspeed wlan0}${endif}${if_up ppp0}${downspeed ppp0}${endif}
+${goto 700}Total: ${if_up eth0}${totaldown eth0}${endif}${if_up wlan0}${totaldown wlan0}${endif}${if_up ppp0}${totaldown ppp0}${endif}
+${goto 700}Upload: ${if_up eth0}${upspeed eth0}${endif}${if_up wlan0}${upspeed wlan0}${endif}${if_up ppp0}${upspeed ppp0}${endif}
+${goto 700}Total: ${if_up eth0}${totalup eth0}${endif}${if_up wlan0}${totalup wlan0}${endif}${if_up ppp0}${totalup ppp0}${endif}
+${goto 920}${voffset -86}Total: $processes${goto 1040}Running: $running_processes
+${goto 920}Name${goto 1040}PID${goto 1100}CPU% 
+${goto 920}${top name 1}${goto 1040}${top pid 1}${goto 1100}${top cpu 1} 
+${goto 920}${top name 2}${goto 1040}${top pid 2}${goto 1100}${top cpu 2}
+${goto 920}${top name 3}${goto 1040}${top pid 3}${goto 1100}${top cpu 3}
+${goto 920}${top name 4}${goto 1040}${top pid 4}${goto 1100}${top cpu 4}

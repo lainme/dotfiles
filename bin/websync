@@ -1,0 +1,5 @@
+#!/bin/bash
+
+rhome=/home/lainme
+
+rsync --delete -azvv --exclude="data/**/focus" --exclude="data/**/programing" --exclude="data/**/notes" --exclude="data/**/study" --exclude="data/attic" --exclude="data/cache" --exclude="data/index" --exclude="data/meta/sync.profiles" -e "ssh vps" :$rhome/www/lainme/lainme.com/ /home/data/web/notebook

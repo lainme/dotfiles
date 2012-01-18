@@ -1,0 +1,18 @@
+[user]
+	name = lainme
+	email = lainme993@gmail.com
+[core]
+	editor = vim
+	quotepath = false
+[merge]
+	tool = vimdiff
+[alias]
+	c = commit
+	s = status
+	a = add
+	r = rm
+	pu = push
+	ls = ls-files
+	a-f = add -f
+	c-a = commit -a
+	pu-remote = push origin master
