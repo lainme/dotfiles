@@ -3,3 +3,4 @@
 .ssh
 .irssi
 *.swp
+.vim/.netrwhist
