@@ -50,7 +50,7 @@ lua_draw_hook_pre widgets
 
 TEXT
 ${voffset 85}${goto 125}${hr 2}
-${voffset -80}${goto 200}CPU: $cpu%    ${freq} MHz   ${execi 60 sensors | grep "temp1:" | cut -c16-17}°C${goto 400}MEMORY: $memperc%    $swapperc%${goto 560}DISK: ${hddtemp /dev/sda}°C    / ${fs_bar 10,50 /} ${fs_used_perc /}%    /home ${fs_bar 10,50 /home} ${fs_used_perc /home}%${goto 900}BATTERY: $acpiacadapter $battery_percent%
+${voffset -80}${goto 200}CPU: $cpu%    ${freq} MHz   ${execi 60 sensors | grep "temp1:" | cut -c16-17}°C${goto 400}MEMORY: $memperc%    $swapperc%${goto 560}DISK: ${hddtemp /dev/sda}°C    / ${fs_bar 10,50 /} ${fs_used_perc /}%    /home ${fs_bar 10,50 /home} ${fs_used_perc /home}%${goto 900}BATTERY: ${apcupsd_status} ${apcupsd_charge}
 ${voffset 25}${goto 200}${font Poky:size=14}p${font WenQuanYi Micro Hei:size=16}WEATHER${goto 460}${font Poky:size=14}H${font WenQuanYi Micro Hei:size=16}MUSIC${goto 700}${font Poky:size=14}w${font WenQuanYi Micro Hei:size=16}NETWORK${goto 920}${font Poky:size=14}S${font WenQuanYi Micro Hei:size=16}PROCESSES${font}
 ${voffset -70}${font WenQuanYi Micro Hei:size=50}${alignr}${time %l:%M}${font}
 ${voffset 16}${goto 460}Status: $mpd_status
