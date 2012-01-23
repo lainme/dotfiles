@@ -17,6 +17,3 @@ hotot &
 
 #pidgin
 pidgin &
-
-#thunderbird
-thunderbird &

@@ -32,17 +32,20 @@ alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 
 #quick launch
-alias ufs='vim -S /home/data/research/ufs/project.vim'
-alias tec360='/home/data/software/tecplot/bin/tec360'
-alias sage='/home/data/software/sage/sage'
-alias sagenb='nohup /home/data/software/sage/sage -n open_viewer="False" port="4000" require_login="False" &> /dev/null &'
+if [ -d /home/data ];then
+    alias ufs='vim -S /home/data/research/ufs/project.vim'
+    alias tec360='/home/data/software/tecplot/bin/tec360'
+    alias sage='/home/data/software/sage/sage'
+    alias sagenb='nohup /home/data/software/sage/sage -n open_viewer="False" port="4000" require_login="False" &> /dev/null &'
+fi
+alias sshproxy='ssh -qTfnN -D 8707 vps'
 
 #--------environment variables--------
 #set prompt
 PS1='\u@\h:\w\$ '
 
 #path
-export PATH=$PATH:$HOME/bin:/home/data/software/bin
+export PATH=$PATH:$HOME/bin
 
 #debian packaging
 DEBEMAIL=lainme993@gmail.com
@@ -65,4 +68,6 @@ fi
 complete -o filenames -F _filedir_xspec file
 
 #intel
-source /home/data/software/intel/bin/compilervars.sh intel64
+if [ -f /home/data/software/intel/bin/compilervars.sh ];then
+    source /home/data/software/intel/bin/compilervars.sh intel64
+fi
