@@ -24,7 +24,7 @@ if [ `uname -n` == "lainme-arch" ];then
     alias s-search='yaourt -Ss'
     alias s-show='yaourt -Si'
     alias s-update='yaourt -Sy'
-    alias s-upgrade='yaourt -Syu'
+    alias s-upgrade='yaourt -Syua'
 fi
 
 #color output
@@ -34,9 +34,9 @@ alias grep='grep --color=auto'
 #quick launch
 if [ -d /home/data ];then
     alias ufs='vim -S /home/data/research/ufs/project.vim'
-    alias tec360='/home/data/software/tecplot/bin/tec360'
     alias sage='/home/data/software/sage/sage'
     alias sagenb='nohup /home/data/software/sage/sage -n open_viewer="False" port="4000" require_login="False" &> /dev/null &'
+    alias tec360='/home/data/software/tecplot/bin/tec360'
 fi
 alias sshproxy='ssh -qTfnN -D 8707 vps'
 

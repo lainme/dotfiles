@@ -4,3 +4,4 @@
 .irssi
 *.swp
 .vim/.netrwhist
+.vim/.VimballRecord
