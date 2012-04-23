@@ -9,7 +9,7 @@ _filedir()
     local quoted tmp
 
     _quote_readline_by_ref "$cur" quoted
-    toks=( ${toks[@]-} $(
+    toks=( $(
         compgen -d -- "$quoted" | {
             while read -r tmp; do
                 # TODO: I have removed a "[ -n $tmp ] &&" before 'printf ..',
@@ -24,38 +24,37 @@ _filedir()
 
     if [[ "$1" != -d ]]; then
         # Munge xspec to contain uppercase version too
-        [[ ${BASH_VERSINFO[0]} -ge 4 ]] && \
-            xspec=${1:+"!*.@($1|${1^^})"} || \
-            xspec=${1:+"!*.@($1|$(printf %s $1 | tr '[:lower:]' '[:upper:]'))"}
-        toks=( ${toks[@]-} $( compgen -f -X "$xspec" -- $quoted) )
+        # http://thread.gmane.org/gmane.comp.shells.bash.bugs/15294/focus=15306
+        xspec=${1:+"!*.@($1|${1^^})"}
+        toks+=( $( compgen -f -X "$xspec" -- $quoted ) )
     fi
-    [ ${#toks[@]} -ne 0 ] && _compopt_o_filenames
+
+    # If the filter failed to produce anything, try without it if configured to
+    [[ -n ${COMP_FILEDIR_FALLBACK:-} && \
+        -n "$1" && "$1" != -d && ${#toks[@]} -lt 1 ]] && \
+        toks+=( $( compgen -f -- $quoted ) )
+
+    if [[ ${#toks[@]} -ne 0 ]]; then
+        # 2>/dev/null for direct invocation, e.g. in the _filedir unit test
+        compopt -o filenames 2>/dev/null
+        COMPREPLY+=( "${toks[@]}" )
+    fi
 
 	chs=($(chsdir "x$1" "$cur"))
 	COMPREPLY=( "${COMPREPLY[@]}" "${toks[@]}" "${chs[@]}" )
-}
+} # _filedir()
 
 _filedir_xspec()
 {
-    local IFS cur xspec
-
-    IFS=$'\n'
-    COMPREPLY=()
-    _get_comp_words_by_ref cur
+    local cur prev words cword
+    _init_completion || return
 
     _expand || return 0
 
-    # get first exclusion compspec that matches this command
-    xspec=$( awk "/^complete[ \t]+.*[ \t]${1##*/}([ \t]|\$)/ { print \$0; exit }" \
-        "$BASH_COMPLETION" )
-    # prune to leave nothing but the -X spec
-    xspec=${xspec#*-X }
-    xspec=${xspec%% *}
-
+    local IFS=$'\n' xspec=${_xspecs[${1##*/}]} tmp
     local -a toks
-    local tmp
 
-    toks=( ${toks[@]-} $(
+    toks=( $(
         compgen -d -- "$(quote_readline "$cur")" | {
         while read -r tmp; do
             # see long TODO comment in _filedir() --David
@@ -65,25 +64,27 @@ _filedir_xspec()
         ))
 
     # Munge xspec to contain uppercase version too
+    # http://thread.gmane.org/gmane.comp.shells.bash.bugs/15294/focus=15306
     eval xspec="${xspec}"
     local matchop=!
     if [[ $xspec == !* ]]; then
         xspec=${xspec#!}
         matchop=@
     fi
-    [[ ${BASH_VERSINFO[0]} -ge 4 ]] && \
-        xspec="$matchop($xspec|${xspec^^})" || \
-        xspec="$matchop($xspec|$(printf %s $xspec | tr '[:lower:]' '[:upper:]'))"
+    xspec="$matchop($xspec|${xspec^^})"
 
-    toks=( ${toks[@]-} $(
+    toks+=( $(
         eval compgen -f -X "!$xspec" -- "\$(quote_readline "\$cur")" | {
         while read -r tmp; do
-            [ -n $tmp ] && printf '%s\n' $tmp
+            [[ -n $tmp ]] && printf '%s\n' $tmp
         done
         }
         ))
 
-    [ ${#toks[@]} -ne 0 ] && _compopt_o_filenames
+    if [[ ${#toks[@]} -ne 0 ]]; then
+        compopt -o filenames
+        COMPREPLY=( "${toks[@]}" )
+    fi
 
     chs=($(chsdir "x$1" "$cur"))
     COMPREPLY=( "${toks[@]}" "${chs[@]}" )

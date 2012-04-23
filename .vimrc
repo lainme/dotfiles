@@ -103,15 +103,9 @@ vnoremap <c-]> g<c-]>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "工具
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"定义W命令，允许以root权限保存文件
-command W w !sudo tee % > /dev/null
-
 "在当前文件路径打开终端
 noremap <F7> :!xterm -e bash -c "cd %:p:h;bash" &<CR> | :redraw!
 inoremap <F7> <C-o>:!xterm -e bash -c "cd %:p:h;bash" &<CR> | :redraw!
-
-"插入模式行
-nnoremap <Leader>ml :put=printf(\"vim: ft=%s\", &filetype)<CR>
 
 "生成ctags
 if ! exists("g:TagCmd")
@@ -141,16 +135,26 @@ noremap <F9> :call ProjGrep()<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "插件设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"----------taglist----------
-let Tlist_Exit_OnlyWindow=1
-let Tlist_Use_Left_Window=1
-let Tlist_Show_One_File=1
-let Tlist_GainFocus_On_ToggleOpen=1
-let Tlist_Enable_Fold_Column=0
-let Tlist_Auto_Updata=1
-let Tlist_Compact_Format = 1
-noremap <F3> :TlistUpdate<CR>:TlistToggle<CR>
-inoremap <F3> <ESC>:TlistUpdate<CR>:TlistToggle<CR>
+"----------Vundle----------
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+Bundle 'gmarik/vundle'
+
+Bundle 'Tagbar'
+Bundle 'neocomplcache'
+Bundle 'The-NERD-Commenter'
+Bundle 'buftabs'
+Bundle 'po.vim'
+Bundle 'L9'
+Bundle 'FuzzyFinder'
+Bundle 'git://github.com/lainme/SimpleCompile.git'
+"
+"----------tagbar----------
+let g:tagbar_left = 1
+let g:tagbar_autofocus = 1
+let g:tagbar_compact = 1
+noremap <F3> :TagbarToggle<CR>
+inoremap <F3> <ESC>:TagbarToggle<CR>
 
 "----------NeoComplCache----------
 let g:neocomplcache_enable_at_startup = 1 
@@ -202,11 +206,6 @@ autocmd FileType fortran
     \setlocal foldmethod=syntax |
     \set efm=%A%f:%l.%c:,%-Z%trror:\ %m,%-Z%tarning:\ %m,%-C%.%#
 
-"taglist设置
-let tlist_fortran_settings = 'fortran;p:program;b:block data;' .
-                    \ 'e:entry;i:interface;k:module;' .
-                    \ 'n:namelist;t:derived;f:function;s:subroutine'
-
 "设置格式
 autocmd BufNewFile,BufReadPre,BufEnter *.f90  
     \unlet! fortran_fixed_source |
@@ -216,18 +215,11 @@ autocmd BufNewFile,BufReadPre,BufEnter *.f
     \let fortran_fixed_source=1 | 
     \setlocal shiftwidth=6 | 
     \setlocal softtabstop=6 |
-autocmd BufNewFile,BufReadPre,BufEnter *.f90,*.f setlocal textwidth=130
-
-"----------C/C++----------
-"C样式缩进、语法折叠
-autocmd FileType c,cpp 
-    \setlocal cindent | 
-    \setlocal foldmethod=syntax
 
 "----------Python----------
 "自动添加文件头
 autocmd BufNewFile *.py 
-    \0put=\"#!/usr/bin/env python2\<nl># -*- coding: UTF-8 -*-\<nl>\"  
+    \0put=\"#!/usr/bin/env python\<nl># -*- coding: UTF-8 -*-\<nl>\"  
 
 "----------Shell----------
 "自动添加文件头
@@ -247,24 +239,6 @@ autocmd BufNewFile *.html,*.htm
     \7put='    </body>' |
     \8put='</html>' |
     \normal 5G7l
-
-"----------文本文件----------
-"设置类型
-noremap <Leader>txt :set filetype=txt<CR>
-
-"设置HTML输出格式
-autocmd FileType txt 
-    \let html_number_lines=0 |
-    \let html_ignore_folding=1
-
-"设置定宽格式
-autocmd FileType txt 
-    \setlocal textwidth=78 |
-    \setlocal formatoptions+=mM
-
-"----------po文件----------
-"保存时自动设置翻译着信息
-autocmd BufWrite *.po exec "normal \\t"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "其它

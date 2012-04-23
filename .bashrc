@@ -72,3 +72,6 @@ complete -o filenames -F _filedir_xspec file
 if [ -f /home/data/software/intel/bin/compilervars.sh ];then
     source /home/data/software/intel/bin/compilervars.sh intel64
 fi
+
+#writer2latex
+export PATH=$PATH:/home/data/software/writer2latex
