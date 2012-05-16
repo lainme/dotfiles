@@ -26,6 +26,7 @@ if [ `uname -n` == "lainme-arch" ];then
     alias s-update='yaourt -Sy'
     alias s-upgrade='yaourt -Syu'
     alias s-full='yaourt -Syua'
+    alias s-clean='yaourt -Sc'
 fi
 
 #color output

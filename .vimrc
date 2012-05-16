@@ -136,10 +136,12 @@ noremap <F9> :call ProjGrep()<CR>
 "插件设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "----------Vundle----------
+"required
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 Bundle 'gmarik/vundle'
 
+"script used
 Bundle 'Tagbar'
 Bundle 'neocomplcache'
 Bundle 'The-NERD-Commenter'
@@ -147,7 +149,8 @@ Bundle 'buftabs'
 Bundle 'po.vim'
 Bundle 'L9'
 Bundle 'FuzzyFinder'
-Bundle 'git://github.com/lainme/SimpleCompile.git'
+Bundle 'TeX-PDF'
+Bundle 'git://github.com/lainme/simplecompile.git'
 "
 "----------tagbar----------
 let g:tagbar_left = 1
