@@ -22,6 +22,7 @@ set sessionoptions=buffers,sesdir,folds,tabpages,winsize "session设置
 set encoding=utf-8 
 set fileencodings=ucs-bom,utf-8,gbk
 set autochdir "自动切换路径
+set runtimepath+=$HOME/.vim "设置runtimepath
 let mapleader="," "设置leader键
 colorscheme lucius "配色主题
 
@@ -45,7 +46,11 @@ set statusline=%<%h%m%r\ %f%=[%{&filetype},%{&fileencoding},%{&fileformat}]%k\ %
 
 "备份设置
 set backup
-set backupdir=/tmp 
+if has("unix")
+    set backupdir=/tmp
+elseif has("win32") || has("win64")
+    set backupdir=$TMP 
+endif
 
 "用四个空格代替<tab>
 set expandtab smarttab
@@ -87,7 +92,11 @@ noremap <Leader>fc :ccl<CR>
 if has("gui_running")
     set guioptions=a  "去掉菜单等，自动复制选择的区域
     set guicursor=a:blinkwait600-blinkoff600-blinkon600 "光标闪烁频率
-    set guifont=Monospace\ 11
+    if has("unix")
+        set guifont=Monospace\ 11
+    elseif has("win32") || has("win64")
+        set guifont=Microsoft_YaHei_Mono:h11
+    endif
 endif
 
 "缓冲区移动键映射
@@ -137,19 +146,20 @@ noremap <F9> :call ProjGrep()<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "----------Vundle----------
 "required
-set rtp+=~/.vim/bundle/vundle/
+set rtp+=$HOME/.vim/bundle/vundle/
 call vundle#rc()
 Bundle 'gmarik/vundle'
 
 "script used
 Bundle 'Tagbar'
-Bundle 'neocomplcache'
 Bundle 'The-NERD-Commenter'
 Bundle 'buftabs'
 Bundle 'po.vim'
 Bundle 'L9'
 Bundle 'FuzzyFinder'
 Bundle 'TeX-PDF'
+Bundle 'SudoEdit.vim'
+Bundle 'fcitx.vim'
 Bundle 'git://github.com/lainme/simplecompile.git'
 "
 "----------tagbar----------
@@ -158,11 +168,6 @@ let g:tagbar_autofocus = 1
 let g:tagbar_compact = 1
 noremap <F3> :TagbarToggle<CR>
 inoremap <F3> <ESC>:TagbarToggle<CR>
-
-"----------NeoComplCache----------
-let g:neocomplcache_enable_at_startup = 1 
-let g:neocomplcache_enable_smart_case = 1
-let g:neocomplcache_enable_underbar_completion = 1
 
 "----------NERD_commenter----------
 let g:NERDShutUp=1

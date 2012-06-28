@@ -1,8 +1,8 @@
-.fonts
 .gnupg
 .ssh
 .irssi
 *.swp
+.evil*
 .vim/.netrwhist
 .vim/bundle/vundle/.netrwhist
 .vim/.VimballRecord

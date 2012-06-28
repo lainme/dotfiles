@@ -1,11 +1,11 @@
 #--------alias--------
 #web
-alias webon='lighttpd -f ~/.lighttpd.conf'
+alias webon='lighttpd -f $HOME/lighttpd.conf'
 alias weboff='killall lighttpd'
 
 #screen
 alias scl='screen -ls'
-alias scq='quitscr() { screen -X -S $1 quit; };quitscr'
+alias scq='quitscr'
 alias scr='screen -raAd'
 
 #software
@@ -38,16 +38,42 @@ if [ -d /home/data ];then
     alias ufs='vim -S /home/data/research/ufs/project.vim'
     alias sage='/home/data/software/sage/sage'
     alias sagenb='nohup /home/data/software/sage/sage -n open_viewer="False" port="4000" require_login="False" &> /dev/null &'
-    alias tec360='/home/data/software/tecplot/bin/tec360'
 fi
 alias sshproxy='ssh -qTfnN -D 8707 vps'
+
+#--------functions--------
+function quitscr() { 
+    screen -X -S $1 quit
+}
+
+#create link in cygwin
+function mklink() {
+    if [ -z $2 ] || [ -z $1 ];then
+        echo "Usage: mklink target link"
+        return
+    fi
+
+    if [ -d $1 ];then
+        target=`cygpath -w $1`
+        link=`cygpath -w $2`
+        cmdstr="cygstart -- cmd /c 'cpau -k -u administrator -ex \"mklink /d $link $target\" -lwp'"
+        eval $cmdstr
+    elif [ -f $1 ];then
+        ln $1 $2
+    else
+        echo "Not a file or directory"
+        return
+    fi
+}
 
 #--------environment variables--------
 #set prompt
 PS1='\u@\h:\w\$ '
 
 #path
-export PATH=$PATH:$HOME/bin
+if [ -d $HOME/bin ];then
+    export PATH=$PATH:$HOME/bin
+fi
 
 #debian packaging
 DEBEMAIL=lainme993@gmail.com
@@ -66,13 +92,17 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 fi
 
 #chsdir
-. $HOME/bin/chs_completion
-complete -o filenames -F _filedir_xspec file
+if [ -f $HOME/bin/chs_completion ];then
+    . $HOME/bin/chs_completion
+    complete -o filenames -F _filedir_xspec file
+fi
 
 #intel
 if [ -f /home/data/software/intel/bin/compilervars.sh ];then
     source /home/data/software/intel/bin/compilervars.sh intel64
 fi
 
-#writer2latex
-export PATH=$PATH:/home/data/software/writer2latex
+#be evil
+if [ -f $HOME/.evil_rc ];then
+    source ~/.evil_rc
+fi

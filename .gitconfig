@@ -2,7 +2,7 @@
 	name = lainme
 	email = lainme993@gmail.com
 [core]
-	editor = vim
+        editor = vim
 	quotepath = false
 [merge]
 	tool = vimdiff
@@ -16,3 +16,7 @@
 	a-f = add -f
 	c-a = commit -a
 	pu-remote = push origin master
+[diff]
+        tool = vimdiff
+[difftool]
+        prompt = false

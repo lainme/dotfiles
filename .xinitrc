@@ -17,3 +17,6 @@ hotot &
 
 #pidgin
 pidgin &
+
+#be evil
+source ~/.evil_init
