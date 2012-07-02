@@ -124,7 +124,7 @@ function! OpenTerminal()
         let s:terminal = "xterm"
         let s:curpath = expand("%:p:h")
     endif
-    exec 'silent !'.s:terminal.' -e bash -c "cd \"'.s:curpath.'\";bash" &'."\n redraw!"
+    silent exec '!'.s:terminal.' -e bash -c "cd \"'.s:curpath.'\";bash" &'."\n redraw!"
 endfunction
 
 
@@ -153,6 +153,17 @@ function! ProjGrep()
     exec "vimgrep /".s:pattern."/j ".s:path
 endfunction
 
+"附加模式行
+function! AppendModeline(commentstring)
+    if ! exists("a:commentstring")
+        let s:commentstring = &commentstring
+    else
+        let s:commentstring = a:commentstring
+    endif
+    let s:modeline = substitute(substitute(s:commentstring,"%s",printf(" vim: ft=%s: ", &filetype)," "),"^\\s\\+","","")
+    call append(line("$"),s:modeline)
+endfunction
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "插件设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -163,23 +174,27 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 "script used
-Bundle 'Tagbar'
+Bundle 'taglist.vim'
+Bundle 'TxtBrowser'
 Bundle 'The-NERD-Commenter'
 Bundle 'buftabs'
 Bundle 'po.vim'
 Bundle 'L9'
 Bundle 'FuzzyFinder'
-Bundle 'TeX-PDF'
 Bundle 'SudoEdit.vim'
 Bundle 'fcitx.vim'
 Bundle 'git://github.com/lainme/simplecompile.git'
 
-"----------tagbar----------
-let g:tagbar_left = 1
-let g:tagbar_autofocus = 1
-let g:tagbar_compact = 1
-noremap <F3> :TagbarToggle<CR>
-inoremap <F3> <ESC>:TagbarToggle<CR>
+"----------taglist----------
+let Tlist_Exit_OnlyWindow=1
+let Tlist_Use_Left_Window=1
+let Tlist_Show_One_File=1
+let Tlist_GainFocus_On_ToggleOpen=1
+let Tlist_Enable_Fold_Column=0
+let Tlist_Auto_Updata=1
+let Tlist_Compact_Format = 1
+noremap <F3> :TlistUpdate<CR>:TlistToggle<CR>
+inoremap <F3> <ESC>:TlistUpdate<CR>:TlistToggle<CR>
 
 "----------NERD_commenter----------
 let g:NERDShutUp=1
@@ -266,6 +281,20 @@ autocmd BufNewFile *.html,*.htm
     \7put='    </body>' |
     \8put='</html>' |
     \normal 5G7l
+
+"----------文本文件----------
+"设置类型
+noremap <Leader>txt :set filetype=txt \| call AppendModeline("%s")<CR>
+
+"设置HTML输出格式
+autocmd FileType txt
+    \let html_number_lines=0 |
+    \let html_ignore_folding=1
+
+"设置定宽格式
+autocmd FileType txt
+    \setlocal textwidth=78 |
+    \setlocal formatoptions+=mM
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "其它
