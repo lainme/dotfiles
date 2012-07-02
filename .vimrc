@@ -173,7 +173,7 @@ Bundle 'TeX-PDF'
 Bundle 'SudoEdit.vim'
 Bundle 'fcitx.vim'
 Bundle 'git://github.com/lainme/simplecompile.git'
-"
+
 "----------tagbar----------
 let g:tagbar_left = 1
 let g:tagbar_autofocus = 1

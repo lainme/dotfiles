@@ -49,15 +49,7 @@ function! s:simpleCompile()
     if g:simplecompile_debug == 1
         silent exec "make -g -Wall"
     else
-        "special compile for latex beamer
-        if &filetype == "tex" && !empty(matchstr(getline(1,line("$")),'^[ |\t]*\\documentclass{beamer}'))
-            silent exec "make"
-            silent exec "!touch %"
-            silent exec "make"
-            silent exec "make"
-        else
-            silent exec "make"
-        endif
+        silent exec "make"
     endif
 
     "Restore makeprg
