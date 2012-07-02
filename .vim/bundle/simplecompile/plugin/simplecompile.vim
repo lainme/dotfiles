@@ -17,6 +17,10 @@ if !exists("g:simplecompile_terminal")
     let g:simplecompile_terminal = "xterm"
 endif
 
+if !exists("g:simplecompile_pdf")
+    let g:simplecompile_pdf = "xdg-open"
+endif
+
 "Define commands
 command! SimpleCompile :call s:simpleCompile()
 command! SimpleRun :call s:simpleRun()
@@ -26,7 +30,7 @@ function! s:simpleCompile()
     "Save file
     exec "w"
 
-    "Save old makeprg
+    "Save old makeprg and errorformat
     let s:oldmakeprg=&makeprg
     
     "Detect file type and set makeprg
@@ -35,7 +39,7 @@ function! s:simpleCompile()
     elseif &filetype == "c"
         setlocal makeprg=gcc\ -o\ %<\ %
     elseif &filetype == "tex"
-        setlocal makeprg=rubber\ -qpd\ %\ &&\ rubber\ --clean\ %
+        setlocal makeprg=rubber\ -qpd\ %
     else
         echo "Error: File type not supported for compile"
         return
@@ -45,7 +49,15 @@ function! s:simpleCompile()
     if g:simplecompile_debug == 1
         silent exec "make -g -Wall"
     else
-        silent exec "make"
+        "special compile for latex beamer
+        if &filetype == "tex" && !empty(matchstr(getline(1,line("$")),'^[ |\t]*\\documentclass{beamer}'))
+            silent exec "make"
+            silent exec "!touch %"
+            silent exec "make"
+            silent exec "make"
+        else
+            silent exec "make"
+        endif
     endif
 
     "Restore makeprg
@@ -68,7 +80,7 @@ function! s:simpleRun()
         elseif (index(s:script, &filetype)>=0)
             silent exec "!".g:simplecompile_terminal." -e bash -c \"cd %:p:h;".&filetype." %:t;echo;read\" &"
         elseif &filetype == "tex"
-            silent exec "!xdg-open %<.pdf &"
+            silent exec "!".g:simplecompile_pdf." %<.pdf &"
         endif
     catch
         echo "Error: not able to execute the file"

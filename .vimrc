@@ -113,8 +113,20 @@ vnoremap <c-]> g<c-]>
 "工具
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "在当前文件路径打开终端
-noremap <F7> :!xterm -e bash -c "cd %:p:h;bash" &<CR> | :redraw!
-inoremap <F7> <C-o>:!xterm -e bash -c "cd %:p:h;bash" &<CR> | :redraw!
+noremap <F7> :call OpenTerminal()<CR>
+inoremap <F7> <C-o>:call OpenTerminal()<CR>
+
+function! OpenTerminal()
+    if has('win32unix') || has('win32') || has('win64')
+        let s:terminal = "start cmd /c mintty.exe"
+        let s:curpath = substitute(system('cygpath "'.expand("%:p:h").'"'),"\n$","","e")
+    elseif has('unix')
+        let s:terminal = "xterm"
+        let s:curpath = expand("%:p:h")
+    endif
+    exec 'silent !'.s:terminal.' -e bash -c "cd \"'.s:curpath.'\";bash" &'."\n redraw!"
+endfunction
+
 
 "生成ctags
 if ! exists("g:TagCmd")
@@ -125,6 +137,8 @@ noremap <F8> :exec "silent !".g:TagCmd." &\n redraw!"<CR>
 inoremap <F8> <ESC>:exec "w \n silent !".g:TagCmd." &\n redraw!"<CR>
 
 "vimgrep搜索当前工作路径
+noremap <F9> :call ProjGrep()<CR>
+
 function! ProjGrep()
     if ! exists("g:SearchPath")
         let g:SearchPath='**'
@@ -138,8 +152,6 @@ function! ProjGrep()
     
     exec "vimgrep /".s:pattern."/j ".s:path
 endfunction
-
-noremap <F9> :call ProjGrep()<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "插件设置
@@ -187,6 +199,13 @@ noremap <F2> :Explore<CR>
 inoremap <F2> <ESC>:Explore<CR>
 
 "----------SimpleCompile----------
+if has('win32unix')
+    let g:simplecompile_terminal = "mintty.exe"
+    let g:simplecompile_pdf = '/cygdrive/c/Program\ Files\ \(x86\)/Adobe/Reader\ 10.0/Reader/AcroRd32.exe'
+elseif has('win32') || has('win64')
+    let g:simplecompile_terminal = "mintty.exe"
+    let g:simplecompile_pdf = 'start cmd /c "C:\Program Files (x86)\Adobe\Reader 10.0\Reader\AcroRd32.exe"'
+endif
 noremap <F5> :SimpleCompile<CR>
 noremap <F6> :SimpleRun<CR>
 inoremap <F5> <ESC>:SimpleCompile<CR>

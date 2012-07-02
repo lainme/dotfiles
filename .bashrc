@@ -1,6 +1,6 @@
 #--------alias--------
 #web
-alias webon='lighttpd -f $HOME/lighttpd.conf'
+alias webon='lighttpd -f $HOME/.lighttpd.conf'
 alias weboff='killall lighttpd'
 
 #screen
@@ -63,6 +63,20 @@ function mklink() {
     else
         echo "Not a file or directory"
         return
+    fi
+}
+
+#open file in gvim
+function gvim() {
+    if [ `uname -o` == "Cygwin" ];then
+        if [ -n "$*" ];then
+            args=`cygpath -w -- "$*"`
+        else
+            args=""
+        fi
+        cygstart -- /cygdrive/c/Program\ Files\ \(x86\)/Vim/vim73/gvim.exe "$args"
+    else
+        gvim "$*"
     fi
 }
 

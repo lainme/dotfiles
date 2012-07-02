@@ -1,6 +1,5 @@
 .gnupg
 .ssh
-.irssi
 *.swp
 .evil*
 .vim/.netrwhist
