@@ -287,12 +287,12 @@ autocmd BufNewFile *.html,*.htm
 noremap <Leader>txt :set filetype=txt \| call AppendModeline("%s")<CR>
 
 "设置HTML输出格式
-autocmd FileType txt
+autocmd FileType txt 
     \let html_number_lines=0 |
     \let html_ignore_folding=1
 
 "设置定宽格式
-autocmd FileType txt
+autocmd FileType txt 
     \setlocal textwidth=78 |
     \setlocal formatoptions+=mM
 
