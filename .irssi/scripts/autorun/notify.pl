@@ -38,7 +38,6 @@ sub notify {
     #OS detection
     my $os = `uname`;
     if ($os = ~/Cygwin/) {
-        signal_emit('beep');
         return;
     }
 
