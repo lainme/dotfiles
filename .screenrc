@@ -9,7 +9,9 @@ defutf8 on
 caption always "%{=b g}%-w%{=rb wg} %n %t %{-}%+w"
 
 #动态窗口
+hardstatus off
 hardstatus string "screen: %t"
+termcapinfo xterm* 'hs:ts=\E]0;:fs=\007:ds=\E]0;\007'
 
 #退出时刷新窗口
 altscreen on
@@ -20,7 +22,7 @@ partial on
 #256色支持
 term xterm-256color
 defbce "on"
-    
+
 #快捷键
 bindkey "^[[1;3A" prev
 bindkey "^[[1;3B" next
