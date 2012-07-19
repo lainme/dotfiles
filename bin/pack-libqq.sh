@@ -2,7 +2,7 @@
 #packaging libqq-pidgin for lucid(default), maverick, natty and oneiric
 
 #define some variables
-basedir=/home/data/packaging/libqq-pidgin
+basedir=/home/lainme/packaging/libqq-pidgin
 releases=("lucid" "maverick" "natty" "oneiric")
 sourcecmd="svn checkout http://libqq-pidgin.googlecode.com/svn/trunk/"
 timestamp=`date -R`

@@ -24,7 +24,7 @@ Irssi::settings_add_str('notify', 'notify_icon', 'gtk-dialog-info');
 Irssi::settings_add_str('notify', 'notify_time', '5000');
 
 #屏蔽bitlbee中某些特定nick的信息
-#my @hidemsg = ("root", "pythoner", "dict");
+my @hidemsg = ("root", "ubuntu-talk", "dict");
 
 sub sanitize {
   my ($text) = @_;
@@ -36,15 +36,15 @@ sub sanitize {
 
 sub notify {
     #当前活动窗口
-    #my $active = 0;
-    #my $active_id = `xprop -root _NET_ACTIVE_WINDOW`;
-    #$active_id =~ s/.*\# //;
-    #my $active_name = `xprop -id "$active_id" WM_NAME`;
-    #$active_name =~ s/[^\"]*\"([^\"]*).*/$1/;
-    #if ($active_name =~ m/screen: irssi/) {
-        #$active = 1;
-    #}
-    #return if ($active eq 1);
+    my $active = 0;
+    my $active_id = `xprop -root _NET_ACTIVE_WINDOW`;
+    $active_id =~ s/.*\# //;
+    my $active_name = `xprop -id "$active_id" WM_NAME`;
+    $active_name =~ s/[^\"]*\"([^\"]*).*/$1/;
+    if ($active_name =~ m/screen: irssi/) {
+        $active = 1;
+    }
+    return if ($active eq 1);
 
     #OS detection
     my $os = `uname`;
@@ -76,9 +76,9 @@ sub print_text_notify {
     $stripped =~ s/^\[.[^\]]+\].// ;
     
     #如果不在屏蔽列表中则提醒
-    #if((!grep /$sender/, @hidemsg) or ($server->{tag} ne "bitlbee")){
+    if((!grep /$sender/, @hidemsg) or ($server->{tag} ne "bitlbee")){
         notify($server, $summary, $stripped);
-    #}
+    }
 
 }
 
@@ -87,9 +87,9 @@ sub message_private_notify {
     return if (!$server);
     
     #如果不在屏蔽列表中则提醒
-    #if((!grep /$nick/, @hidemsg) or ($server->{tag} ne "bitlbee")){
+    if((!grep /$nick/, @hidemsg) or ($server->{tag} ne "bitlbee") or (grep /$msg/, "lainme")){
         notify($server, "来自 ".$nick." 的私人消息", $msg);
-    #}
+    }
 }
 
 sub dcc_request_notify {

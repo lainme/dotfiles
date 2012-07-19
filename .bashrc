@@ -25,8 +25,9 @@ if [ `uname -n` == "lainme-arch" ];then
     alias s-show='yaourt -Si'
     alias s-update='yaourt -Sy'
     alias s-upgrade='yaourt -Syu'
-    alias s-full='yaourt -Syua'
     alias s-clean='yaourt -Sc'
+    alias s-full-upgrade='yaourt -Syua'
+    alias s-full-clean='yaourt -Scc'
 fi
 
 #color output
@@ -34,10 +35,10 @@ alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 
 #quick launch
-if [ -d /home/data ];then
-    alias ufs='vim -S /home/data/research/ufs/project.vim'
-    alias sage='/home/data/software/sage/sage'
-    alias sagenb='nohup /home/data/software/sage/sage -n open_viewer="False" port="4000" require_login="False" &> /dev/null &'
+if [ -d /home/lainme ];then
+    alias ufs='vim -S /home/lainme/research/ufs/project.vim'
+    alias sage='/home/lainme/software/sage/sage'
+    alias sagenb='nohup /home/lainme/software/sage/sage -n open_viewer="False" port="4000" require_login="False" &> /dev/null &'
 fi
 alias sshproxy='ssh -qTfnN -D 8707 vps'
 
@@ -112,8 +113,8 @@ if [ -f $HOME/bin/chs_completion ];then
 fi
 
 #intel
-if [ -f /home/data/software/intel/bin/compilervars.sh ];then
-    source /home/data/software/intel/bin/compilervars.sh intel64
+if [ -f /home/lainme/software/intel/bin/compilervars.sh ];then
+    source /home/lainme/software/intel/bin/compilervars.sh intel64
 fi
 
 #be evil

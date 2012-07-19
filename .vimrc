@@ -154,13 +154,8 @@ function! ProjGrep()
 endfunction
 
 "附加模式行
-function! AppendModeline(commentstring)
-    if ! exists("a:commentstring")
-        let s:commentstring = &commentstring
-    else
-        let s:commentstring = a:commentstring
-    endif
-    let s:modeline = substitute(substitute(s:commentstring,"%s",printf(" vim: ft=%s: ", &filetype)," "),"^\\s\\+","","")
+function! AppendModeline()
+    let s:modeline = substitute(substitute(&commentstring,"%s",printf(" vim: set ft=%s tw=%s ", &filetype,&textwidth)," "),"^\\s\\+","","")
     call append(line("$"),s:modeline)
 endfunction
 
@@ -284,17 +279,12 @@ autocmd BufNewFile *.html,*.htm
 
 "----------文本文件----------
 "设置类型
-noremap <Leader>txt :set filetype=txt \| call AppendModeline("%s")<CR>
+noremap <Leader>txt :set filetype=txt \| call AppendModeline()<CR>
 
 "设置HTML输出格式
 autocmd FileType txt 
     \let html_number_lines=0 |
     \let html_ignore_folding=1
-
-"设置定宽格式
-autocmd FileType txt 
-    \setlocal textwidth=78 |
-    \setlocal formatoptions+=mM
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "其它

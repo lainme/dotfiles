@@ -1,5 +1,5 @@
 #!/bin/bash
-insdir=/home/data/web/notebook/data 
+insdir=/home/lainme/web/notebook/data 
 mtime=5
 
 #删除超过$mtime天的修订记录
