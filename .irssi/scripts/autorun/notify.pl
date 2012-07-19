@@ -35,6 +35,13 @@ sub sanitize {
 }
 
 sub notify {
+    #OS detection
+    my $os = `uname`;
+    if ($os = ~/Cygwin/) {
+        signal_emit('beep');
+        return;
+    }
+
     #当前活动窗口
     my $active = 0;
     my $active_id = `xprop -root _NET_ACTIVE_WINDOW`;
@@ -45,10 +52,6 @@ sub notify {
         $active = 1;
     }
     return if ($active eq 1);
-
-    #OS detection
-    my $os = `uname`;
-    return if ($os = ~/Cygwin/);
 
     my ($server, $summary, $message) = @_;
 
@@ -87,7 +90,7 @@ sub message_private_notify {
     return if (!$server);
     
     #如果不在屏蔽列表中则提醒
-    if((!grep /$nick/, @hidemsg) or ($server->{tag} ne "bitlbee") or (grep /$msg/, "lainme")){
+    if((!grep /$nick/, @hidemsg) or ($server->{tag} ne "bitlbee") or ($msg =~ /lainme/)){
         notify($server, "来自 ".$nick." 的私人消息", $msg);
     }
 }
