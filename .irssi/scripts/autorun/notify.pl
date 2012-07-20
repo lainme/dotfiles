@@ -37,7 +37,7 @@ sub sanitize {
 sub notify {
     #OS detection
     my $os = `uname`;
-    if ($os = ~/Cygwin/) {
+    if ($os =~ m/Cygwin/) {
         return;
     }
 

@@ -154,8 +154,10 @@ function! ProjGrep()
 endfunction
 
 "附加模式行
+noremap <Leader>ml :call AppendModeline()<CR>
+
 function! AppendModeline()
-    let s:modeline = substitute(substitute(&commentstring,"%s",printf(" vim: set ft=%s tw=%s ", &filetype,&textwidth)," "),"^\\s\\+","","")
+    let s:modeline = substitute(substitute(substitute(&commentstring,"\\s\*%s\\s\*","%s",""),"%s",printf(" vim: set ft=%s tw=%s: ", &filetype,&textwidth)," "),"^\\s\\+","","")
     call append(line("$"),s:modeline)
 endfunction
 
