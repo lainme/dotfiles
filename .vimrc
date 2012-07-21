@@ -235,7 +235,7 @@ noremap <Leader>sj :FufJumpList<CR>
 noremap <Leader>st :FufTag<CR>
 
 "----------supertab----------
-let g:SuperTabRetainCompletionType = 1
+let g:SuperTabRetainCompletionType = 2
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "分类设置
@@ -294,7 +294,7 @@ autocmd FileType txt
     \let html_ignore_folding=1
 
 "----------tex文件----------
-autocmd FileType tex
+autocmd FileType tex 
     \let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
