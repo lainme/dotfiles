@@ -180,6 +180,8 @@ Bundle 'L9'
 Bundle 'FuzzyFinder'
 Bundle 'SudoEdit.vim'
 Bundle 'fcitx.vim'
+Bundle 'LaTeX-Box-Team/LaTeX-Box'
+Bundle 'SuperTab-continued.'
 Bundle 'git://github.com/lainme/simplecompile.git'
 
 "----------taglist----------
@@ -231,6 +233,9 @@ noremap <Leader>so :FufFile<CR>
 noremap <Leader>sf :FufTaggedFile<CR>
 noremap <Leader>sj :FufJumpList<CR>
 noremap <Leader>st :FufTag<CR>
+
+"----------supertab----------
+let g:SuperTabRetainCompletionType = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "分类设置
@@ -287,6 +292,10 @@ noremap <Leader>txt :set filetype=txt \| call AppendModeline()<CR>
 autocmd FileType txt 
     \let html_number_lines=0 |
     \let html_ignore_folding=1
+
+"----------tex文件----------
+autocmd FileType tex
+    \let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "其它
