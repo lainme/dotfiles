@@ -30,8 +30,12 @@ function! s:simpleCompile()
     "Save file
     exec "w"
 
-    "Save old makeprg and errorformat
+    "Save old makeprg
     let s:oldmakeprg=&makeprg
+
+    "switch dir
+    let s:oldpath=getcwd()
+    cd %:p:h
     
     "Detect file type and set makeprg
     if &filetype == "fortran"
@@ -52,8 +56,11 @@ function! s:simpleCompile()
         silent exec "make"
     endif
 
-    "Restore makeprg
+    "Restore
     let &makeprg=s:oldmakeprg
+
+    "switch back
+    exec "cd" s:oldpath
     
     "Redraw
     redraw!

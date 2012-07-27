@@ -23,6 +23,7 @@ set encoding=utf-8
 set fileencodings=ucs-bom,utf-8,gbk
 set autochdir "自动切换路径
 set runtimepath+=$HOME/.vim "设置runtimepath
+set spellfile=$HOME/.vim/spell/en.utf-8.add "设置拼写检查文件
 let mapleader="," "设置leader键
 colorscheme lucius "配色主题
 
