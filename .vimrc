@@ -129,7 +129,6 @@ function! OpenTerminal()
     silent exec '!'.s:terminal.' -e bash -c "cd \"'.s:curpath.'\";bash" &'."\n redraw!"
 endfunction
 
-
 "生成ctags
 if ! exists("g:TagCmd")
     let g:TagCmd='ctags -R -o %:p:h/tags %:p:h'
@@ -155,6 +154,20 @@ function! ProjGrep()
     exec "vimgrep /".s:pattern."/j ".s:path
 endfunction
 
+"局部拼写检查列表
+noremap <Leader>zg :call AddLocalSpellfile()<CR>
+
+function! AddLocalSpellfile()
+    if ! exists("g:LocalSpellfile")
+        return
+    endif
+
+    silent exec "redir >> ".g:LocalSpellfile
+    silent echon expand("<cword>")."\n"
+    silent redir END
+    silent exec "mkspell! ".g:LocalSpellfile 
+endfunction
+    
 "附加模式行
 noremap <Leader>ml :call AppendModeline()<CR>
 
