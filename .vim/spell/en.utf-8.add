@@ -17,3 +17,5 @@ gfortran
 UGKS
 Doxygen
 ifort
+fortran
+vim
