@@ -43,7 +43,7 @@ function! s:simpleCompile()
     elseif &filetype == "c"
         setlocal makeprg=gcc\ -o\ %<\ %
     elseif &filetype == "tex"
-        setlocal makeprg=rubber\ -qpd\ %
+        setlocal makeprg=rubber\ -c\ 'setlist\ arguments\ -shell-escape'\ -qpd\ %
     else
         echo "Error: File type not supported for compile"
         return
