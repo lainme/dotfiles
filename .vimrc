@@ -196,6 +196,7 @@ Bundle 'FuzzyFinder'
 Bundle 'SudoEdit.vim'
 Bundle 'fcitx.vim'
 Bundle 'LaTeX-Box-Team/LaTeX-Box'
+Bundle 'Markdown'
 Bundle 'git://github.com/lainme/simplecompile.git'
 
 "----------taglist----------
