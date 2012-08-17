@@ -11,7 +11,7 @@ alias scq='quitscr'
 alias scr='screen -raAd'
 
 #software
-alias s-install='yaourt'
+alias s-install='yaourt -S'
 alias s-purge='yaourt -Rsn'
 alias s-search='yaourt -Ss'
 alias s-show='yaourt -Si'
