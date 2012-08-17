@@ -48,11 +48,7 @@ set statusline=%<%h%m%r\ %f%=[%{&filetype},%{&fileencoding},%{&fileformat}]%k\ %
 
 "备份设置
 set backup
-if has("unix")
-    set backupdir=/tmp
-elseif has("win32") || has("win64")
-    set backupdir=$TMP 
-endif
+set backupdir=$TMPDIR
 
 "用四个空格代替<tab>
 set expandtab smarttab
@@ -187,7 +183,6 @@ Bundle 'gmarik/vundle'
 
 "script used
 Bundle 'taglist.vim'
-Bundle 'TxtBrowser'
 Bundle 'The-NERD-Commenter'
 Bundle 'buftabs'
 Bundle 'po.vim'
@@ -196,7 +191,7 @@ Bundle 'FuzzyFinder'
 Bundle 'SudoEdit.vim'
 Bundle 'fcitx.vim'
 Bundle 'LaTeX-Box-Team/LaTeX-Box'
-Bundle 'Markdown'
+Bundle 'notes.vim'
 Bundle 'git://github.com/lainme/simplecompile.git'
 
 "----------taglist----------
@@ -228,13 +223,6 @@ noremap <F2> :Explore<CR>
 inoremap <F2> <ESC>:Explore<CR>
 
 "----------SimpleCompile----------
-if has('win32unix')
-    let g:simplecompile_terminal = "mintty.exe"
-    let g:simplecompile_pdf = '/cygdrive/c/Program\ Files\ \(x86\)/Adobe/Reader\ 10.0/Reader/AcroRd32.exe'
-elseif has('win32') || has('win64')
-    let g:simplecompile_terminal = "mintty.exe"
-    let g:simplecompile_pdf = 'start cmd /c "C:\Program Files (x86)\Adobe\Reader 10.0\Reader\AcroRd32.exe"'
-endif
 noremap <F5> :SimpleCompile<CR>
 noremap <F6> :SimpleRun<CR>
 inoremap <F5> <ESC>:SimpleCompile<CR>
@@ -248,6 +236,10 @@ noremap <Leader>so :FufFile<CR>
 noremap <Leader>sf :FufTaggedFile<CR>
 noremap <Leader>sj :FufJumpList<CR>
 noremap <Leader>st :FufTag<CR>
+
+"----------notes----------
+let g:notes_directory="/home/lainme/Documents/notes"
+let g:notes_suffix=".txt"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "分类设置
@@ -295,15 +287,6 @@ autocmd BufNewFile *.html,*.htm
     \7put='    </body>' |
     \8put='</html>' |
     \normal 5G7l
-
-"----------文本文件----------
-"设置类型
-noremap <Leader>txt :set filetype=txt \| call AppendModeline()<CR>
-
-"设置HTML输出格式
-autocmd FileType txt 
-    \let html_number_lines=0 |
-    \let html_ignore_folding=1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "其它

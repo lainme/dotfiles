@@ -12,11 +12,5 @@ sleep 5 && fcitx &
 #mpd
 mpd &
 
-#hotot
-hotot &
-
-#pidgin
-pidgin &
-
 #be evil
 source ~/.evil_init
