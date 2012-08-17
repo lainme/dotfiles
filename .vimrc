@@ -48,7 +48,7 @@ set statusline=%<%h%m%r\ %f%=[%{&filetype},%{&fileencoding},%{&fileformat}]%k\ %
 
 "备份设置
 set backup
-set backupdir=$TMPDIR
+set backupdir=/tmp
 
 "用四个空格代替<tab>
 set expandtab smarttab
