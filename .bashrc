@@ -41,9 +41,6 @@ function quitscr() {
 #set prompt
 export PS1='\u@\h:\w\$ '
 
-#temp dir
-export TMPDIR=/tmp
-
 #debian packaging
 export DEBEMAIL=lainme993@gmail.com
 export DEBFULLNAME="lainme"
