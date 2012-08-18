@@ -25,6 +25,7 @@ set autochdir "自动切换路径
 set runtimepath+=$HOME/.vim "设置runtimepath
 set spellsuggest=best,10 "最佳的10个拼写建议
 set spellfile=$HOME/.vim/spell/en.utf-8.add "设置拼写检查文件
+set undodir=$HOME/.vim-undo "设置undodir
 let mapleader="," "设置leader键
 colorscheme lucius "配色主题
 
