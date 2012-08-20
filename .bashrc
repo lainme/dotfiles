@@ -10,17 +10,6 @@ alias scl='screen -ls'
 alias scq='quitscr'
 alias scr='screen -raAd'
 
-#software
-alias s-install='yaourt -S'
-alias s-purge='yaourt -Rsn'
-alias s-search='yaourt -Ss'
-alias s-show='yaourt -Si'
-alias s-update='yaourt -Sy'
-alias s-upgrade='yaourt -Syu'
-alias s-clean='yaourt -Sc'
-alias s-full-upgrade='yaourt -Syua'
-alias s-full-clean='yaourt -Scc'
-
 #color output
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
