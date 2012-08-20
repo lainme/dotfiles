@@ -9,5 +9,8 @@ sleep 15 && conky &
 #mpd
 mpd &
 
+#pidgin
+pidgin &
+
 #be evil
 source ~/.evil_init
