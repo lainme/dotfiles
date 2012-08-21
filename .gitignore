@@ -9,3 +9,6 @@
 .irssi/away.log
 .config
 .purple
+.local
+.gtk-bookmarks
+.gnome2
