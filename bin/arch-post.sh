@@ -217,6 +217,7 @@ function settings_user(){
 
     #avatar
     sudo cp $USERHOME/Pictures/avatar/avatar-gnome.png /var/lib/AccountsService/icons/$USERNAME
+    sudo cp $USERHOME/Dropbox/sysconf/gnome-account.conf /var/lib/AccountsService/users/$USERNAME
 }
 
 #--------------------------------------------------
