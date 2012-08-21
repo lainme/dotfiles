@@ -269,7 +269,7 @@ function init(){
 #main
 #--------------------------------------------------
 #main configuration
-USERNAME=lainme #user name
+USERNAME=lainme #user name (Danger, do not change!)
 USERHOME=/home/$USERNAME #user home directory
 USERDOWN=/home/$USERNAME/Downloads #download directory
 USERSOFT=/home/$USERNAME/software  #local software directory
