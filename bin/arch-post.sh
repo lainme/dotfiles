@@ -196,7 +196,6 @@ function install_software(){
     yaourt -S --noconfirm gvim ctags
 
     #other
-    yaourt -S --noconfirm xbindkeys scrot xsel  #scripts
     yaourt -S --noconfirm evince poppler-data #PDF
     yaourt -S --noconfirm file-roller p7zip archive-mounter #archiver
     yaourt -S --noconfirm fcitx-gtk3 fcitx-configtool fcitx-cloudpinyin fcitx-googlepinyin fcitx-gtk2 #input method
