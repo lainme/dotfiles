@@ -239,7 +239,7 @@ noremap <Leader>sj :FufJumpList<CR>
 noremap <Leader>st :FufTag<CR>
 
 "----------notes----------
-let g:notes_directory="/home/lainme/Documents/notes"
+let g:notes_directory="$HOME/Documents/notes"
 let g:notes_suffix=".txt"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

@@ -1,7 +1,11 @@
 #!/bin/bash
 # post-installation of Archlinux. Assume Dropbox directory is already in /tmp directory
+# TODO:
+# 1. video driver selection with hardware acceleration setup
+# 2. user configuration file modification
+
 #--------------------------------------------------
-#special
+#help
 #--------------------------------------------------
 function show_help(){
     echo "DESCRIPTION: Archlinux post-installation script. Please run as root"
@@ -17,23 +21,9 @@ function show_help(){
     echo "symlink           - make symbol link"
 }
 
-function install_epstool(){
-    #change directory
-    cd /tmp
-
-    #obtain pkgbuild
-    yaourt -G epstool
-
-    #change download link
-    cd /tmp/epstool
-    sed -i "s|\(source[^\"']*\)[^ ]*\(.*\)|\1 \"$EPSDLINK\" \2|" PKGBUILD
-
-    #build/install
-    makepkg PKGBUILD
-    pacman -U --noconfirm epstool*.pkg.tar.xz
-
-}
-
+#--------------------------------------------------
+#symbol link
+#--------------------------------------------------
 function mksymlink(){
     #arguments
     args=("$@")
@@ -77,17 +67,47 @@ function symlink(){
 }
 
 #--------------------------------------------------
+#special install
+#--------------------------------------------------
+function install_epstool(){
+    #change directory
+    cd /tmp
+
+    #obtain pkgbuild
+    yaourt -G epstool
+
+    #change download link
+    cd /tmp/epstool
+    sed -i "s|\(source[^\"']*\)[^ ]*\(.*\)|\1 \"$EPSDLINK\" \2|" PKGBUILD
+
+    #build/install
+    makepkg --asroot PKGBUILD
+    pacman -U --noconfirm epstool*.pkg.tar.xz
+}
+
+function install_yaourt(){
+    #change directory
+    cd /tmp
+
+    #obtain pkgbuild
+    curl -L https://aur.archlinux.org/packages/ya/yaourt/yaourt.tar.gz > yaourt.tar.gz
+
+    #extract
+    tar -xzf yaourt.tar.gz
+    cd yaourt
+
+    #build/install
+    makepkg --asroot PKGBUILD
+    pacman -U --noconfirm yaourt*.pkg.tar.xz
+}
+#--------------------------------------------------
 #common tasks
 #--------------------------------------------------
 function init_post(){
     #--------------------------------------------------
     #add user
     #--------------------------------------------------
-    #add networkmanager group
-    groupadd networkmanager
-
-    #add user
-    useradd -m -g users -G audio,games,lp,optical,power,scanner,storage,video,wheel,networkmanager,network -s /bin/bash $USERNAME
+    useradd -m -g users -G audio,games,lp,optical,power,scanner,storage,video,wheel,network -s /bin/bash $USERNAME
     
     #--------------------------------------------------
     #initialize package manager
@@ -97,11 +117,12 @@ function init_post(){
     chown $USERNAME:users -R $USERHOME/Dropbox
 
     #configure pacman
-    cp $USERHOME/Dropbox/sysconf/pacman/mirrorlist  > /etc/pacman.d/mirrorlist
-    cp $USERHOME/Dropbox/sysconf/pacman/pacman.conf > /etc/pacman.conf
+    cp $USERHOME/Dropbox/sysconf/pacman/mirrorlist  /etc/pacman.d/mirrorlist
+    cp $USERHOME/Dropbox/sysconf/pacman/pacman.conf /etc/pacman.conf
 
     #install necessary package
-    pacman -Syu --noconfirm yaourt linux-headers sudo
+    install_yaourt
+    pacman -Syu --noconfirm linux-headers sudo
 
     #--------------------------------------------------
     #configure user
@@ -142,7 +163,7 @@ function install_software(){
 
     #utils
     yaourt -S --noconfirm lm_sensors hddtemp base-completion net-tools ntp openssh gparted
-    yaourt -S --noconfirm os-prober #for multiple OS
+    yaourt -S --noconfirm os-prober  #multiple os
 
     #laptop
     yaourt -S --noconfirm tlp ethtool smartmontools tlp-rdw 
@@ -189,22 +210,50 @@ function install_software(){
 }
 
 function settings_system(){
-   #networkmanager
-   mkdir -p /etc/polkit-1/localauthority/50-local.d
-   cp $USERHOME/Dropbox/sysconf/org.freedesktop.NetworkManager.pkla /etc/polkit-1/localauthority/50-local.d/
+    #--------------------------------------------------
+    #system init configuration
+    #--------------------------------------------------
+    #hostname
+    echo "$HOSTNAME" > /etc/hostname
+    sed -i "s/\(127.0.0.1.*$\)/\1\t$HOSTNAME/" /etc/hosts
+    sed -i "s/\(::1.*$\)/\1\t$HOSTNAME/" /etc/hosts
 
-   #Thinkfan
-   cp $USERHOME/Dropbox/sysconf/modprobe.conf /etc/modprobe.d/
-   cp $USERHOME/Dropbox/sysconf/thinkfan.conf /etc/
+    #locale
+    for locale in ${OSLOCALE[*]}; do
+        sed -i "s/^#\($locale.*\)/\1/" /etc/locale.gen
+    done
+    locale-gen
+    echo "LANG=${OSLOCALE[0]}" > /etc/locale.conf
+    
+    #timezone
+    ln -sf /usr/share/zoneinfo/$TIMEZONE /etc/localtime
 
-   #grub
-   cp $USERHOME/Dropbox/sysconf/grub.conf /etc/default/grub 
-   grub-mkconfig -o /boot/grub/grub.cfg
+    #hardware clock
+    hwclock --systohc --utc
 
-   #other
-   cp -r $USERHOME/Dropbox/sysconf/font-config /etc/fonts #Ubuntu font configuration
-   cp $USERHOME/Dropbox/sysconf/rc.conf /etc/ #rc.conf
-   (while :; do echo ""; done ) | sensors-detect #sensors setup
+    #rc.conf
+    cp $USERHOME/Dropbox/sysconf/rc.conf /etc/
+
+    #--------------------------------------------------
+    #other
+    #--------------------------------------------------
+    #networkmanager
+    mkdir -p /etc/polkit-1/localauthority/50-local.d
+    cp $USERHOME/Dropbox/sysconf/org.freedesktop.NetworkManager.pkla /etc/polkit-1/localauthority/50-local.d/
+
+    #Thinkfan
+    cp $USERHOME/Dropbox/sysconf/thinkfan/modprobe.conf /etc/modprobe.d/
+    cp $USERHOME/Dropbox/sysconf/thinkfan/thinkfan.conf /etc/
+
+    #grub
+    cp $USERHOME/Dropbox/sysconf/grub.conf /etc/default/grub 
+    grub-mkconfig -o /boot/grub/grub.cfg
+
+    #ubuntu font
+    cp -r $USERHOME/Dropbox/sysconf/font-config /etc/fonts
+
+    #sensors
+    (while :; do echo ""; done ) | sensors-detect
 
 }
 
@@ -216,8 +265,8 @@ function settings_user(){
     sudo -u $USERNAME xdg-user-dirs-update
 
     #avatar
-    sudo cp $USERHOME/Pictures/avatar/avatar-gnome.png /var/lib/AccountsService/icons/$USERNAME
-    sudo cp $USERHOME/Dropbox/sysconf/gnome-account.conf /var/lib/AccountsService/users/$USERNAME
+    cp $USERHOME/Pictures/avatar/avatar-gnome.png /var/lib/AccountsService/icons/$USERNAME
+    cp $USERHOME/Dropbox/sysconf/gnome-account.conf /var/lib/AccountsService/users/$USERNAME
 }
 
 #--------------------------------------------------
@@ -228,14 +277,15 @@ function install_mendeley(){
     yaourt -S --noconfirm libpng12
 
     #download
-    sudo -u $USERNAME aria2c http://www.mendeley.com/client/get/100-2/ -d $USERDOWN
+    sudo -u $USERNAME aria2c -c http://www.mendeley.com/client/get/100-2/ -d $USERDOWN
 
     #install
+    sudo -u $USERNAME mkdir -p $USERSOFT
     sudo -u $USERNAME tar -xjf $USERDOWN/mendeleydesktop* -C $USERSOFT
     sudo -u $USERNAME mv $USERSOFT/mendeleydesktop* $USERSOFT/mendeley
     sudo -u $USERNAME cp $USERSOFT/mendeley/share/applications/mendeleydesktop.desktop $USERHOME/.local/share/applications/
+    sudo -u $USERNAME sed -i "s|^Exec.*|Exec=$USERSOFT/mendeley/bin/mendeleydesktop|" $USERHOME/.local/share/applications/mendeleydesktop.desktop
     sudo -u $USERNAME cp -r $USERSOFT/mendeley/share/icons/ $USERHOME/.local/share/icons/
-    sudo -u $USERNAME ln -s $USERSOFT/mendeley/bin/mendeleydesktop $USERHOME/.local/share/mendeleydesktop
 }
 
 function install_intel(){
@@ -243,14 +293,29 @@ function install_intel(){
     yaourt -S --noconfirm cpio
 
     #download
-    sudo -u $USERNAME aria2c http://registrationcenter-download.intel.com/akdlm/irc_nas/$INTELNUM/l_fcompxe_intel64_$INTELVER.tgz -d $USERDOWN
+    sudo -u $USERNAME aria2c -c http://registrationcenter-download.intel.com/akdlm/irc_nas/$INTELNUM/l_fcompxe_intel64_$INTELVER.tgz -d $USERDOWN
+
+    #extract
+    sudo -u $USERNAME mkdir -p $USERSOFT
+    sudo -u $USERNAME tar -xzf $USERDOWN/l_fcompxe_intel64_$INTELVER.tgz -C $USERDOWN
+
+    #move license 
+    sudo -u $USERNAME mkdir -p $USERHOME/intel/licenses
+    sudo -u $USERNAME cp $USERHOME/Dropbox/sysconf/intel/*.lic $USERHOME/intel/licenses/
+
+    #configure .ini file
+    sudo -u $USERNAME cp $USERHOME/Dropbox/sysconf/intel/install.ini $USERDOWN/l_fcompxe_intel64_$INTELVER/
+    sudo -u $USERNAME sed -i "s|\(PSET_INSTALL_DIR\).*|\1=$USERSOFT/intel|" $USERDOWN/l_fcompxe_intel64_$INTELVER/install.ini
 
     #install
-    sudo -u $USERNAME tar -xzf $USERDOWN/l_fcompxe_intel64_$INTELVER.tgz -C $USERDOWN
-    sudo -u $USERNAME mkdir -p $USERHOME/intel
-    sudo -u $USERNAME cp $USERHOME/Dropbox/sysconf/intel/licenses $USERHOME/intel/
-    sudo -u $USERNAME sed -i "s|\(PSET_INSTALL_DIR\).*|\1=$USERSOFT/intel|" $USERHOME/Dropbox/sysconf/intel/install.ini
-    sudo -u $USERNAME $USERDOWN/l_fcompxe_intel64_$INTELVER/install.sh --silent $USERHOME/Dropbox/sysconf/intel/install.ini
+    sudo -u $USERNAME $USERDOWN/l_fcompxe_intel64_$INTELVER/install.sh --silent $USERDOWN/l_fcompxe_intel64_$INTELVER/install.ini
+
+    #move license
+    sudo -u $USERNAME mkdir -p $USERSOFT/intel/licenses
+    sudo -u $USERNAME mv $USERHOME/intel/licenses/*.lic $USERSOFT/intel/licenses/
+
+    #delete not needed
+    sudo -u $USERNAME rm -rf $USERHOME/intel
 }
 
 #--------------------------------------------------
@@ -261,8 +326,11 @@ function init(){
     install_software
     settings_system
     settings_user
-    install_mendeley
-    install_intel
+
+    #local softwares
+    for software in ${LOCALPRG[*]}; do
+        install_$software
+    done
 }
 
 #--------------------------------------------------
@@ -273,8 +341,12 @@ USERNAME=lainme #user name (Danger, do not change!)
 USERHOME=/home/$USERNAME #user home directory
 USERDOWN=/home/$USERNAME/Downloads #download directory
 USERSOFT=/home/$USERNAME/software  #local software directory
+LOCALPRG=("mendeley" "intel") #local softwares to install
+HOSTNAME=lainme-arch #hostname
+OSLOCALE=("en_US.UTF-8") #system locales. First one is default
+TIMEZONE=("Asia/Hong_Kong") #timezone
 
-#Intel
+#Intel compiler version
 INTELNUM=2671
 INTELVER=2011.11.339
 
