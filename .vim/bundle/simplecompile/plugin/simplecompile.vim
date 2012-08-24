@@ -30,12 +30,8 @@ function! s:simpleCompile()
     "Save file
     exec "w"
 
-    "Save old makeprg
+    "Save old makeprg and errorformat
     let s:oldmakeprg=&makeprg
-
-    "switch dir
-    let s:oldpath=getcwd()
-    cd %:p:h
     
     "Detect file type and set makeprg
     if &filetype == "fortran"
@@ -43,7 +39,7 @@ function! s:simpleCompile()
     elseif &filetype == "c"
         setlocal makeprg=gcc\ -o\ %<\ %
     elseif &filetype == "tex"
-        setlocal makeprg=rubber\ -c\ 'setlist\ arguments\ -shell-escape'\ -qpd\ %
+        setlocal makeprg=rubber\ -qpd\ %
     else
         echo "Error: File type not supported for compile"
         return
@@ -56,11 +52,8 @@ function! s:simpleCompile()
         silent exec "make"
     endif
 
-    "Restore
+    "Restore makeprg
     let &makeprg=s:oldmakeprg
-
-    "switch back
-    exec "cd" s:oldpath
     
     "Redraw
     redraw!

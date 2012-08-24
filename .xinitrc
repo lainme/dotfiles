@@ -1,8 +1,5 @@
 #!/bin/bash
 
-#xbindkeys
-xbindkeys &
-
 #conky
 sleep 15 && conky &
 
@@ -11,6 +8,9 @@ mpd &
 
 #pidgin
 pidgin &
+
+#hotot
+hotot-gtk3 &
 
 #be evil
 source ~/.evil_init

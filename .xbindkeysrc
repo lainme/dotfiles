@@ -1,8 +1,0 @@
-"xterm"
-    Control+Alt+t
-
-"$HOME/bin/screenshot"
-    Print
-
-"$HOME/bin/screenshot -s"
-    Alt+Print

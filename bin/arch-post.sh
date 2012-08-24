@@ -1,29 +1,60 @@
 #!/bin/bash
-# post-installation of Archlinux. Assume Dropbox directory is already in /tmp directory
+# post-installation of Archlinux. Assume this script and Dropbox directory is already in /tmp directory
 # TODO:
 # 1. video driver selection with hardware acceleration setup
 # 2. user configuration file modification
 
 #--------------------------------------------------
-#help
+#helper
 #--------------------------------------------------
 function show_help(){
-    echo "DESCRIPTION: Archlinux post-installation script. Please run as root"
-    echo "USAGE: arch-post.sh FUNCTION-NAME"
-    echo "List of function:"
-    echo "init              - fresh install, run all functions"
-    echo "init_post         - initialize post installation (manually configuration needed)"
-    echo "install_software  - install softwares"
-    echo "settings_system   - change system settings"
-    echo "settings_user     - change user settings"
-    echo "install_mendeley  - install mendeley"
-    echo "install_intel     - install Intel compiler"
-    echo "symlink           - make symbol link"
+    echo -e "DESCRIPTION: Archlinux post-installation script. Please run as root"
+    echo -e "USAGE: arch-post.sh FUNCTION-NAME"
+    echo -e "Main functions:"
+    echo -e ""
+    echo -e "\tconfigure_system    - configur system when installing"
+    echo -e "\tinit                - run all post-install functions"
+    echo -e ""
+    echo -e "Core functions:"
+    echo -e ""
+    echo -e "\tinit_post           - initialize post installation"
+    echo -e "\tinstall_software    - install softwares"
+    echo -e "\tsettings_system     - change system settings"
+    echo -e "\tsettings_user       - change user settings"
+    echo -e "\tvbox_guest          - install virtualbox guest additions"
+    echo -e ""
+    echo -e "Individual software installation functions:"
+    echo -e ""
+    echo -e "\tinstall_yaourt      - install yaourt"
+    echo -e "\tinstall_epstool     - install epstool"
+    echo -e "\tinstall_mendeley    - install mendeley"
+    echo -e "\tinstall_intel       - install Intel compiler"
+    echo -e ""
+    echo -e "Misc functions:"
+    echo -e ""
+    echo -e "\tsymlink             - make symbol link"
 }
 
-#--------------------------------------------------
-#symbol link
-#--------------------------------------------------
+function yaourt_install(){
+    #arguments
+    args=("$@")
+    
+    #if not install, return
+    if [ "${args[0]}" != "-S" ];then
+        yaourt --noconfirm $@ 1> /dev/null
+        return
+    fi
+
+    #check if install
+    for ((i=1; i<=$#-1; i++));do  
+        string=`pacman -Qi ${args[i]} 2> /dev/null`
+        if [ -z "$string" ];then
+            echo "Installing: ${args[i]}"
+            yaourt --noconfirm $1 ${args[i]} 1> /dev/null #install
+        fi
+    done
+}
+
 function mksymlink(){
     #arguments
     args=("$@")
@@ -38,6 +69,9 @@ function mksymlink(){
     #find all files
     files=(`find -L $1 -mindepth 1 -maxdepth 1 | sed -rn "$regex"`)
 
+    #target dir
+    $RUNASUSR mkdir -p $2
+
     for file in ${files[*]}; do
         #strip file name
         file=${file##*/}
@@ -48,14 +82,11 @@ function mksymlink(){
         fi
 
         #make symbol link
-        ln -sf $1/$file $2/
+        $RUNASUSR ln -sf $1/$file $2/
     done
 }
 
 function symlink(){
-    #public 
-    mksymlink $USERHOME/Dropbox $USERHOME "/Public/p"
-
     #home
     mksymlink $USERHOME/Dropbox/home $USERHOME
 
@@ -64,17 +95,43 @@ function symlink(){
     mksymlink $USERHOME/config/.config $USERHOME/.config
     mksymlink $USERHOME/config/.gnome2 $USERHOME/.gnome2
     mksymlink $USERHOME/config/.local/share/gnome-shell $USERHOME/.local/share/gnome-shell "/extensions/p"
+
+    rm -rf $USERHOME/.git $USERHOME/.gitignore
 }
 
 #--------------------------------------------------
 #special install
 #--------------------------------------------------
+function install_yaourt(){
+    #change directory
+    cd /tmp
+
+    #obtain pkgbuild
+    curl -L https://aur.archlinux.org/packages/pa/package-query/package-query.tar.gz > package-query.tar.gz
+    curl -L https://aur.archlinux.org/packages/ya/yaourt/yaourt.tar.gz > yaourt.tar.gz
+
+    #extract
+    tar -xzf yaourt.tar.gz
+    tar -xzf package-query.tar.gz
+
+    #build package-query
+    cd /tmp/package-query
+    makepkg --asroot PKGBUILD
+    pacman -U --noconfirm package-query*.pkg.tar.xz
+
+    #build yaourt
+    cd /tmp/yaourt
+    makepkg --asroot PKGBUILD
+    pacman -U --noconfirm yaourt*.pkg.tar.xz
+}
+
 function install_epstool(){
     #change directory
     cd /tmp
 
     #obtain pkgbuild
-    yaourt -G epstool
+    curl -L https://aur.archlinux.org/packages/ep/epstool/epstool.tar.gz > epstool.tar.gz
+    tar -xzf epstool.tar.gz
 
     #change download link
     cd /tmp/epstool
@@ -82,140 +139,50 @@ function install_epstool(){
 
     #build/install
     makepkg --asroot PKGBUILD
-    pacman -U --noconfirm epstool*.pkg.tar.xz
+    $BUILDCMD -U --noconfirm epstool*.pkg.tar.xz
 }
 
-function install_yaourt(){
-    #change directory
-    cd /tmp
-
-    #obtain pkgbuild
-    curl -L https://aur.archlinux.org/packages/ya/yaourt/yaourt.tar.gz > yaourt.tar.gz
-
-    #extract
-    tar -xzf yaourt.tar.gz
-    cd yaourt
-
-    #build/install
-    makepkg --asroot PKGBUILD
-    pacman -U --noconfirm yaourt*.pkg.tar.xz
-}
 #--------------------------------------------------
 #common tasks
 #--------------------------------------------------
-function init_post(){
+function configure_system(){
     #--------------------------------------------------
-    #add user
+    #pre-installation
     #--------------------------------------------------
-    useradd -m -g users -G audio,games,lp,optical,power,scanner,storage,video,wheel,network -s /bin/bash $USERNAME
-    
-    #--------------------------------------------------
-    #initialize package manager
-    #--------------------------------------------------
-    #mv Dropbox dir
-    mv /tmp/Dropbox $USERHOME/Dropbox
-    chown $USERNAME:users -R $USERHOME/Dropbox
-
-    #configure pacman
-    cp $USERHOME/Dropbox/sysconf/pacman/mirrorlist  /etc/pacman.d/mirrorlist
-    cp $USERHOME/Dropbox/sysconf/pacman/pacman.conf /etc/pacman.conf
-
-    #install necessary package
-    install_yaourt
-    pacman -Syu --noconfirm linux-headers sudo
+    pacman -Syu --noconfirm linux-headers sudo yajl
 
     #--------------------------------------------------
     #configure user
     #--------------------------------------------------
+    #add user
+    useradd -m -g users -G audio,games,lp,optical,power,scanner,storage,video,wheel,network -s /bin/bash $USERNAME
+
     #setup password
+    echo ">>>>>>set password for $USERNAME:"
     passwd $USERNAME
 
-    #configure sudo
-    visudo
-}
-
-function install_software(){
-    #--------------------------------------------------
-    #Xorg and drivers
-    #--------------------------------------------------
-    #Xorg
-    yaourt -S --noconfirm xorg-server xorg-xinit xorg-server-utils xorg-xprop mesa
-
-    #video drivers (open source)
-    yaourt -S --noconfirm xf86-video-intel libva-driver-intel 
-    yaourt -S --noconfirm xf86-video-nouveau xf86-video-ati xf86-video-vesa #compatibility
-
-    #touchpad
-    yaourt -S --noconfirm xf86-input-synaptics
+    #configure sudo (don't use visudo ?)
+    echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
 
     #--------------------------------------------------
-    #desktop environment
+    #prepare Dropbox directory
     #--------------------------------------------------
-    #gnome-shell essential
-    yaourt -S --noconfirm gnome-control-center gnome-shell gnome-themes-standard gdm gnome-keyring xdg-user-dir
-    yaourt -S --noconfirm nautilus nautilus-open-terminal
-    yaourt -S --noconfirm ntfs-3g ntfsprogs
-
-    #interface
-    yaourt -S --noconfirm faenza-icon-theme
-    yaourt -S --noconfirm wqy-microhei
-    yaourt -S --noconfirm freetype2-ubuntu fontconfig-ubuntu libxft-ubuntu cairo-ubuntu 
-
-    #utils
-    yaourt -S --noconfirm lm_sensors hddtemp base-completion net-tools ntp openssh gparted
-    yaourt -S --noconfirm os-prober  #multiple os
-
-    #laptop
-    yaourt -S --noconfirm tlp ethtool smartmontools tlp-rdw 
-    yaourt -S --noconfirm thinkfan acpi_call-git tp_smapi #Thinkpad only
+    $RUNASUSR cp -r /tmp/Dropbox $USERHOME/Dropbox
+    $RUNASUSR cp /tmp/arch-post.sh $USERHOME/
 
     #--------------------------------------------------
-    #development tools
+    #set root passwd
     #--------------------------------------------------
-    #AUR
-    yaourt -S --noconfirm nampcap 
+    echo ">>>>>>set password for ROOT:"
+    passwd
 
-    #personal
-    yaourt -S --noconfirm git python gcc-fortran python-matplotlib-git doxygen graphviz
-    yaourt -S --noconfirm lighttpd php-cgi php-gd php-sqlite
-
-    #--------------------------------------------------
-    #other softwares
-    #--------------------------------------------------
-    #Video and Audio
-    yaourt -S --noconfirm mpd mpc
-    yaourt -S --noconfirm mplayer-vaapi gnome-mplayer 
-
-    #IM
-    yaourt -S --noconfirm skype lib32-libpulse
-    yaourt -S --noconfirm pidgin pidgin-lwqq-git gnome-shell-pidgin
-    yaourt -S --noconfirm irssi
-
-    #Text editing/processing
-    yaourt -S --noconfirm texlive-latexextra rubber latex-beamer-ctan minted
-    yaourt -S --noconfirm gvim ctags
-
-    #other
-    yaourt -S --noconfirm evince poppler-data #PDF
-    yaourt -S --noconfirm file-roller p7zip archive-mounter #archiver
-    yaourt -S --noconfirm fcitx-gtk3 fcitx-configtool fcitx-cloudpinyin fcitx-googlepinyin fcitx-gtk2 #input method
-    yaourt -S --noconfirm firefox chromium flashplugin icedtea-web-java7 aliedit #browser
-    yaourt -S --noconfirm eog gimp inkscape #photo
-    yaourt -S --noconfirm dropbox nautilus-dropbox #dropbox
-    yaourt -S --noconfirm hotot-gtk3-git screen aria2 conky-lua xterm #misc
-
-    #special
-    install_epstool
-}
-
-function settings_system(){
     #--------------------------------------------------
     #system init configuration
     #--------------------------------------------------
     #hostname
     echo "$HOSTNAME" > /etc/hostname
-    sed -i "s/\(127.0.0.1.*$\)/\1\t$HOSTNAME/" /etc/hosts
-    sed -i "s/\(::1.*$\)/\1\t$HOSTNAME/" /etc/hosts
+    sed -i "s/\(127.0.0.1.*localhost\).*$/\1\t$HOSTNAME/" /etc/hosts
+    sed -i "s/\(::1.*localhost\).*$/\1\t$HOSTNAME/" /etc/hosts
 
     #locale
     for locale in ${OSLOCALE[*]}; do
@@ -230,12 +197,123 @@ function settings_system(){
     #hardware clock
     hwclock --systohc --utc
 
-    #rc.conf
-    cp $USERHOME/Dropbox/sysconf/rc.conf /etc/
+    #--------------------------------------------------
+    #ramdisk
+    #--------------------------------------------------
+    for hook in ${CPIOHOOK[*]}; do
+        sed -n "s|\(^HOOKS.* \w\+\)|\1 $hook|p" /etc/mkinitcpio.conf
+    done
+    mkinitcpio -p linux
 
     #--------------------------------------------------
-    #other
+    #grub
     #--------------------------------------------------
+    #install
+    pacman -S --noconfirm grub-bios os-prober
+    grub-install --target=i386-pc --recheck $BIOSDEVI
+
+    #configure
+    cp $USERHOME/Dropbox/sysconf/grub.conf /etc/default/grub 
+    grub-mkconfig -o /boot/grub/grub.cfg
+}
+
+function init_post(){
+    #configure pacman
+    cp $USERHOME/Dropbox/sysconf/pacman/mirrorlist  /etc/pacman.d/mirrorlist
+    cp $USERHOME/Dropbox/sysconf/pacman/pacman.conf /etc/pacman.conf
+
+    #architecture change
+    if [ "$SYSTARCH" != "x86_64" ];then
+        sed -i -r "N;N;s|(^\[multilib\].*\n.*\n.*)||" /etc/pacman.conf
+    fi
+
+    #install necessary package
+    install_yaourt
+}
+
+function install_software(){
+    #--------------------------------------------------
+    #Xorg and drivers
+    #--------------------------------------------------
+    #Xorg
+    $BUILDCMD -S xorg-server xorg-xinit xorg-server-utils xorg-xprop mesa
+
+    #video drivers (open source)
+    $BUILDCMD -S xf86-video-intel libva-driver-intel 
+    $BUILDCMD -S xf86-video-nouveau xf86-video-ati xf86-video-vesa #compatibility
+
+    #touchpad
+    $BUILDCMD -S xf86-input-synaptics
+
+    #--------------------------------------------------
+    #desktop environment
+    #--------------------------------------------------
+    #gnome-shell essential
+    $BUILDCMD -S gnome-control-center gnome-shell gnome-themes-standard gdm gnome-keyring xdg-user-dirs
+    $BUILDCMD -S nautilus nautilus-open-terminal
+    $BUILDCMD -S ntfs-3g ntfsprogs
+
+    #interface
+    $BUILDCMD -S faenza-icon-theme
+    $BUILDCMD -S wqy-microhei
+
+    #font
+    $BUILDCMD -Rdd freetype2 fontconfig libxft cairo 2>/dev/null #remove conflicting
+    $BUILDCMD -S freetype2-ubuntu fontconfig-ubuntu libxft-ubuntu cairo-ubuntu 
+
+    #utils
+    $BUILDCMD -S lm_sensors hddtemp bash-completion net-tools ntp openssh gparted gnome-screenshot
+    $BUILDCMD -S remmina freerdp vino #remote desktop
+
+    #laptop
+    $BUILDCMD -S tlp ethtool smartmontools tlp-rdw 
+    $BUILDCMD -S thinkfan acpi_call-git tp_smapi #Thinkpad only
+
+    #--------------------------------------------------
+    #development tools
+    #--------------------------------------------------
+    #AUR
+    $BUILDCMD -S namcap 
+
+    #personal
+    $BUILDCMD -S git python gcc-fortran python-matplotlib-git doxygen graphviz
+    $BUILDCMD -S lighttpd php-cgi php-gd php-sqlite
+
+    #--------------------------------------------------
+    #other softwares
+    #--------------------------------------------------
+    #Video and Audio
+    $BUILDCMD -S mpd mpc
+    $BUILDCMD -S mplayer-vaapi gnome-mplayer 
+
+    #skype
+    $BUILDCMD -S skype 
+    if [ "$SYSTARCH" == "x86_64" ];then
+        $BUILDCMD -S lib32-libpulse
+    fi
+
+    #other IM
+    $BUILDCMD -S pidgin pidgin-lwqq-git gnome-shell-pidgin
+    $BUILDCMD -S irssi
+
+    #Text editing/processing
+    $BUILDCMD -S texlive-latexextra rubber latex-beamer-ctan minted
+    $BUILDCMD -S gvim ctags
+
+    #other
+    $BUILDCMD -S evince poppler-data #PDF
+    $BUILDCMD -S file-roller p7zip archive-mounter #archiver
+    $BUILDCMD -S fcitx-gtk3 fcitx-configtool fcitx-cloudpinyin fcitx-googlepinyin fcitx-gtk2 #input method
+    $BUILDCMD -S firefox chromium flashplugin icedtea-web-java7 aliedit #browser
+    $BUILDCMD -S eog gimp inkscape #photo
+    $BUILDCMD -S dropbox nautilus-dropbox #dropbox
+    $BUILDCMD -S hotot-gtk3-git screen aria2 conky-lua xterm #misc
+
+    #special
+    install_epstool
+}
+
+function settings_system(){
     #networkmanager
     mkdir -p /etc/polkit-1/localauthority/50-local.d
     cp $USERHOME/Dropbox/sysconf/org.freedesktop.NetworkManager.pkla /etc/polkit-1/localauthority/50-local.d/
@@ -244,28 +322,28 @@ function settings_system(){
     cp $USERHOME/Dropbox/sysconf/thinkfan/modprobe.conf /etc/modprobe.d/
     cp $USERHOME/Dropbox/sysconf/thinkfan/thinkfan.conf /etc/
 
-    #grub
-    cp $USERHOME/Dropbox/sysconf/grub.conf /etc/default/grub 
-    grub-mkconfig -o /boot/grub/grub.cfg
-
-    #ubuntu font
-    cp -r $USERHOME/Dropbox/sysconf/font-config /etc/fonts
-
-    #sensors
-    (while :; do echo ""; done ) | sensors-detect
+    #other
+    cp $USERHOME/Dropbox/sysconf/rc.conf /etc/ #rc.conf
+    cp -r $USERHOME/Dropbox/sysconf/font-config /etc/fonts #ubuntu-font
+    (while :; do echo ""; done ) | sensors-detect #sensors
 
 }
 
 function settings_user(){
+    #update user directory
+    $RUNASUSR xdg-user-dirs-update
+
     #symbol link   
     symlink
     
-    #update user directory
-    sudo -u $USERNAME xdg-user-dirs-update
-
     #avatar
     cp $USERHOME/Pictures/avatar/avatar-gnome.png /var/lib/AccountsService/icons/$USERNAME
     cp $USERHOME/Dropbox/sysconf/gnome-account.conf /var/lib/AccountsService/users/$USERNAME
+}
+
+function vbox_guest(){
+    $BUILDCMD -S virtualbox-archlinux-additions
+    echo -e "vboxguest\nvboxsf\nvboxvideo" > /etc/modules-load.d/vbox.conf
 }
 
 #--------------------------------------------------
@@ -273,52 +351,52 @@ function settings_user(){
 #--------------------------------------------------
 function install_mendeley(){
     #pre-request
-    yaourt -S --noconfirm libpng12
+    $BUILDCMD -S libpng12
 
     #download
-    sudo -u $USERNAME aria2c -c http://www.mendeley.com/client/get/100-2/ -d $USERDOWN
+    $RUNASUSR aria2c -c http://www.mendeley.com/client/get/100-2/ -d $USERDOWN
 
     #install
-    sudo -u $USERNAME mkdir -p $USERSOFT
-    sudo -u $USERNAME tar -xjf $USERDOWN/mendeleydesktop* -C $USERSOFT
-    sudo -u $USERNAME mv $USERSOFT/mendeleydesktop* $USERSOFT/mendeley
-    sudo -u $USERNAME cp $USERSOFT/mendeley/share/applications/mendeleydesktop.desktop $USERHOME/.local/share/applications/
-    sudo -u $USERNAME sed -i "s|^Exec.*|Exec=$USERSOFT/mendeley/bin/mendeleydesktop|" $USERHOME/.local/share/applications/mendeleydesktop.desktop
-    sudo -u $USERNAME cp -r $USERSOFT/mendeley/share/icons/ $USERHOME/.local/share/icons/
+    $RUNASUSR mkdir -p $USERSOFT
+    $RUNASUSR tar -xjf $USERDOWN/mendeleydesktop* -C $USERSOFT
+    $RUNASUSR mv $USERSOFT/mendeleydesktop* $USERSOFT/mendeley
+    $RUNASUSR cp $USERSOFT/mendeley/share/applications/mendeleydesktop.desktop $USERHOME/.local/share/applications/
+    $RUNASUSR sed -i "s|^Exec.*|Exec=$USERSOFT/mendeley/bin/mendeleydesktop|" $USERHOME/.local/share/applications/mendeleydesktop.desktop
+    $RUNASUSR cp -r $USERSOFT/mendeley/share/icons/ $USERHOME/.local/share/icons/
 }
 
 function install_intel(){
     #pre-request
-    yaourt -S --noconfirm cpio
+    $BUILDCMD -S cpio
 
     #download
-    sudo -u $USERNAME aria2c -c http://registrationcenter-download.intel.com/akdlm/irc_nas/$INTELNUM/l_fcompxe_intel64_$INTELVER.tgz -d $USERDOWN
+    $RUNASUSR aria2c -c http://registrationcenter-download.intel.com/akdlm/irc_nas/$INTELNUM/l_fcompxe_intel64_$INTELVER.tgz -d $USERDOWN
 
     #extract
-    sudo -u $USERNAME mkdir -p $USERSOFT
-    sudo -u $USERNAME tar -xzf $USERDOWN/l_fcompxe_intel64_$INTELVER.tgz -C $USERDOWN
+    $RUNASUSR mkdir -p $USERSOFT
+    $RUNASUSR tar -xzf $USERDOWN/l_fcompxe_intel64_$INTELVER.tgz -C $USERDOWN
 
     #move license 
-    sudo -u $USERNAME mkdir -p $USERHOME/intel/licenses
-    sudo -u $USERNAME cp $USERHOME/Dropbox/sysconf/intel/*.lic $USERHOME/intel/licenses/
+    $RUNASUSR mkdir -p $USERHOME/intel/licenses
+    $RUNASUSR cp $USERHOME/Dropbox/sysconf/intel/*.lic $USERHOME/intel/licenses/
 
     #configure .ini file
-    sudo -u $USERNAME cp $USERHOME/Dropbox/sysconf/intel/install.ini $USERDOWN/l_fcompxe_intel64_$INTELVER/
-    sudo -u $USERNAME sed -i "s|\(PSET_INSTALL_DIR\).*|\1=$USERSOFT/intel|" $USERDOWN/l_fcompxe_intel64_$INTELVER/install.ini
+    $RUNASUSR cp $USERHOME/Dropbox/sysconf/intel/install.ini $USERDOWN/l_fcompxe_intel64_$INTELVER/
+    $RUNASUSR sed -i "s|\(PSET_INSTALL_DIR\).*|\1=$USERSOFT/intel|" $USERDOWN/l_fcompxe_intel64_$INTELVER/install.ini
 
     #install
-    sudo -u $USERNAME $USERDOWN/l_fcompxe_intel64_$INTELVER/install.sh --silent $USERDOWN/l_fcompxe_intel64_$INTELVER/install.ini
+    $RUNASUSR $USERDOWN/l_fcompxe_intel64_$INTELVER/install.sh --silent $USERDOWN/l_fcompxe_intel64_$INTELVER/install.ini
 
     #move license
-    sudo -u $USERNAME mkdir -p $USERSOFT/intel/licenses
-    sudo -u $USERNAME mv $USERHOME/intel/licenses/*.lic $USERSOFT/intel/licenses/
+    $RUNASUSR mkdir -p $USERSOFT/intel/licenses
+    $RUNASUSR mv $USERHOME/intel/licenses/*.lic $USERSOFT/intel/licenses/
 
     #delete not needed
-    sudo -u $USERNAME rm -rf $USERHOME/intel
+    $RUNASUSR rm -rf $USERHOME/intel
 }
 
 #--------------------------------------------------
-#sequence
+#collect
 #--------------------------------------------------
 function init(){
     init_post
@@ -330,6 +408,11 @@ function init(){
     for software in ${LOCALPRG[*]}; do
         install_$software
     done
+
+    #virtualbox guest
+    if [ "$VBOXINST" == "1" ];then
+        vbox_guest
+    fi
 }
 
 #--------------------------------------------------
@@ -341,9 +424,17 @@ USERHOME=/home/$USERNAME #user home directory
 USERDOWN=/home/$USERNAME/Downloads #download directory
 USERSOFT=/home/$USERNAME/software  #local software directory
 LOCALPRG=("mendeley" "intel") #local softwares to install
+SYSTARCH=x86_64 #system archtecture
 HOSTNAME=lainme-arch #hostname
 OSLOCALE=("en_US.UTF-8") #system locales. First one is default
 TIMEZONE=("Asia/Hong_Kong") #timezone
+CPIOHOOK=() #additional hooks added to mkinitcpio.conf
+BIOSDEVI=/dev/sda #device to install bios
+VBOXINST=0 #build for virtualbox
+
+#installation commands
+BUILDCMD="yaourt_install"
+RUNASUSR="sudo -u $USERNAME" #run as normal user
 
 #Intel compiler version
 INTELNUM=2671
@@ -355,5 +446,5 @@ EPSDLINK="http://archive.ubuntu.com/ubuntu/pool/universe/e/epstool/epstool_3.08+
 if [ -z $1 ];then
     show_help
 else
-    $1
+    $@
 fi
