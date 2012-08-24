@@ -251,7 +251,6 @@ function install_software(){
     #gnome-shell essential
     $BUILDCMD -S gnome-control-center gnome-shell gnome-themes-standard gdm gnome-keyring xdg-user-dirs
     $BUILDCMD -S nautilus nautilus-open-terminal
-    $BUILDCMD -S ntfs-3g ntfsprogs
 
     #interface
     $BUILDCMD -S faenza-icon-theme
@@ -264,6 +263,7 @@ function install_software(){
     #utils
     $BUILDCMD -S lm_sensors hddtemp bash-completion net-tools ntp openssh gparted gnome-screenshot
     $BUILDCMD -S remmina freerdp vino #remote desktop
+    $BUILDCMD -S ntfs-3g ntfsprogs #ntfs support
 
     #laptop
     $BUILDCMD -S tlp ethtool smartmontools tlp-rdw 
@@ -424,13 +424,13 @@ USERHOME=/home/$USERNAME #user home directory
 USERDOWN=/home/$USERNAME/Downloads #download directory
 USERSOFT=/home/$USERNAME/software  #local software directory
 LOCALPRG=("mendeley" "intel") #local softwares to install
-SYSTARCH=x86_64 #system archtecture
+SYSTARCH=x86_64 #system architecture
 HOSTNAME=lainme-arch #hostname
 OSLOCALE=("en_US.UTF-8") #system locales. First one is default
-TIMEZONE=("Asia/Hong_Kong") #timezone
+TIMEZONE="Asia/Hong_Kong" #timezone
 CPIOHOOK=() #additional hooks added to mkinitcpio.conf
-BIOSDEVI=/dev/sda #device to install bios
-VBOXINST=0 #build for virtualbox
+BIOSDEVI=/dev/sda #device to install grub
+VBOXINST=0 #build for virtualbox?
 
 #installation commands
 BUILDCMD="yaourt_install"
