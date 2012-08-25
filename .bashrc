@@ -46,6 +46,11 @@ export PATH=$PATH:$HOME/bin
 #--------------------------------------------------
 #others
 #--------------------------------------------------
+#bash completion
+if [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+fi
+
 #chsdir
 source $HOME/bin/chs_completion
 complete -o filenames -F _filedir_xspec file
