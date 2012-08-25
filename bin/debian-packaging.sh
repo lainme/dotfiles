@@ -1,6 +1,6 @@
 #!/bin/bash
 #debian packaging for varies of releases. currently design for Git
-#Todo:
+#TODO: bzr support
 
 #--------------------------------------------------
 #functions
@@ -14,7 +14,7 @@ function show_help(){
     echo "-v VERSION_SCHEME -   Optional. Specify how to determine minor version. Default is 'git'"
     echo "-r RELEASES       -   Optional. Specify the releases to build. Default is the release of current system"
     echo "-o OUTOUT_DIR     -   Optional. specify the output directory. Default is ~/build"
-    echo "-d DPUT_REPO      -   Optional. Specify the remote repo. Default is ppa:$USERNAME/sandbox"
+    echo "-d DPUT_REPO      -   Optional. Specify the remote repo. Default is ppa:USERNAME/sandbox"
     echo "-u                -   Optional. If set, upload to the specified remote repo"
     echo "-l                -   Optional. If set, locally build the package using pbuilder-dist"
     echo "-a                -   Optional. If set, do not contain .orig.tar.gz"
