@@ -16,7 +16,9 @@ function show_help(){
     echo "-o OUTOUT_DIR     -   Optional. specify the output directory. Default is ~/build"
     echo "-d DPUT_REPO      -   Optional. Specify the remote repo. Default is ppa:$USERNAME/sandbox"
     echo "-u                -   Optional. If set, upload to the specified remote repo"
+    echo "-l                -   Optional. If set, locally build the package using pbuilder-dist"
     echo "-a                -   Optional. If set, do not contain .orig.tar.gz"
+    echo "-t                -   Optional. If set, do not commmit to git"
     echo "-h                -   show this help"
 }
 
@@ -82,6 +84,12 @@ function set_changelog(){
 }
 
 function git_commit(){
+    #check
+    if [ "$no_commit" == "1" ];then
+        return
+    fi
+
+    #commit
     cd $build_dir/$package_name
     git commit -a -m "Debian packaging for version $version"
     git push origin $git_branch
@@ -126,6 +134,22 @@ function dput_upload(){
     done
 }
 
+function local_build(){
+    #check
+    if [ "$local_build" == "0" ];then
+        return
+    fi
+
+    #uplaod
+    for release in ${releases[*]};do
+        if [ ! -f $HOME/pbuilder/$release-base.tgz ];then
+            pbuilder-dist $release create
+        fi
+        cd $build_dir/$release/
+        pbuilder-dist $release build *.dsc
+    done
+}
+
 #--------------------------------------------------
 #main
 #--------------------------------------------------
@@ -143,7 +167,9 @@ releases=("`lsb_release -cs`")
 output_dir=$HOME/build
 dput_repo="ppa:$USERNAME/sandbox"
 upload=0
+local_build=0
 has_orig=1
+no_commit=0
 
 #other global variables
 build_dir=""
@@ -166,7 +192,9 @@ while [ $# -gt 1 ];do
         -o) output_dir=$2;shift 2;;
         -d) dput_repo=$2;shift 2;;
         -u) upload=1;shift 1;;
+        -l) local_build=1;shift 1;;
         -a) has_orig=0;shift 1;;
+        -t) no_commit=1;shift 1;;
         -h) show_help;shift 1;;
         *) echo "option $1 not recognizable, type -h to see help list";exit;;
     esac
@@ -187,3 +215,4 @@ set_changelog #set changelog
 git_commit #commit to git
 deb_packaging #debian packaging
 dput_upload #upload to remote repo
+local_build #locally build package
