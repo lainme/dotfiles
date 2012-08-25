@@ -17,7 +17,7 @@ function show_help(){
     echo "-d DPUT_REPO      -   Optional. Specify the remote repo. Default is ppa:USERNAME/sandbox"
     echo "-u                -   Optional. If set, upload to the specified remote repo"
     echo "-l                -   Optional. If set, locally build the package using pbuilder-dist"
-    echo "-a                -   Optional. If set, do not contain .orig.tar.gz"
+    echo "-a                -   Optional. If set, do not upload .orig.tar.gz"
     echo "-t                -   Optional. If set, do not commmit to git"
     echo "-h                -   show this help"
 }
@@ -31,10 +31,8 @@ function set_build_dir(){
     git clone $GITBASE/$package_name.git -b $git_branch $build_dir/$package_name
 
     #create orig
-    if [ "$has_orig" == "1" ];then
-        cd $build_dir
-        tar --exclude=".git" --exclude=".gitignore" --exclude="debian" -czf "$package_name.orig.tar.gz" $package_name
-    fi
+    cd $build_dir
+    tar --exclude=".git" --exclude=".gitignore" --exclude="debian" -czf "$package_name.orig.tar.gz" $package_name
 
     #prepare packaging dirs
     for release in ${releases[*]};do
@@ -101,9 +99,8 @@ function deb_packaging(){
         cp -r $build_dir/$package_name $build_dir/$release/$package_name-$major_version
 
         #copy orig
-        if [ "$has_orig" == "1" ];then
-            cp "$build_dir/$package_name.orig.tar.gz" $build_dir/$release/$package_name"_"$version~$release".orig.tar.gz"
-        fi
+        orig_version=`echo "$version" | sed "s/\(.*\)-.*/\1/"`
+        cp "$build_dir/$package_name.orig.tar.gz" $build_dir/$release/$package_name"_"$orig_version~$release".orig.tar.gz"
         
         #change dir
         cd $build_dir/$release/$package_name-$major_version
