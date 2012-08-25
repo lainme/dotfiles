@@ -11,7 +11,7 @@ function show_help(){
     echo "-c CONFIG_FILE    -   Optional. Specify the configuration file for a build"
     echo "-n PACKAGE_NAME   -   Required. Specify the package name."
     echo "-b GIT_BRANCH     -   Optional. Specify which branch to use. Default is master"
-    echo "-v VERSION_SCHEME -   Optional. Specify how to determine minor version. Default is 'git'"
+    echo "-v VERSION_SCHEME -   Optional. Specify how to determine minor version. Default is 'manual'"
     echo "-r RELEASES       -   Optional. Specify the releases to build. Default is the release of current system"
     echo "-o OUTOUT_DIR     -   Optional. specify the output directory. Default is ~/build"
     echo "-d DPUT_REPO      -   Optional. Specify the remote repo. Default is ppa:USERNAME/sandbox"
