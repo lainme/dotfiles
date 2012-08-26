@@ -211,7 +211,6 @@ fi
 
 build_dir=$OUTPUT/$package_name
 
-
 #pacakging
 set_build_dir #set build directory
 set_version #set version number
