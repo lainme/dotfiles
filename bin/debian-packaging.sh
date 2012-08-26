@@ -49,17 +49,17 @@ function set_version(){
     #change dir
     cd $build_dir/$package_name
 
-    #major-version
+    #old major and minor version
     major_version=`sed -n "1s/.*(\([.0-9]*\).*/\1/p" debian/changelog`
+    minor_version=`sed -n "1s/.*([.0-9]*\(.*\)).*/\1/;1s/~lainme.*//p" debian/changelog`
 
-    #minor-version
-    if [ "$misc_build" != "0" ];then
-        read -p "Minor version: " minor_version
-        minor_version="-$minor_version"
-    else
+    #git minor version
+    if [ "$misc_build" == "0" ];then
         minor_version=`git log -n 1 --date=short --pretty=format:"git%ad.%h" | sed "s/-//g"`
         minor_version="+$minor_version"
     fi
+
+    #confirm
     version="$major_version$minor_version~$USERNAME"
     read -e -i $version -p "Confirm version: " version
 }
@@ -102,13 +102,13 @@ function deb_packaging(){
 
         #copy orig
         orig_version=`echo "$version" | sed "s/\(.*\)-.*/\1/"`
-        cp "$build_dir/$package_name.orig.tar.gz" $build_dir/$release/$package_name"_"$orig_version~$release".orig.tar.gz"
+        cp "$build_dir/$package_name.orig.tar.gz" $build_dir/$release/$package_name"_"$orig_version".orig.tar.gz"
         
         #change dir
         cd $build_dir/$release/$package_name-$major_version
 
         #modify
-        sed -i "s|\(~$USERNAME\)\(.*\)unstable|\1~$release\2$release|" "debian/changelog"
+        sed -i "s|\(~$USERNAME\)\().*\)unstable|\1~$release\2$release|" "debian/changelog"
 
         #build
         if [ "$has_orig" != "0" ];then
@@ -205,7 +205,7 @@ if [ -z $package_name ];then
     exit
 fi
 
-if [ ( "$misc_build" != "0" ) -a ( -z $source_dir ) ];then
+if [ "$misc_build" != "0" -a -z $source_dir ];then
     source_dir=$HOME/Downloads/$package_name
 fi
 
