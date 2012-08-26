@@ -1,6 +1,7 @@
 #!/bin/bash
 #debian packaging for varies of releases. currently design for Git
-#TODO: bzr support
+#TODO: 
+# 1. bzr support
 
 #--------------------------------------------------
 #functions
@@ -8,17 +9,17 @@
 function show_help(){
     echo "Description: build debian package and upload to launchpad"
     echo "Usage: debian-packaging [options]"
-    echo "-c CONFIG_FILE    -   Optional. Specify the configuration file for a build"
-    echo "-n PACKAGE_NAME   -   Required. Specify the package name."
-    echo "-b GIT_BRANCH     -   Optional. Specify which branch to use. Default is master"
-    echo "-v VERSION_SCHEME -   Optional. Specify how to determine minor version. Default is 'manual'"
-    echo "-r RELEASES       -   Optional. Specify the releases to build. Default is the release of current system"
-    echo "-o OUTOUT_DIR     -   Optional. specify the output directory. Default is ~/build"
-    echo "-d DPUT_REPO      -   Optional. Specify the remote repo. Default is ppa:USERNAME/sandbox"
-    echo "-u                -   Optional. If set, upload to the specified remote repo"
-    echo "-l                -   Optional. If set, locally build the package using pbuilder-dist"
-    echo "-a                -   Optional. If set, do not upload .orig.tar.gz"
-    echo "-t                -   Optional. If set, do not commmit to git"
+    echo "-c CONFIG_FILE    -   Optional. Configuration file for a build"
+    echo "-n PACKAGE_NAME   -   Required. Package name."
+    echo "-b GIT_BRANCH     -   Optional. Which branch to use. Default is master"
+    echo "-r RELEASES       -   Optional. Releases to build. Default is the release of current system"
+    echo "-d DPUT_REPO      -   Optional. Remote repo. Default is ppa:USERNAME/sandbox"
+    echo "-s SOURCE_DIR     -   Optional. Directory where source exsits, default is ~/Downloads/PACKAGE_NAME. Used if misc build is enabled"
+    echo "-u FLAG           -   Optional. If not zero, upload to the specified remote repo. Default is 0"
+    echo "-l FLAG           -   Optional. If not zero, locally build the package using pbuilder-dist. Default is 0"
+    echo "-o FLAG           -   Optional. If not zero, upload .orig.tar.gz. Default is 0"
+    echo "-p FLAG           -   Optional. If not zero, do not commmit to git. Default is 0"
+    echo "-m FLAG           -   Optional. If not zero, invoke non-git build (misc build). Default is 0"
     echo "-h                -   show this help"
 }
 
@@ -27,12 +28,16 @@ function set_build_dir(){
     rm -rf $build_dir
     mkdir -p $build_dir
 
-    #clone source files
-    git clone $GITBASE/$package_name.git -b $git_branch $build_dir/$package_name
+    #obtain source files
+    if [ "$misc_build" != "0" ];then
+        cp -r $source_dir $build_dir/$package_name
+    else
+        git clone $GITBASE/$package_name.git -b $git_branch $build_dir/$package_name
+    fi
 
     #create orig
     cd $build_dir
-    tar --exclude=".git" --exclude=".gitignore" --exclude="debian" -czf "$package_name.orig.tar.gz" $package_name
+    tar --exclude="debian" -czf "$package_name.orig.tar.gz" $package_name
 
     #prepare packaging dirs
     for release in ${releases[*]};do
@@ -48,10 +53,10 @@ function set_version(){
     major_version=`sed -n "1s/.*(\([.0-9]*\).*/\1/p" debian/changelog`
 
     #minor-version
-    if [ "$version_scheme" == "manual" ];then
+    if [ "$misc_build" != "0" ];then
         read -p "Minor version: " minor_version
         minor_version="-$minor_version"
-    elif [ "$version_scheme" == "git" ];then
+    else
         minor_version=`git log -n 1 --date=short --pretty=format:"git%ad.%h" | sed "s/-//g"`
         minor_version="+$minor_version"
     fi
@@ -63,16 +68,13 @@ function set_changelog(){
     #change dir
     cd $build_dir/$package_name
 
-    #read comment
-    comment=`git log -n 1 --pretty=format:%s`
-
     #timestamp
     timestamp=`date -R`
 
     #change log
     changelog="$package_name ($version) unstable; urgency=low\n\
 \n\
-  * $comment\n\
+  * [Enter comment here]\n\
 \n\
  -- $USERNAME <$USEREMAIL>  $timestamp\n"
 
@@ -83,7 +85,7 @@ function set_changelog(){
 
 function git_commit(){
     #check
-    if [ "$no_commit" == "1" ];then
+    if [ "$is_commit" == "0" -o "$misc_build" != "0" ];then
         return
     fi
 
@@ -106,11 +108,10 @@ function deb_packaging(){
         cd $build_dir/$release/$package_name-$major_version
 
         #modify
-        rm -rf .git .gitignore
         sed -i "s|\(~$USERNAME\)\(.*\)unstable|\1~$release\2$release|" "debian/changelog"
 
         #build
-        if [ "$has_orig" == "1" ];then
+        if [ "$has_orig" != "0" ];then
             debuild -S -sa
         else
             debuild -S -sd
@@ -154,19 +155,20 @@ function local_build(){
 USERNAME=lainme #username
 USEREMAIL=lainme993@gmail.com #user email
 GITBASE=git@github.com:$USERNAME #git base repo url
+OUTPUT=$HOME/build #output directory
 
 #default values of options
 config_file=""
 package_name=""
 git_branch="master"
-version_scheme=manual
 releases=("`lsb_release -cs`")
-output_dir=$HOME/build
 dput_repo="ppa:$USERNAME/sandbox"
+source_dir=""
 upload=0
 local_build=0
-has_orig=1
-no_commit=0
+has_orig=0
+is_commit=0
+misc_build=0
 
 #other global variables
 build_dir=""
@@ -184,15 +186,15 @@ while [ $# -gt 1 ];do
         -c) config_file=$2;source $2;shift 2;; #source config file
         -n) package_name=$2;shift 2;;
         -b) git_branch=$2;shift 2;;
-        -v) version_scheme=$2;shift 2;;
         -r) releases=$2;shift 2;;
-        -o) output_dir=$2;shift 2;;
         -d) dput_repo=$2;shift 2;;
-        -u) upload=1;shift 1;;
-        -l) local_build=1;shift 1;;
-        -a) has_orig=0;shift 1;;
-        -t) no_commit=1;shift 1;;
-        -h) show_help;shift 1;;
+        -s) source_dir=$2;shift 2;;
+        -u) upload=$2;shift 2;;
+        -l) local_build=$2;shift 2;;
+        -0) has_orig=$2;shift 2;;
+        -p) no_commit=$2;shift 2;;
+        -m) misc_build=$2;shift 2;;
+        -h) show_help;shift 2;;
         *) echo "option $1 not recognizable, type -h to see help list";exit;;
     esac
 done
@@ -203,7 +205,12 @@ if [ -z $package_name ];then
     exit
 fi
 
-build_dir=$output_dir/$package_name
+if [ ( "$misc_build" != "0" ) -a ( -z $source_dir ) ];then
+    source_dir=$HOME/Downloads/$package_name
+fi
+
+build_dir=$OUTPUT/$package_name
+
 
 #pacakging
 set_build_dir #set build directory
