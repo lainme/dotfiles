@@ -13,7 +13,7 @@ function show_help(){
     echo "-n PACKAGE_NAME   -   Required. Package name."
     echo "-b GIT_BRANCH     -   Optional. Which branch to use. Default is master"
     echo "-r RELEASES       -   Optional. Releases to build. Default is the release of current system"
-    echo "-d DPUT_REPO      -   Optional. Remote repo. Default is ppa:USERNAME/sandbox"
+    echo "-d DPUT_REPO      -   Optional. Remote repos. Default is ppa:USERNAME/sandbox only"
     echo "-s SOURCE_DIR     -   Optional. Directory where source exsits, default is ~/Downloads/PACKAGE_NAME. Used if misc build is enabled"
     echo "-u FLAG           -   Optional. If not zero, upload to the specified remote repo. Default is 0"
     echo "-l FLAG           -   Optional. If not zero, locally build the package using pbuilder-dist. Default is 0"
@@ -37,7 +37,7 @@ function set_build_dir(){
 
     #create orig
     cd $build_dir
-    tar --exclude="debian" -czf "$package_name.orig.tar.gz" $package_name
+    tar --exclude=".git" --exclude=".gitignore" --exclude="debian" -czf "$package_name.orig.tar.gz" $package_name
 
     #prepare packaging dirs
     for release in ${releases[*]};do
@@ -51,7 +51,7 @@ function set_version(){
 
     #old major and minor version
     major_version=`sed -n "1s/.*(\([.0-9]*\).*/\1/p" debian/changelog`
-    minor_version=`sed -n "1s/.*([.0-9]*\(.*\)).*/\1/;1s/~lainme.*//p" debian/changelog`
+    minor_version=`sed -n "1s/.*([.0-9]*\(.*\)).*/\1/p;1s/~lainme.*//p" debian/changelog`
 
     #git minor version
     if [ "$misc_build" == "0" ];then
@@ -108,6 +108,7 @@ function deb_packaging(){
         cd $build_dir/$release/$package_name-$major_version
 
         #modify
+        rm -rf .git .gitignore
         sed -i "s|\(~$USERNAME\)\().*\)unstable|\1~$release\2$release|" "debian/changelog"
 
         #build
@@ -125,10 +126,19 @@ function dput_upload(){
         return
     fi
 
-    #uplaod
+    #upload
     for release in ${releases[*]};do
-        cd $build_dir/$release/
-        dput $dput_repo *.changes
+        for repo in ${dput_repo[*]};do
+            if [ "$repo" == "local" ];then
+                cd $PBUILDER_DIR"/"$release"_result"
+                changes_name=$package_name"_"$version"~"$release"_"$PBUILDER_ARCH".changes"
+            else
+                cd $build_dir/$release/
+                changes_name=$package_name"_"$version"~"$release"_source.changes"
+            fi
+
+            dput $repo $changes_name
+        done
     done
 }
 
@@ -138,13 +148,19 @@ function local_build(){
         return
     fi
 
-    #uplaod
     for release in ${releases[*]};do
-        if [ ! -f $HOME/pbuilder/$release-base.tgz ];then
-            pbuilder-dist $release create
+        #create package
+        if [ ! -f $PBUILDER_DIR/$release-base.tgz ];then
+            pbuilder-dist $release $PBUILDER_ARCH create
         fi
+
+        #build
         cd $build_dir/$release/
-        pbuilder-dist $release build *.dsc
+        pbuilder-dist $release $PBUILDER_ARCH build $package_name"_"$version"~"$release".dsc"
+
+        #sign package
+        cd $PBUILDER_DIR"/"$release"_result"
+        debsign $package_name"_"$version"~"$release"_"$PBUILDER_ARCH".changes"
     done
 }
 
@@ -155,14 +171,16 @@ function local_build(){
 USERNAME=lainme #username
 USEREMAIL=lainme993@gmail.com #user email
 GITBASE=git@github.com:$USERNAME #git base repo url
-OUTPUT=$HOME/build #output directory
+OUTPUT_DIR=$HOME/build #output directory
+PBUILDER_DIR=$HOME/pbuilder #pbuilder-dist directory
+PBUILDER_ARCH=`uname -i` #archtecture used for pbuilder (default native)
 
 #default values of options
 config_file=""
 package_name=""
 git_branch="master"
 releases=("`lsb_release -cs`")
-dput_repo="ppa:$USERNAME/sandbox"
+dput_repo=("ppa:$USERNAME/sandbox")
 source_dir=""
 upload=0
 local_build=0
@@ -205,11 +223,11 @@ if [ -z $package_name ];then
     exit
 fi
 
-if [ "$misc_build" != "0" -a -z $source_dir ];then
+if [ "$misc_build" != "0" -a "t$source_dir" == "t" ];then
     source_dir=$HOME/Downloads/$package_name
 fi
 
-build_dir=$OUTPUT/$package_name
+build_dir=$OUTPUT_DIR/$package_name
 
 #pacakging
 set_build_dir #set build directory
@@ -217,5 +235,5 @@ set_version #set version number
 set_changelog #set changelog
 git_commit #commit to git
 deb_packaging #debian packaging
-dput_upload #upload to remote repo
 local_build #locally build package
+dput_upload #upload to remote repo
