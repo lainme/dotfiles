@@ -153,6 +153,9 @@ function local_build(){
         return
     fi
 
+    #do not check
+    export DEB_BUILD_OPTIONS=nocheck
+
     for release in ${releases[*]};do
         #create package
         if [ ! -f $PBUILDER_DIR/$release-base.tgz ];then
