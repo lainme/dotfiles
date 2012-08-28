@@ -194,6 +194,7 @@ Bundle 'SudoEdit.vim'
 Bundle 'fcitx.vim'
 Bundle 'LaTeX-Box-Team/LaTeX-Box'
 Bundle 'notes.vim'
+Bundle 'DirDiff.vim'
 Bundle 'git://github.com/lainme/simplecompile.git'
 
 "----------taglist----------

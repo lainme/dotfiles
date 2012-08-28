@@ -30,10 +30,6 @@ function quitscr() {
 #set prompt
 export PS1='\u@\h:\w\$ '
 
-#debian packaging
-export DEBEMAIL=lainme993@gmail.com
-export DEBFULLNAME="lainme"
-
 #xterm-256
 export TERM=xterm-256color
 
