@@ -94,6 +94,11 @@ function git_commit(){
         return
     fi
 
+    if [ "$is_commit" == "0" -a "$is_tag" == "0" ];then
+        return
+    fi
+
+    #change directory
     cd $build_dir/$package_name
 
     #commit
@@ -106,6 +111,7 @@ function git_commit(){
         git tag -a debian/$major_version -m "Release version $major_version"
     fi
 
+    #push to remote
     git push origin $git_main_branch
 }
 
