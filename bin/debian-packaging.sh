@@ -7,22 +7,23 @@
 #functions
 #--------------------------------------------------
 function show_help(){
-    echo "Description: build debian package and upload to launchpad"
+    echo "Description: build debian package and upload to launchpad or local repo"
     echo "Usage: debian-packaging [options]"
-    echo "-c CONFIG_FILE    -   Optional. Configuration file for a build"
-    echo "-n PACKAGE_NAME   -   Required. Package name."
-    echo "-b GIT_BRANCH     -   Optional. Which branch to use. Default is master"
-    echo "-r RELEASES       -   Optional. Releases to build. Default is the release of current system"
-    echo "-d DPUT_REPO      -   Optional. Remote repos. Default is ppa:USERNAME/sandbox only"
-    echo "-s SOURCE_DIR     -   Optional. Directory where source exsits, default is ~/Downloads/PACKAGE_NAME. Used if misc build enabled"
-    echo "-o ORIG_FILE      -   Optional. Path of .orig file, default is create by program"
-    echo "-u FLAG           -   Optional. If not zero, upload to the specified remote repo. Default is 0"
-    echo "-l FLAG           -   Optional. If not zero, locally build the package using pbuilder-dist. Default is 0"
-    echo "-a FLAG           -   Optional. If not zero, do not upload .orig.tar.gz. Default is 1"
-    echo "-p FLAG           -   Optional. If not zero, commmit to git. Default is 0"
-    echo "-t FLAG           -   Optional. If not zero, add tag to git. Default is 0"
-    echo "-m FLAG           -   Optional. If not zero, invoke non-git build (misc build). Default is 0"
-    echo "-h                -   show this help"
+    echo "The -c/--congfig option should be given first, then you can override the options in config file"
+    echo "-c --config   CONFIG_FILE     - Optional. Configuration file for a build"
+    echo "-n --name     PACKAGE_NAME    - Required. Package name."
+    echo "-b --branch   GIT_MAIN_BRANCH - Optional. Which branch to use. Default is master"
+    echo "-u --upstream GIT_ORIG_BRANCH - Optional. Which branch to use as upstream. Default is upstream"
+    echo "-r --releases RELEASES        - Optional. Releases to build. Default is the release of current system"
+    echo "-d --dput     DPUT_REPO       - Optional. Remote repos. Default is ppa:USERNAME/sandbox only."
+    echo "-s --source   SOURCE_DIR      - Optional. Directory where source exsits, default is ~/Downloads/PACKAGE_NAME. Used if misc build enabled"
+    echo "-o --orig     ORIG_FILE       - Optional. Path of .orig file, default is create by program"
+    echo "-l --pbuilder FLAG            - Optional. If not zero, locally build the package using pbuilder-dist. Default is 0"
+    echo "-a --alter    FLAG            - Optional. If not zero, do not upload .orig.tar.gz. Default is 1"
+    echo "-p --commit   FLAG            - Optional. If not zero, commmit to git. Default is 0"
+    echo "-t --tag      FLAG            - Optional. If not zero, add tag to git. Default is 0"
+    echo "-m --misc     FLAG            - Optional. If not zero, invoke non-git build (misc build). Default is 0"
+    echo "-h --help                     - show this help"
 }
 
 function set_build_dir(){
@@ -35,7 +36,7 @@ function set_build_dir(){
     if [ "$misc_build" != "0" ];then
         cp -r $source_dir $build_dir/$package_name
     else
-        git clone $GITBASE/$package_name.git -b $git_branch $build_dir/$package_name
+        git clone $GITBASE/$package_name.git -b $git_main_branch $build_dir/$package_name
     fi
 
     #prepare packaging dirs
@@ -105,7 +106,7 @@ function git_commit(){
         git tag -a debian/$major_version -m "Release version $major_version"
     fi
 
-    git push origin $git_branch
+    git push origin $git_main_branch
 }
 
 function deb_packaging(){
@@ -146,12 +147,6 @@ function deb_packaging(){
 }
 
 function dput_upload(){
-    #check
-    if [ "$upload" == "0" ];then
-        return
-    fi
-
-    #upload
     for release in ${releases[*]};do
         for repo in ${dput_repo[*]};do
             if [ "$repo" == "local" ];then
@@ -206,12 +201,12 @@ PBUILDER_ARCH=`uname -i` #archtecture used for pbuilder (default native)
 #default values of options
 config_file=""
 package_name=""
-git_branch="master"
+git_main_branch="master"
+git_orig_branch="upstream"
 releases=("`lsb_release -cs`")
 dput_repo=("ppa:$USERNAME/sandbox")
 source_dir=""
 orig_file=""
-upload=0
 local_build=0
 no_orig=1
 is_commit=0
@@ -231,20 +226,20 @@ fi
 
 while [ $# -gt 1 ];do
     case $1 in
-        -c) config_file=$2;source $2;shift 2;; #source config file
-        -n) package_name=$2;shift 2;;
-        -b) git_branch=$2;shift 2;;
-        -r) releases=$2;shift 2;;
-        -d) dput_repo=$2;shift 2;;
-        -s) source_dir=$2;shift 2;;
-        -o) orig_file=$2;shift 2;;
-        -u) upload=$2;shift 2;;
-        -l) local_build=$2;shift 2;;
-        -a) no_orig=$2;shift 2;;
-        -p) is_commit=$2;shift 2;;
-        -t) is_tag=$2;shift 2;;
-        -m) misc_build=$2;shift 2;;
-        -h) show_help;shift 2;;
+        -c|--config) config_file=$2;source $2;shift 2;; #source config file
+        -n|--name) package_name=$2;shift 2;;
+        -b|--branch) git_main_branch=$2;shift 2;;
+        -u|--upstream) git_orig_branch=$2;shift 2;;
+        -r|--releases) releases=$2;shift 2;;
+        -d|--dput) dput_repo=$2;shift 2;;
+        -s|--source) source_dir=$2;shift 2;;
+        -o|--orig) orig_file=$2;shift 2;;
+        -l|--pbuilder) local_build=$2;shift 2;;
+        -a|--alter) no_orig=$2;shift 2;;
+        -p|--commit) is_commit=$2;shift 2;;
+        -t|--tag) is_tag=$2;shift 2;;
+        -m|--misc) misc_build=$2;shift 2;;
+        -h|--help) show_help;shift 2;;
         *) echo "option $1 not recognizable, type -h to see help list";exit;;
     esac
 done
