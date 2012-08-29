@@ -45,6 +45,15 @@ export EDITOR=vim
 #path
 export PATH=$PATH:$HOME/bin
 
+#stow path
+if [ -d $HOME/opt ];then
+    export PATH=$HOME/opt/bin:$HOME/bin:$PATH
+    export INCLUDE=$HOME/opt/include:$INCLUDE
+    export LIBRARY_PATH=$HOME/opt/lib:$HOME/opt/lib64:$LIBRARY_PATH
+    export LD_LIBRARY_PATH=$HOME/opt/lib:$HOME/opt/lib64:$LD_LIBRARY_PATH
+    export XDG_DATA_DIRS=$HOME/opt/share:$XDG_DATA_DIRS
+fi
+
 #--------------------------------------------------
 #others
 #--------------------------------------------------
@@ -57,6 +66,11 @@ fi
 if [ -f $HOME/bin/chs_completion ];then
     source $HOME/bin/chs_completion
     complete -o filenames -F _filedir_xspec file
+fi
+
+#git completion on cluster
+if [ -f $HOME/.git-completion.bash ];then
+    source $HOME/.git-completion.bash
 fi
 
 #be evil

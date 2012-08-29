@@ -29,7 +29,3 @@ bindkey "^[[1;3B" next
 
 #滚屏
 termcapinfo xterm* ti@:te@
-
-#启动控制
-screen -t irssi bash -i -c "irssi;bash"
-screen -t bash
