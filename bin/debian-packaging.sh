@@ -15,7 +15,7 @@ function show_help(){
     echo "-b --branch   GIT_MAIN_BRANCH - Optional. Which branch to use. Default is master"
     echo "-u --upstream GIT_ORIG_BRANCH - Optional. Which branch to use as upstream. Default is upstream"
     echo "-r --releases RELEASES        - Optional. Releases to build. Default is the release of current system"
-    echo "-d --dput     DPUT_REPO       - Optional. Remote repos. Default is ppa:USERNAME/sandbox only."
+    echo "-d --dput     DPUT_REPO       - Optional. Remote repos. If not empty, upload to the specified repos"
     echo "-s --source   SOURCE_DIR      - Optional. Directory where source exsits, default is ~/Downloads/PACKAGE_NAME. Used if misc build enabled"
     echo "-o --orig     ORIG_FILE       - Optional. Path of .orig file, default is create by program"
     echo "-l --pbuilder FLAG            - Optional. If not zero, locally build the package using pbuilder-dist. Default is 0"
@@ -204,7 +204,7 @@ package_name=""
 git_main_branch="master"
 git_orig_branch="upstream"
 releases=("`lsb_release -cs`")
-dput_repo=("ppa:$USERNAME/sandbox")
+dput_repo=("")
 source_dir=""
 orig_file=""
 local_build=0
