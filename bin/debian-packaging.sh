@@ -78,8 +78,8 @@ function set_changelog(){
     #--------------------------------------------------
     #version
     #--------------------------------------------------
-    version=`sed -n "1s|.*(\(.*\)).*|\1|p" debian/changelog`
-    major_version=`echo $version | sed -n -r "s/(.*:|)([^-]*)-.*/\2/p"`
+    version=`sed -n -r "1s|.*\((.*:\|)(.*)\).*|\2|p" debian/changelog`
+    major_version=`echo $version | sed -n -r "s/([^-]*).*/\1/p"`
 }
 
 function git_commit(){
