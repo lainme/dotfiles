@@ -19,7 +19,7 @@ function show_help(){
     echo "-s --source   SOURCE_DIR      - Optional. Directory where source exsits, default is ~/Downloads/PACKAGE_NAME. Used if misc build enabled"
     echo "-o --orig     ORIG_FILE       - Optional. Path of .orig file, default is create by program"
     echo "-l --pbuilder FLAG            - Optional. If not zero, locally build the package using pbuilder-dist. Default is 0"
-    echo "-a --alter    FLAG            - Optional. If not zero, do not upload .orig.tar.gz. Default is 1"
+    echo "-a --alter    FLAG            - Optional. If not zero, do not upload .orig.tar.*. Default is 1"
     echo "-p --commit   FLAG            - Optional. If not zero, commmit to git. Default is 0"
     echo "-t --tag      FLAG            - Optional. If not zero, add tag to git. Default is 0"
     echo "-m --misc     FLAG            - Optional. If not zero, invoke non-git build (misc build). Default is 0"
@@ -114,7 +114,7 @@ function deb_packaging(){
     cd $build_dir
     mv $package_name $package_name-$major_version
 
-    #generate .orig.tar.gz
+    #generate .orig.tar.*
     if [ -z $orig_file ];then
         tar --exclude=".git" --exclude=".gitignore" --exclude="debian" -czf \
             ${package_name}_${major_version}.orig.tar.gz $package_name-$major_version
@@ -126,7 +126,7 @@ function deb_packaging(){
     for release in ${releases[*]};do
         #copy files and orig
         cp -r $build_dir/$package_name-$major_version $build_dir/$release/
-        cp ${build_dir}/${package_name}_${major_version}.orig.tar.gz $build_dir/$release/
+        cp ${build_dir}/${package_name}_${major_version}.orig.tar.* $build_dir/$release/
         
         #change dir
         cd $build_dir/$release/$package_name-$major_version
