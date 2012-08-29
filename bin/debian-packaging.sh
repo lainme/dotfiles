@@ -11,7 +11,7 @@ function show_help(){
     echo "Usage: debian-packaging [options]"
     echo "-c CONFIG_FILE    -   Optional. Configuration file for a build"
     echo "-n PACKAGE_NAME   -   Required. Package name."
-    echo "-b GIT_BRANCH     -   Optional. Which branch to use. Default is debian"
+    echo "-b GIT_BRANCH     -   Optional. Which branch to use. Default is master"
     echo "-r RELEASES       -   Optional. Releases to build. Default is the release of current system"
     echo "-d DPUT_REPO      -   Optional. Remote repos. Default is ppa:USERNAME/sandbox only"
     echo "-s SOURCE_DIR     -   Optional. Directory where source exsits, default is ~/Downloads/PACKAGE_NAME. Used if misc build enabled"
@@ -205,7 +205,7 @@ PBUILDER_ARCH=`uname -i` #archtecture used for pbuilder (default native)
 #default values of options
 config_file=""
 package_name=""
-git_branch="debian"
+git_branch="master"
 releases=("`lsb_release -cs`")
 dput_repo=("ppa:$USERNAME/sandbox")
 source_dir=""
