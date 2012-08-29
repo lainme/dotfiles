@@ -50,33 +50,21 @@ function set_changelog(){
     cd $build_dir/$package_name
 
     #--------------------------------------------------
-    #version
-    #--------------------------------------------------
-    #prefix, old major and minor version
-    prefix=`sed -n -r "1s/.*\((.*:).*/\1/p" debian/changelog`
-    major_version=`sed -n -r "1s/.*\((.*:|)([^-]*).*/\2/p" debian/changelog`
-    minor_version=`sed -n -r "1s/.*\((.*:|)[^-]*(.*)\).*/\2/p;1s/~$USERNAME*//p" debian/changelog`
-
-    #git minor version
-    if [ "$misc_build" == "0" ];then
-        minor_version=`git log origin/$git_orig_branch -n 1 --date=short --pretty=format:"git%ad.%h" | sed "s/-//g"`
-        minor_version="+$minor_version"
-    fi
-
-    #set version
-    version="$major_version$minor_version~$USERNAME"
-
-    #confirm version
-    read -e -i $version -p "Confirm version: " version
-
-    #--------------------------------------------------
     #changelog
     #--------------------------------------------------
+    #prepare version
+    version=`sed -n "1s|.*(\(.*\)).*|\1|p" debian/changelog`
+
+    if [ "$misc_build" == "0" ];then
+        git_version=`git log origin/$git_orig_branch -n 1 --date=short --pretty=format:"git%ad.%h" | sed "s/-//g"`
+        version=`echo $version | sed "s|git[.0-9a-zA-Z]*|$git_version|"`
+    fi
+
     #set timestamp
     timestamp=`date -R`
 
     #change log
-    changelog="$package_name ($prefix$version) unstable; urgency=low\n\
+    changelog="$package_name ($version) unstable; urgency=low\n\
 \n\
   * [Enter comment here]\n\
 \n\
@@ -86,6 +74,12 @@ function set_changelog(){
 
     #confirm changelog
     $EDITOR debian/changelog
+
+    #--------------------------------------------------
+    #version
+    #--------------------------------------------------
+    version=`sed -n "1s|.*(\(.*\)).*|\1|p" debian/changelog`
+    major_version=`echo $version | sed -n -r "s/.*\((.*:|)([^-]*).*/\2/p"`
 }
 
 function git_commit(){
