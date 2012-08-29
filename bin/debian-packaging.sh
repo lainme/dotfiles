@@ -19,7 +19,8 @@ function show_help(){
     echo "-u FLAG           -   Optional. If not zero, upload to the specified remote repo. Default is 0"
     echo "-l FLAG           -   Optional. If not zero, locally build the package using pbuilder-dist. Default is 0"
     echo "-a FLAG           -   Optional. If not zero, do not upload .orig.tar.gz. Default is 1"
-    echo "-p FLAG           -   Optional. If not zero, do not commmit to git. Default is 0"
+    echo "-p FLAG           -   Optional. If not zero, commmit to git. Default is 0"
+    echo "-t FLAG           -   Optional. If not zero, add tag to git. Default is 0"
     echo "-m FLAG           -   Optional. If not zero, invoke non-git build (misc build). Default is 0"
     echo "-h                -   show this help"
 }
@@ -214,6 +215,7 @@ upload=0
 local_build=0
 no_orig=1
 is_commit=0
+is_tag=0
 misc_build=0
 
 #other global variables
@@ -239,7 +241,8 @@ while [ $# -gt 1 ];do
         -u) upload=$2;shift 2;;
         -l) local_build=$2;shift 2;;
         -a) no_orig=$2;shift 2;;
-        -p) no_commit=$2;shift 2;;
+        -p) is_commit=$2;shift 2;;
+        -t) is_tag=$2;shift 2;;
         -m) misc_build=$2;shift 2;;
         -h) show_help;shift 2;;
         *) echo "option $1 not recognizable, type -h to see help list";exit;;
