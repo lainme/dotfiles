@@ -16,7 +16,7 @@ alias grep="grep --color=auto"
 
 #other
 alias sshproxy="ssh -qTfnN -D 8707 vps"
-alias dquilt="quilt --quiltrc=$HOME/.quitrc-dpkg"
+alias dquilt="quilt --quiltrc=$HOME/.quiltrc-dpkg"
 
 #--------------------------------------------------
 #functions
@@ -30,11 +30,6 @@ function quitscr() {
 #--------------------------------------------------
 #set prompt
 export PS1="\u@\h:\w\$ "
-
-#debian packaging
-export DEBEMAIL=lainme993@gmail.com
-export DEBFULLNAME="lainme"
-export DEB_BUILD_OPTIONS=nocheck
 
 #xterm-256
 export TERM=xterm-256color
@@ -53,6 +48,13 @@ if [ -d $HOME/opt ];then
     export LD_LIBRARY_PATH=$HOME/opt/lib:$HOME/opt/lib64:$LD_LIBRARY_PATH
     export XDG_DATA_DIRS=$HOME/opt/share:$XDG_DATA_DIRS
 fi
+
+#debian packaging
+export DEBEMAIL=lainme993@gmail.com
+export DEBFULLNAME="lainme"
+export DEB_BUILD_OPTIONS=nocheck
+export QUILT_PATCHES=debian/patches
+export QUILT_REFRESH_ARGS="-p ab --no-timestamps --no-index"
 
 #--------------------------------------------------
 #others
