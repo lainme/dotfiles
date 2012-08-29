@@ -11,10 +11,11 @@ function show_help(){
     echo "Usage: debian-packaging [options]"
     echo "-c CONFIG_FILE    -   Optional. Configuration file for a build"
     echo "-n PACKAGE_NAME   -   Required. Package name."
-    echo "-b GIT_BRANCH     -   Optional. Which branch to use. Default is master"
+    echo "-b GIT_BRANCH     -   Optional. Which branch to use. Default is debian"
     echo "-r RELEASES       -   Optional. Releases to build. Default is the release of current system"
     echo "-d DPUT_REPO      -   Optional. Remote repos. Default is ppa:USERNAME/sandbox only"
     echo "-s SOURCE_DIR     -   Optional. Directory where source exsits, default is ~/Downloads/PACKAGE_NAME. Used if misc build enabled"
+    echo "-o ORIG_FILE      -   Optional. Path of .orig file, default is create by program"
     echo "-u FLAG           -   Optional. If not zero, upload to the specified remote repo. Default is 0"
     echo "-l FLAG           -   Optional. If not zero, locally build the package using pbuilder-dist. Default is 0"
     echo "-a FLAG           -   Optional. If not zero, do not upload .orig.tar.gz. Default is 1"
@@ -52,7 +53,7 @@ function set_changelog(){
     #prefix, old major and minor version
     prefix=`sed -n -r "1s/.*\((.*:).*/\1/p" debian/changelog`
     major_version=`sed -n -r "1s/.*\((.*:|)([.0-9]*).*/\2/p" debian/changelog`
-    minor_version=`sed -n -r "1s/.*\((.*:|)[.0-9]*(.*)\).*/\2/p;1s/~lainme.*//p" debian/changelog`
+    minor_version=`sed -n -r "1s/.*\((.*:|)[.0-9]*(.*)\).*/\2/p;1s/~$USERNAME*//p" debian/changelog`
 
     #git minor version
     if [ "$misc_build" == "0" ];then
@@ -87,13 +88,22 @@ function set_changelog(){
 
 function git_commit(){
     #check
-    if [ "$is_commit" == "0" -o "$misc_build" != "0" ];then
+    if [ "$misc_build" != "0" ];then
         return
     fi
 
-    #commit
     cd $build_dir/$package_name
-    git commit -a -m "Debian packaging for version $version"
+
+    #commit
+    if [ "$is_commit" != "0" ];then
+        git commit -a -m "Debian packaging for version $version"
+    fi
+
+    #tag
+    if [ "$is_tag" != "0" ];then
+        git tag -a debian/$major_version -m "Release version $major_version"
+    fi
+
     git push origin $git_branch
 }
 
@@ -103,13 +113,18 @@ function deb_packaging(){
     mv $package_name $package_name-$major_version
 
     #generate .orig.tar.gz
-    tar --exclude=".git" --exclude=".gitignore" --exclude="debian" -czf $package_name"_"$major_version".orig.tar.gz" $package_name-$major_version
+    if [ -z $orig_file ];then
+        tar --exclude=".git" --exclude=".gitignore" --exclude="debian" -czf \
+            ${package_name}_${major_version}.orig.tar.gz $package_name-$major_version
+    else
+        cp $orig_file .
+    fi
 
     #build
     for release in ${releases[*]};do
         #copy files and orig
         cp -r $build_dir/$package_name-$major_version $build_dir/$release/
-        cp $build_dir"/"$package_name"_"$major_version".orig.tar.gz" $build_dir/$release/
+        cp ${build_dir}/${package_name}_${major_version}.orig.tar.gz $build_dir/$release/
         
         #change dir
         cd $build_dir/$release/$package_name-$major_version
@@ -190,10 +205,11 @@ PBUILDER_ARCH=`uname -i` #archtecture used for pbuilder (default native)
 #default values of options
 config_file=""
 package_name=""
-git_branch="master"
+git_branch="debian"
 releases=("`lsb_release -cs`")
 dput_repo=("ppa:$USERNAME/sandbox")
 source_dir=""
+orig_file=""
 upload=0
 local_build=0
 no_orig=1
@@ -219,6 +235,7 @@ while [ $# -gt 1 ];do
         -r) releases=$2;shift 2;;
         -d) dput_repo=$2;shift 2;;
         -s) source_dir=$2;shift 2;;
+        -o) orig_file=$2;shift 2;;
         -u) upload=$2;shift 2;;
         -l) local_build=$2;shift 2;;
         -a) no_orig=$2;shift 2;;
@@ -235,6 +252,7 @@ if [ -z $package_name ];then
     exit
 fi
 
+#set source directory
 if [ "$misc_build" != "0" -a "t$source_dir" == "t" ];then
     source_dir=$HOME/Downloads/$package_name
 fi
