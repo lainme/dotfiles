@@ -54,8 +54,8 @@ function set_changelog(){
     #--------------------------------------------------
     #prefix, old major and minor version
     prefix=`sed -n -r "1s/.*\((.*:).*/\1/p" debian/changelog`
-    major_version=`sed -n -r "1s/.*\((.*:|)([.0-9]*).*/\2/p" debian/changelog`
-    minor_version=`sed -n -r "1s/.*\((.*:|)[.0-9]*(.*)\).*/\2/p;1s/~$USERNAME*//p" debian/changelog`
+    major_version=`sed -n -r "1s/.*\((.*:|)([^-]*).*/\2/p" debian/changelog`
+    minor_version=`sed -n -r "1s/.*\((.*:|)[^-]*(.*)\).*/\2/p;1s/~$USERNAME*//p" debian/changelog`
 
     #git minor version
     if [ "$misc_build" == "0" ];then
