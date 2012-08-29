@@ -59,7 +59,7 @@ function set_changelog(){
 
     #git minor version
     if [ "$misc_build" == "0" ];then
-        minor_version=`git log -n 1 --date=short --pretty=format:"git%ad.%h" | sed "s/-//g"`
+        minor_version=`git log $git_orig_branch -n 1 --date=short --pretty=format:"git%ad.%h" | sed "s/-//g"`
         minor_version="+$minor_version"
     fi
 
