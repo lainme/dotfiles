@@ -226,20 +226,20 @@ fi
 
 while [ $# -gt 1 ];do
     case $1 in
-        -c|--config) config_file=$2;source $2;shift 2;; #source config file
-        -n|--name) package_name=$2;shift 2;;
-        -b|--branch) git_main_branch=$2;shift 2;;
-        -u|--upstream) git_orig_branch=$2;shift 2;;
-        -r|--releases) releases=$2;shift 2;;
-        -d|--dput) dput_repo=$2;shift 2;;
-        -s|--source) source_dir=$2;shift 2;;
-        -o|--orig) orig_file=$2;shift 2;;
-        -l|--pbuilder) local_build=$2;shift 2;;
-        -a|--alter) no_orig=$2;shift 2;;
-        -p|--commit) is_commit=$2;shift 2;;
-        -t|--tag) is_tag=$2;shift 2;;
-        -m|--misc) misc_build=$2;shift 2;;
-        -h|--help) show_help;shift 2;;
+        -c|--config)    config_file=$2;source $2;shift 2;; #source config file
+        -n|--name)      package_name=$2;shift 2;;
+        -b|--branch)    git_main_branch=$2;shift 2;;
+        -u|--upstream)  git_orig_branch=$2;shift 2;;
+        -r|--releases)  releases=$2;shift 2;;
+        -d|--dput)      dput_repo=$2;shift 2;;
+        -s|--source)    source_dir=$2;shift 2;;
+        -o|--orig)      orig_file=$2;shift 2;;
+        -l|--pbuilder)  local_build=$2;shift 2;;
+        -a|--alter)     no_orig=$2;shift 2;;
+        -p|--commit)    is_commit=$2;shift 2;;
+        -t|--tag)       is_tag=$2;shift 2;;
+        -m|--misc)      misc_build=$2;shift 2;;
+        -h|--help)      show_help;shift 2;;
         *) echo "option $1 not recognizable, type -h to see help list";exit;;
     esac
 done
