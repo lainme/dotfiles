@@ -2,20 +2,21 @@
 #alias
 #--------------------------------------------------
 #web
-alias webon='lighttpd -f $HOME/.lighttpd.conf'
-alias weboff='killall lighttpd'
+alias webon="lighttpd -f $HOME/.lighttpd.conf"
+alias weboff="killall lighttpd"
 
 #screen
-alias scl='screen -ls'
-alias scq='quitscr'
-alias scr='screen -raAd'
+alias scl="screen -ls"
+alias scq="quitscr"
+alias scr="screen -raAd"
 
 #color output
-alias ls='ls --color=auto'
-alias grep='grep --color=auto'
+alias ls="ls --color=auto"
+alias grep="grep --color=auto"
 
-#quick launch
-alias sshproxy='ssh -qTfnN -D 8707 vps'
+#other
+alias sshproxy="ssh -qTfnN -D 8707 vps"
+alias dquilt="quilt --quiltrc=$HOME/.quitrc-dpkg"
 
 #--------------------------------------------------
 #functions
@@ -28,7 +29,12 @@ function quitscr() {
 #environment variables
 #--------------------------------------------------
 #set prompt
-export PS1='\u@\h:\w\$ '
+export PS1="\u@\h:\w\$ "
+
+#debian packaging
+export DEBEMAIL=lainme993@gmail.com
+export DEBFULLNAME="lainme"
+export DEB_BUILD_OPTIONS=nocheck
 
 #xterm-256
 export TERM=xterm-256color
@@ -48,8 +54,12 @@ if [ -f /etc/bash_completion ]; then
 fi
 
 #chsdir
-source $HOME/bin/chs_completion
-complete -o filenames -F _filedir_xspec file
+if [ -f $HOME/bin/chs_completion ];then
+    source $HOME/bin/chs_completion
+    complete -o filenames -F _filedir_xspec file
+fi
 
 #be evil
-source ~/.evil_rc
+if [ -f $HOME/.evil_rc ];then
+    source $HOME/.evil_rc
+fi

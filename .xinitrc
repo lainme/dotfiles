@@ -13,4 +13,4 @@ pidgin &
 hotot-gtk3 &
 
 #be evil
-source ~/.evil_init
+source $HOME/.evil_init

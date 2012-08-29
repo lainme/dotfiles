@@ -14,10 +14,10 @@ function show_help(){
     echo "-b GIT_BRANCH     -   Optional. Which branch to use. Default is master"
     echo "-r RELEASES       -   Optional. Releases to build. Default is the release of current system"
     echo "-d DPUT_REPO      -   Optional. Remote repos. Default is ppa:USERNAME/sandbox only"
-    echo "-s SOURCE_DIR     -   Optional. Directory where source exsits, default is ~/Downloads/PACKAGE_NAME. Used if misc build is enabled"
+    echo "-s SOURCE_DIR     -   Optional. Directory where source exsits, default is ~/Downloads/PACKAGE_NAME. Used if misc build enabled"
     echo "-u FLAG           -   Optional. If not zero, upload to the specified remote repo. Default is 0"
     echo "-l FLAG           -   Optional. If not zero, locally build the package using pbuilder-dist. Default is 0"
-    echo "-o FLAG           -   Optional. If not zero, upload .orig.tar.gz. Default is 0"
+    echo "-a FLAG           -   Optional. If not zero, do not upload .orig.tar.gz. Default is 1"
     echo "-p FLAG           -   Optional. If not zero, do not commmit to git. Default is 0"
     echo "-m FLAG           -   Optional. If not zero, invoke non-git build (misc build). Default is 0"
     echo "-h                -   show this help"
@@ -27,6 +27,7 @@ function set_build_dir(){
     #create build dir
     rm -rf $build_dir
     mkdir -p $build_dir
+    cd $build_dir
 
     #obtain source files
     if [ "$misc_build" != "0" ];then
@@ -34,10 +35,6 @@ function set_build_dir(){
     else
         git clone $GITBASE/$package_name.git -b $git_branch $build_dir/$package_name
     fi
-
-    #create orig
-    cd $build_dir
-    tar --exclude=".git" --exclude=".gitignore" --exclude="debian" -czf "$package_name.orig.tar.gz" $package_name
 
     #prepare packaging dirs
     for release in ${releases[*]};do
@@ -101,26 +98,33 @@ function git_commit(){
 }
 
 function deb_packaging(){
-    for release in ${releases[*]};do
-        #copy files
-        cp -r $build_dir/$package_name $build_dir/$release/$package_name-$major_version
+    #change package name
+    cd $build_dir
+    mv $package_name $package_name-$major_version
 
-        #copy orig
-        orig_version=`echo "$version" | sed "s/\(.*\)-.*/\1/"`
-        cp "$build_dir/$package_name.orig.tar.gz" $build_dir/$release/$package_name"_"$orig_version".orig.tar.gz"
+    #generate .orig.tar.gz
+    tar --exclude=".git" --exclude=".gitignore" --exclude="debian" -czf $package_name"_"$major_version".orig.tar.gz" $package_name-$major_version
+
+    #build
+    for release in ${releases[*]};do
+        #copy files and orig
+        cp -r $build_dir/$package_name-$major_version $build_dir/$release/
+        cp $build_dir"/"$package_name"_"$major_version".orig.tar.gz" $build_dir/$release/
         
         #change dir
         cd $build_dir/$release/$package_name-$major_version
 
         #modify
-        rm -rf .git .gitignore
+        if [ "$misc_build" == "0" ];then
+            rm -rf .git .gitignore
+        fi
         sed -i "s|\(~$USERNAME\)\().*\)unstable|\1~$release\2$release|" "debian/changelog"
 
         #build
-        if [ "$has_orig" != "0" ];then
-            debuild -S -sa
-        else
+        if [ "$no_orig" != "0" ];then
             debuild -S -sd
+        else
+            debuild -S -sa
         fi
     done
 }
@@ -192,7 +196,7 @@ dput_repo=("ppa:$USERNAME/sandbox")
 source_dir=""
 upload=0
 local_build=0
-has_orig=0
+no_orig=1
 is_commit=0
 misc_build=0
 
@@ -217,7 +221,7 @@ while [ $# -gt 1 ];do
         -s) source_dir=$2;shift 2;;
         -u) upload=$2;shift 2;;
         -l) local_build=$2;shift 2;;
-        -0) has_orig=$2;shift 2;;
+        -a) no_orig=$2;shift 2;;
         -p) no_commit=$2;shift 2;;
         -m) misc_build=$2;shift 2;;
         -h) show_help;shift 2;;
@@ -235,6 +239,7 @@ if [ "$misc_build" != "0" -a "t$source_dir" == "t" ];then
     source_dir=$HOME/Downloads/$package_name
 fi
 
+#set build directory
 build_dir=$OUTPUT_DIR/$package_name
 
 #pacakging

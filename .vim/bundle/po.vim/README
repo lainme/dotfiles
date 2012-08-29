@@ -1,5 +1,0 @@
-This is a mirror of http://www.vim.org/scripts/script.php?script_id=64
-
-  PO files are textfiles which contains translations. These are used by localized programs using gettext.
-  Ever saw the Emacs PO mode? It's great. This little filetype plugin tries to at least give you some help editing those PO files, and while it's certainly not (yet?) as good as the Emacs PO mode, it's good enough to get the work done.
-  This script adds some menu entries. No keystrokes defined. There are search functions for the next untranslated entry, the next fuzzy entry, or both; there's a "remove fuzzy" entry. To edit longer entries use "remove quotes"; you then can edit the entry as you like (using "gq", for instance); afterwards add the quotes again with "add quotes". When you're finished, send your file to the translation project (but take care that you filename must be the name the TP Robot requires - use a symlink, for instance).
