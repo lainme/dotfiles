@@ -1,7 +1,8 @@
 #!/bin/bash
 # Debian packaging for varies of releases. Currently design for Git
 # TODO: 
-# 1. bzr support
+# 1. bzr support (may not)
+# 2. check local upload and local build
 
 #--------------------------------------------------
 #functions
