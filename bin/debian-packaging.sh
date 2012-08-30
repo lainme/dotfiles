@@ -1,33 +1,33 @@
 #!/bin/bash
-#debian packaging for varies of releases. currently design for Git
-#TODO: 
+# Debian packaging for varies of releases. Currently design for Git
+# TODO: 
 # 1. bzr support
 
 #--------------------------------------------------
 #functions
 #--------------------------------------------------
 function show_help(){
-    echo "Description: build debian package and upload to launchpad or local repo"
+    echo "Description: build debian package and upload to launchpad or local repository"
     echo "Usage: debian-packaging [options]"
-    echo "The -c/--congfig option should be given first, then you can override the options in config file"
+    echo "The -c/--config option should be given first, then you can override the options in config file"
     echo "-c --config   CONFIG_FILE     - Optional. Configuration file for a build"
     echo "-n --name     PACKAGE_NAME    - Required. Package name."
     echo "-b --branch   GIT_MAIN_BRANCH - Optional. Which branch to use. Default is master"
     echo "-u --upstream GIT_ORIG_BRANCH - Optional. Which branch to use as upstream. Default is upstream"
     echo "-r --releases RELEASES        - Optional. Releases to build. Default is the release of current system"
-    echo "-d --dput     DPUT_REPO       - Optional. Remote repos. If not empty, upload to the specified repos"
-    echo "-s --source   SOURCE_DIR      - Optional. Directory where source exsits, default is ~/Downloads/PACKAGE_NAME. Used if misc build enabled"
+    echo "-d --dput     DPUT_REPO       - Optional. Remote repository If not empty, upload to the specified repositories"
+    echo "-s --source   SOURCE_DIR      - Optional. Directory where source exists, default is ~/Downloads/PACKAGE_NAME. Used if misc build enabled"
     echo "-o --orig     ORIG_FILE       - Optional. Path of .orig file, default is create by program"
     echo "-l --pbuilder FLAG            - Optional. If not zero, locally build the package using pbuilder-dist. Default is 0"
     echo "-a --alter    FLAG            - Optional. If not zero, do not upload .orig.tar.*. Default is 1"
-    echo "-p --commit   FLAG            - Optional. If not zero, commmit to git. Default is 0"
+    echo "-p --commit   FLAG            - Optional. If not zero, commit to git. Default is 0"
     echo "-t --tag      FLAG            - Optional. If not zero, add tag to git. Default is 0"
     echo "-m --misc     FLAG            - Optional. If not zero, invoke non-git build (misc build). Default is 0"
     echo "-h --help                     - show this help"
 }
 
 function set_build_dir(){
-    #create build dir
+    #create build directory
     rm -rf $build_dir
     mkdir -p $build_dir
     cd $build_dir
@@ -39,14 +39,14 @@ function set_build_dir(){
         git clone $GITBASE/$package_name.git -b $git_main_branch $build_dir/$package_name
     fi
 
-    #prepare packaging dirs
+    #prepare packaging directories
     for release in ${releases[*]};do
         mkdir -p $build_dir/$release
     done
 }
 
 function set_changelog(){
-    #change dir
+    #change directory
     cd $build_dir/$package_name
 
     #--------------------------------------------------
@@ -61,7 +61,7 @@ function set_changelog(){
         version=`echo $version | sed "s|git[.0-9a-zA-Z]*|$git_version|"`
     fi
 
-    #set timestamp
+    #set time stamp
     timestamp=`date -R`
 
     #change log
@@ -129,7 +129,7 @@ function deb_packaging(){
         cp -r $build_dir/$package_name-$major_version $build_dir/$release/
         cp ${build_dir}/${package_name}_${major_version}.orig.tar.* $build_dir/$release/
         
-        #change dir
+        #change directory
         cd $build_dir/$release/$package_name-$major_version
 
         #modify
@@ -150,7 +150,7 @@ function deb_packaging(){
 function dput_upload(){
     for release in ${releases[*]};do
         for repo in ${dput_repo[*]};do
-            if [ "$repo" == "local" ];then
+            if [ "$repo" == "$LOCAL_REPO" ];then
                 cd $PBUILDER_DIR"/"$release"_result"
                 changes_name=$package_name"_"$version"~"$release"_"$PBUILDER_ARCH".changes"
             else
@@ -192,12 +192,13 @@ function local_build(){
 #main
 #--------------------------------------------------
 #script configuration
-USERNAME=lainme #username
+USERNAME=lainme #user name
 USEREMAIL=lainme993@gmail.com #user email
-GITBASE=git@github.com:$USERNAME #git base repo url
+GITBASE=git@github.com:$USERNAME #git base repository URL
 OUTPUT_DIR=$HOME/build #output directory
 PBUILDER_DIR=$HOME/pbuilder #pbuilder-dist directory
-PBUILDER_ARCH=`uname -i` #archtecture used for pbuilder (default native)
+PBUILDER_ARCH=`uname -i` #architecture used for pbuilder (default native)
+LOCAL_REPO="local" #name of local repository (defined in .dput.cf)
 
 #default values of options
 config_file=""
@@ -259,10 +260,10 @@ fi
 #set build directory
 build_dir=$OUTPUT_DIR/$package_name
 
-#pacakging
+#packaging
 set_build_dir #set build directory
 set_changelog #set changelog
 git_commit #commit to git
 deb_packaging #debian packaging
 local_build #locally build package
-dput_upload #upload to remote repo
+dput_upload #upload to remote repository
