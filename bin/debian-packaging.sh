@@ -170,7 +170,7 @@ function local_build(){
     fi
 
     #do not check
-    export DEB_BUILD_OPTIONS=nocheck
+    export DEB_BUILD_OPTIONS=$BUILD_OPTIONS
 
     for release in ${releases[*]};do
         #create package
@@ -199,6 +199,7 @@ OUTPUT_DIR=$HOME/build #output directory
 PBUILDER_DIR=$HOME/pbuilder #pbuilder-dist directory
 PBUILDER_ARCH=`uname -i` #architecture used for pbuilder (default native)
 LOCAL_REPO="local" #name of local repository (defined in .dput.cf)
+BUILD_OPTIONS=nocheck #do not check
 
 #default values of options
 config_file=""
