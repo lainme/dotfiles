@@ -136,7 +136,7 @@ function deb_packaging(){
         if [ "$misc_build" == "0" ];then
             rm -rf .git .gitignore
         fi
-        sed -i "s|\(~$USERNAME\)\().*\)unstable|\1~$release\2$release|" "debian/changelog"
+        sed -i "1s|\(~$USERNAME\)\().*\)unstable|\1~$release\2$release|" "debian/changelog"
 
         #build
         if [ "$no_orig" != "0" ];then
