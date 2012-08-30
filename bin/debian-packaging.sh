@@ -53,7 +53,8 @@ function set_changelog(){
     #changelog
     #--------------------------------------------------
     #prepare version
-    version=`sed -n "1s|.*(\(.*\)).*|\1|p" debian/changelog`
+    version=`sed -n "1s|.*(\(.*\)).*|\1|;1s|~$USERNAME.*||p" debian/changelog`
+    version=$version~$USERNAME
 
     if [ "$misc_build" == "0" ];then
         git_version=`git log origin/$git_orig_branch -n 1 --date=short --pretty=format:"git%ad.%h" | sed "s/-//g"`
