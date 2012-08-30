@@ -16,13 +16,12 @@ function show_help(){
     echo "-u --upstream GIT_ORIG_BRANCH - Optional. Which branch to use as upstream. Default is upstream"
     echo "-r --releases RELEASES        - Optional. Build for which system versions. Default is the version of current system"
     echo "-d --dput     DPUT_REPO       - Optional. Remote repository. If not empty, upload to the specified repositories using dput"
-    echo "-s --source   SOURCE_DIR      - Optional. Directory where source exists, default is ~/Downloads/PACKAGE_NAME. Used if misc build enabled"
+    echo "-s --source   SOURCE_DIR      - Optional. Directory where source exists. If not empty, invoke non-git build"
     echo "-o --orig     ORIG_FILE       - Optional. Path of .orig file, default is created by program"
     echo "-l --pbuilder FLAG            - Optional. If not zero, locally build the package using pbuilder-dist. Default is 0"
     echo "-a --alter    FLAG            - Optional. If not zero, do not upload .orig.tar.*. Default is 1"
     echo "-p --commit   FLAG            - Optional. If not zero, commit to git. Default is 0"
     echo "-t --tag      FLAG            - Optional. If not zero, add tag to git. Default is 0"
-    echo "-m --misc     FLAG            - Optional. If not zero, invoke non-git build (misc build). Default is 0"
     echo "-h --help                     - show this help"
 }
 
@@ -214,9 +213,9 @@ local_build=0
 no_orig=1
 is_commit=0
 is_tag=0
-misc_build=0
 
 #other global variables
+misc_build=0
 build_dir=""
 version=""
 major_version=""
@@ -241,7 +240,6 @@ while [ $# -gt 1 ];do
         -a|--alter)     no_orig=$2;shift 2;;
         -p|--commit)    is_commit=$2;shift 2;;
         -t|--tag)       is_tag=$2;shift 2;;
-        -m|--misc)      misc_build=$2;shift 2;;
         -h|--help)      show_help;shift 2;;
         *) echo "option $1 not recognizable, type -h to see help list";exit;;
     esac
@@ -253,9 +251,9 @@ if [ -z $package_name ];then
     exit
 fi
 
-#set source directory
-if [ "$misc_build" != "0" -a "t$source_dir" == "t" ];then
-    source_dir=$HOME/Downloads/$package_name
+#check if non-git build
+if [ ! -z $source_dir ];then
+    misc_build=1
 fi
 
 #set build directory
