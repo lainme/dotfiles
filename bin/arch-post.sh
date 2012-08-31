@@ -3,6 +3,8 @@
 # TODO:
 # 1. video driver selection with hardware acceleration setup
 # 2. user configuration file modification
+# 3. thinkpad/other switch
+# 4. recommends software list
 
 #--------------------------------------------------
 #helper
@@ -260,8 +262,7 @@ function install_software(){
     $BUILDCMD -S freetype2-ubuntu fontconfig-ubuntu libxft-ubuntu cairo-ubuntu 
 
     #utils
-    $BUILDCMD -S lm_sensors hddtemp bash-completion net-tools ntp openssh gparted
-    $BUILDCMD -S remmina freerdp vino #remote desktop
+    $BUILDCMD -S lm_sensors hddtemp bash-completion net-tools ntp openssh
     $BUILDCMD -S ntfs-3g ntfsprogs #ntfs support
 
     #laptop
@@ -281,10 +282,6 @@ function install_software(){
     #--------------------------------------------------
     #other softwares
     #--------------------------------------------------
-    #Video and Audio
-    $BUILDCMD -S mpd mpc
-    $BUILDCMD -S mplayer-vaapi gnome-mplayer 
-
     #IM
     $BUILDCMD -S pidgin gnome-shell-pidgin irssi skype
     if [ "$SYSTARCH" == "x86_64" ];then #skype on 64bit
@@ -296,6 +293,7 @@ function install_software(){
     $BUILDCMD -S gvim ctags
 
     #other
+    $BUILDCMD -S mpd mpc mplayer-vaapi gnome-mplayer #video and audio
     $BUILDCMD -S evince poppler-data #PDF
     $BUILDCMD -S scrot xsel #script
     $BUILDCMD -S file-roller p7zip archive-mounter #archiver
@@ -304,6 +302,7 @@ function install_software(){
     $BUILDCMD -S eog gimp inkscape #photo
     $BUILDCMD -S dropbox nautilus-dropbox #dropbox
     $BUILDCMD -S hotot-gtk3-git screen aria2 conky-lua xterm #misc
+    $BUILDCMD -S remmina freerdp vino #remote desktop
 
     #special
     install_epstool
