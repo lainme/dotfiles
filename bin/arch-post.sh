@@ -253,15 +253,14 @@ function install_software(){
     $BUILDCMD -S nautilus nautilus-open-terminal
 
     #interface
-    $BUILDCMD -S faenza-icon-theme
-    $BUILDCMD -S wqy-microhei
+    $BUILDCMD -S faenza-icon-theme wqy-microhei
 
     #font
     $BUILDCMD -Rdd freetype2 fontconfig libxft cairo 2>/dev/null #remove conflicting
     $BUILDCMD -S freetype2-ubuntu fontconfig-ubuntu libxft-ubuntu cairo-ubuntu 
 
     #utils
-    $BUILDCMD -S lm_sensors hddtemp bash-completion net-tools ntp openssh gparted gnome-screenshot
+    $BUILDCMD -S lm_sensors hddtemp bash-completion net-tools ntp openssh gparted
     $BUILDCMD -S remmina freerdp vino #remote desktop
     $BUILDCMD -S ntfs-3g ntfsprogs #ntfs support
 
@@ -286,15 +285,11 @@ function install_software(){
     $BUILDCMD -S mpd mpc
     $BUILDCMD -S mplayer-vaapi gnome-mplayer 
 
-    #skype
-    $BUILDCMD -S skype 
-    if [ "$SYSTARCH" == "x86_64" ];then
+    #IM
+    $BUILDCMD -S pidgin gnome-shell-pidgin irssi skype
+    if [ "$SYSTARCH" == "x86_64" ];then #skype on 64bit
         $BUILDCMD -S lib32-libpulse
     fi
-
-    #other IM
-    $BUILDCMD -S pidgin pidgin-lwqq-git gnome-shell-pidgin
-    $BUILDCMD -S irssi
 
     #Text editing/processing
     $BUILDCMD -S texlive-latexextra rubber latex-beamer-ctan minted
@@ -302,9 +297,10 @@ function install_software(){
 
     #other
     $BUILDCMD -S evince poppler-data #PDF
+    $BUILDCMD -S scrot xsel #script
     $BUILDCMD -S file-roller p7zip archive-mounter #archiver
     $BUILDCMD -S fcitx-gtk3 fcitx-configtool fcitx-cloudpinyin fcitx-googlepinyin fcitx-gtk2 #input method
-    $BUILDCMD -S firefox chromium flashplugin icedtea-web-java7 aliedit #browser
+    $BUILDCMD -S firefox flashplugin icedtea-web-java7 aliedit #browser
     $BUILDCMD -S eog gimp inkscape #photo
     $BUILDCMD -S dropbox nautilus-dropbox #dropbox
     $BUILDCMD -S hotot-gtk3-git screen aria2 conky-lua xterm #misc

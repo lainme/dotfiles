@@ -188,13 +188,12 @@ Bundle 'taglist.vim'
 Bundle 'The-NERD-Commenter'
 Bundle 'buftabs'
 Bundle 'po.vim--Jelenak'
-Bundle 'L9'
-Bundle 'FuzzyFinder'
 Bundle 'SudoEdit.vim'
 Bundle 'fcitx.vim'
 Bundle 'LaTeX-Box-Team/LaTeX-Box'
 Bundle 'notes.vim'
 Bundle 'DirDiff.vim'
+Bundle 'linediff.vim'
 Bundle 'git://github.com/lainme/simplecompile.git'
 
 "----------taglist----------
@@ -233,12 +232,6 @@ inoremap <F6> <ESC>:SimpleRun<CR>
 
 "----------po.vim----------
 let g:po_translator="lainme <lainme993@gmail.com>"
-
-"----------fuzzyfinder----------
-noremap <Leader>so :FufFile<CR>
-noremap <Leader>sf :FufTaggedFile<CR>
-noremap <Leader>sj :FufJumpList<CR>
-noremap <Leader>st :FufTag<CR>
 
 "----------notes----------
 let g:notes_directory="$HOME/Documents/notes"
