@@ -234,7 +234,7 @@ inoremap <F6> <ESC>:SimpleRun<CR>
 let g:po_translator="lainme <lainme993@gmail.com>"
 
 "----------notes----------
-let g:notes_directory="$HOME/Documents/notes"
+let g:notes_directory="~/Documents/notes"
 let g:notes_suffix=".txt"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
