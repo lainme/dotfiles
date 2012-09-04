@@ -53,7 +53,7 @@ function set_changelog(){
     #changelog
     #--------------------------------------------------
     #prepare version
-    version=`sed -n "1s|.*(\(.*\)).*|\1|;1s|~$USERNAME.*||p" debian/changelog`
+    version=`sed -n "1s|.*(\(.*\)~$USERNAME.*|\1|p;1s|.*(\(.*\)).*|\1|p" debian/changelog`
     version=$version~$USERNAME
 
     if [ "$misc_build" == "0" ];then
@@ -79,8 +79,8 @@ function set_changelog(){
     #--------------------------------------------------
     #version
     #--------------------------------------------------
-    version=`sed -n -r "1s|.*\((.*:\|)(.*)\).*|\2|p" debian/changelog`
-    major_version=`echo $version | sed -n -r "s/([^-]*).*/\1/p"`
+    version=`sed -n -r "1s|.*\(([^:]*:\|)(.*)\).*|\2|p" debian/changelog`
+    major_version=`echo $version | sed -n -r "s/(.*)-[^-]*/\1/p"`
 }
 
 function git_commit(){
@@ -107,7 +107,7 @@ function git_commit(){
     fi
 
     #push to remote
-    git push origin $git_main_branch
+    git push --tags origin $git_main_branch
 }
 
 function deb_packaging(){
