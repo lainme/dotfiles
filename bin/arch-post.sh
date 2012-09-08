@@ -432,8 +432,8 @@ BUILDCMD="yaourt_install"
 RUNASUSR="sudo -u $USERNAME" #run as normal user
 
 #Intel compiler version
-INTELNUM=2671
-INTELVER=2011.11.339
+INTELNUM=2724
+INTELVER=2013.0.079
 
 #epstool
 EPSDLINK="http://archive.ubuntu.com/ubuntu/pool/universe/e/epstool/epstool_3.08+repack.orig.tar.gz"
