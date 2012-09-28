@@ -262,7 +262,7 @@ function install_software(){
     $BUILDCMD -S freetype2-ubuntu fontconfig-ubuntu libxft-ubuntu cairo-ubuntu 
 
     #utils
-    $BUILDCMD -S lm_sensors hddtemp bash-completion net-tools ntp openssh
+    $BUILDCMD -S lm_sensors hddtemp bash-completion net-tools ntp openssh ufw
     $BUILDCMD -S ntfs-3g ntfsprogs #ntfs support
 
     #laptop
@@ -322,6 +322,9 @@ function settings_system(){
     cp -r $USERHOME/Dropbox/sysconf/font-config /etc/fonts #ubuntu-font
     (while :; do echo ""; done ) | sensors-detect #sensors
 
+    #ufw
+    ufw enable
+    ufw default deny
 }
 
 function settings_user(){

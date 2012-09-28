@@ -64,12 +64,6 @@ if [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
 fi
 
-#chsdir
-if [ -f $HOME/bin/chs_completion ];then
-    source $HOME/bin/chs_completion
-    complete -o filenames -F _filedir_xspec file
-fi
-
 #git completion on cluster
 if [ -f $HOME/.git-completion.bash ];then
     source $HOME/.git-completion.bash
