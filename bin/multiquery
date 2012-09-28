@@ -1,0 +1,58 @@
+#!/usr/bin/env python2
+# -*- coding: UTF-8 -*-
+#Author: Roy L Zuo (roylzuo at gmail dot come)
+#Last Change: Sat Sep 27 07:30:22 2008 EST
+#Description: various actions to perform on selected text
+#修改: lainme(lainme993@gmail.com) 2010年09月03日
+
+import re, sys, os, urllib, urllib2, socket
+
+notifyargs = "notify-send -t 5000 -i gtk-dialog-info"
+socket.setdefaulttimeout(10)
+
+string = (" ".join(sys.argv[1:]) if len(sys.argv)>=2 else (os.popen('xsel -o').read().strip()))
+if  string=="-d": string = os.popen("zenity --title='查询' --entry --text='输入查询字符串'").read().strip()
+
+def query_ip(string):
+    data = urllib.urlencode({"action": 2, "ip": string})
+    url = "http://www.ip138.com/ips.asp?"
+    
+    try:
+        outstr = urllib2.urlopen(url, data).read().decode("gb2312").encode("utf8")
+        result = re.search('本站主数据：(.*?)</li', outstr).group(1)
+        return (string+"的地址在：", result)
+    except:
+        return False
+
+def query_word(string):
+    iciba_data = urllib.urlencode({"w": string})
+    iciba_url = "http://dict-co.iciba.com/api/dictionary.php?" 
+    g_data = urllib.urlencode({"langpair": "|zh-CN", "v": "1.0", "q": string}) 
+    g_url = "http://ajax.googleapis.com/ajax/services/language/translate?" 
+
+    try:
+        outstr = urllib2.urlopen(iciba_url, iciba_data).read()
+        result = re.search("<pos>.*</acceptation>", outstr).group()
+        result = re.sub('<[^/]*?>','', result)
+        result = re.sub('</.*?>','\n',result).strip()
+        return ("爱词霸释义："+string, result)
+    except:
+        try:
+            outstr = urllib2.urlopen(g_url, g_data).read()
+            result = re.search("{\"translatedText\":\"([^\"]*)\"", outstr).group(1)
+            return ("Google释义："+string, result)
+        except:
+            return False
+
+if string=="":
+    sys.exit()
+elif re.match("^(\d{1,3}\.){3}\d{1,3}$", string) or re.match("^((\w|\w-)+\.)+(\w|\w-)+$", string):
+    result = query_ip(string)
+else:
+    result = query_word(string)
+
+if result:
+    print "%s\n%s" %(result[0],result[1])
+    os.system("%s '%s' '%s'" %(notifyargs, result[0], result[1])) 
+else:
+    os.system("%s '获取数据出错'"  %notifyargs)

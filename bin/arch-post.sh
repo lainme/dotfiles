@@ -157,7 +157,7 @@ function configure_system(){
     #configure user
     #--------------------------------------------------
     #add user
-    useradd -m -g users -G audio,games,lp,optical,power,scanner,storage,video,wheel,network -s /bin/bash $USERNAME
+    useradd -m -g $USERNAME -G audio,games,lp,optical,power,scanner,storage,video,wheel,network -s /bin/bash $USERNAME
 
     #setup password
     echo ">>>>>>set password for $USERNAME:"
