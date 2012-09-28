@@ -353,7 +353,7 @@ function install_mendeley(){
     $BUILDCMD -S libpng12
 
     #download
-    $RUNASUSR aria2c -c http://www.mendeley.com/client/get/100-2/ -d $USERDOWN
+    $RUNASUSR aria2c -c -x 5 http://www.mendeley.com/client/get/100-2/ -d $USERDOWN
 
     #install
     $RUNASUSR mkdir -p $USERSOFT
@@ -370,7 +370,7 @@ function install_intel(){
     $BUILDCMD -S cpio
 
     #download
-    $RUNASUSR aria2c -c http://registrationcenter-download.intel.com/akdlm/irc_nas/$INTELNUM/l_fcompxe_intel64_$INTELVER.tgz -d $USERDOWN
+    $RUNASUSR aria2c -c -x 5 http://registrationcenter-download.intel.com/akdlm/irc_nas/$INTELNUM/l_fcompxe_intel64_$INTELVER.tgz -d $USERDOWN
 
     #extract
     $RUNASUSR mkdir -p $USERSOFT
