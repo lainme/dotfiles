@@ -14,7 +14,7 @@ function show_help(){
     echo -e "USAGE: arch-post.sh FUNCTION-NAME"
     echo -e "Main functions:"
     echo -e ""
-    echo -e "\tconfigure_system    - configur system when installing"
+    echo -e "\tconfigure_system    - configure system when installing"
     echo -e "\tinit                - run all post-install functions"
     echo -e ""
     echo -e "Core functions:"
