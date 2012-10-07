@@ -1,0 +1,4 @@
+OTHERMIRROR="deb file://$HOME/mini-dinstall $DIST/|deb http://archive.ubuntu.com/ubuntu $DIST-security $COMPONENTS|deb http://archive.ubuntu.com/ubuntu $DIST-updates $COMPONENTS|deb http://archive.ubuntu.com/ubuntu $DIST-proposed $COMPONENTS|deb http://archive.ubuntu.com/ubuntu $DIST-backports $COMPONENTS"
+BINDMOUNTS="$HOME/mini-dinstall"
+EXTRAPACKAGES="apt-utils"
+ALLOWUNTRUSTED=yes
