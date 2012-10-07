@@ -2,10 +2,8 @@
 .ssh
 *.swp
 .evil*
-.vim/.netrwhist
-.vim/bundle/vundle/.netrwhist
-.vim/.VimballRecord
-.vim/undo
+.vim
+!.vim/bundle/vundle
 .irssi/config.autosave
 .irssi/away.log
 .config
