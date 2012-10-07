@@ -6,7 +6,8 @@
 !.vim/colors/
 .irssi/config.autosave
 .irssi/away.log
-.config
+.config/*
+!.config/fontconfig/
 .purple
 .local
 .gtk-bookmarks
