@@ -2,8 +2,8 @@
 .ssh
 *.swp
 .evil*
-.vim
-!.vim/bundle/vundle
+.vim/*
+!.vim/colors/
 .irssi/config.autosave
 .irssi/away.log
 .config
