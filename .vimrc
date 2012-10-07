@@ -25,7 +25,7 @@ set autochdir "自动切换路径
 set runtimepath+=$HOME/.vim "设置runtimepath
 set spellsuggest=best,10 "最佳的10个拼写建议
 set spellfile=$HOME/.vim/spell/en.utf-8.add "设置拼写检查文件
-set undodir=/tmp "设置undodir
+set undodir=$HOME/.vim/undo "设置undodir
 set directory=/tmp "设置swp文件目录
 let mapleader="," "设置leader键
 colorscheme lucius "配色主题
@@ -92,11 +92,7 @@ noremap <Leader>fc :ccl<CR>
 if has("gui_running")
     set guioptions=a  "去掉菜单等，自动复制选择的区域
     set guicursor=a:blinkwait600-blinkoff600-blinkon600 "光标闪烁频率
-    if has("unix")
-        set guifont=Monospace\ 11
-    elseif has("win32") || has("win64")
-        set guifont=Microsoft_YaHei_Mono:h11
-    endif
+    set guifont=Monospace\ 11
 endif
 
 "缓冲区移动键映射
@@ -117,13 +113,8 @@ noremap <F7> :call OpenTerminal()<CR>
 inoremap <F7> <C-o>:call OpenTerminal()<CR>
 
 function! OpenTerminal()
-    if has('win32unix') || has('win32') || has('win64')
-        let s:terminal = "start cmd /c mintty.exe"
-        let s:curpath = substitute(system('cygpath "'.expand("%:p:h").'"'),"\n$","","e")
-    elseif has('unix')
-        let s:terminal = "xterm"
-        let s:curpath = expand("%:p:h")
-    endif
+    let s:terminal = "xterm"
+    let s:curpath = expand("%:p:h")
     silent exec '!'.s:terminal.' -e bash -c "cd \"'.s:curpath.'\";bash" &'."\n redraw!"
 endfunction
 
@@ -204,6 +195,7 @@ let Tlist_GainFocus_On_ToggleOpen=1
 let Tlist_Enable_Fold_Column=0
 let Tlist_Auto_Updata=1
 let Tlist_Compact_Format = 1
+let tlist_tex_settings   = 'latex;s:sections;g:graphics;l:labels'
 noremap <F3> :TlistUpdate<CR>:TlistToggle<CR>
 inoremap <F3> <ESC>:TlistUpdate<CR>:TlistToggle<CR>
 

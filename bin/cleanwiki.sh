@@ -1,5 +1,12 @@
 #!/bin/bash
-insdir=/home/lainme/web/notebook/data 
+
+if [ "$1" == "" ];then
+    echo "Please specify the directory"
+    exit
+else
+    insdir=$1
+fi
+
 mtime=5
 
 #删除超过$mtime天的修订记录

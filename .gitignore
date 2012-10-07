@@ -5,6 +5,7 @@
 .vim/.netrwhist
 .vim/bundle/vundle/.netrwhist
 .vim/.VimballRecord
+.vim/undo
 .irssi/config.autosave
 .irssi/away.log
 .config
