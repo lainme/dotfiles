@@ -283,7 +283,7 @@ function install_software(){
     #other softwares
     #--------------------------------------------------
     #IM
-    $BUILDCMD -S pidgin pidgin-lwqq-git irssi skype
+    $BUILDCMD -S pidgin pidgin-lwqq-git pidgin-libnotify irssi skype
     if [ "$SYSTARCH" == "x86_64" ];then #skype on 64bit
         $BUILDCMD -S lib32-libpulse
     fi
