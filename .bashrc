@@ -18,6 +18,7 @@ alias grep="grep --color=auto"
 alias sshproxy="ssh -qTfnN -D 8707 vps"
 alias dquilt="quilt --quiltrc=$HOME/.quiltrc-dpkg"
 alias genpatch="diff -Naur --strip-trailing-cr"
+alias sage="$HOME/software/sage/sage"
 
 #--------------------------------------------------
 #functions
