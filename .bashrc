@@ -19,7 +19,7 @@ alias sshproxy="ssh -qTfnN -D 8707 vps"
 alias dquilt="quilt --quiltrc=$HOME/.quiltrc-dpkg"
 alias genpatch="diff -Naur --strip-trailing-cr"
 alias sage="$HOME/software/sage/sage"
-alias sagenb="nohup $HOME/software/sage/sage -n interface='' open_viewer='False' &> /dev/null &"
+alias sagenb="$HOME/software/sage/sage -n interface='' open_viewer='False'"
 
 #--------------------------------------------------
 #functions
