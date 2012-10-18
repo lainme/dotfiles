@@ -46,7 +46,7 @@ export PATH=$PATH:$HOME/bin
 
 #stow path
 if [ -d $HOME/opt ];then
-    export PATH=$HOME/opt/bin:$HOME/bin:$PATH
+    export PATH=$HOME/opt/bin:$PATH
     export INCLUDE=$HOME/opt/include:$INCLUDE
     export LIBRARY_PATH=$HOME/opt/lib:$HOME/opt/lib64:$LIBRARY_PATH
     export LD_LIBRARY_PATH=$HOME/opt/lib:$HOME/opt/lib64:$LD_LIBRARY_PATH
