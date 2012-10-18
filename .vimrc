@@ -185,6 +185,7 @@ Bundle 'LaTeX-Box-Team/LaTeX-Box'
 Bundle 'notes.vim'
 Bundle 'DirDiff.vim'
 Bundle 'linediff.vim'
+Bundle 'vim-flake8'
 Bundle 'git://github.com/lainme/simplecompile.git'
 
 "----------taglist----------
