@@ -42,16 +42,11 @@ export TERM=xterm-256color
 export EDITOR=vim
 
 #path
-export PATH=$PATH:$HOME/bin
-
-#stow path
-if [ -d $HOME/opt ];then
-    export PATH=$HOME/opt/bin:$PATH
-    export INCLUDE=$HOME/opt/include:$INCLUDE
-    export LIBRARY_PATH=$HOME/opt/lib:$HOME/opt/lib64:$LIBRARY_PATH
-    export LD_LIBRARY_PATH=$HOME/opt/lib:$HOME/opt/lib64:$LD_LIBRARY_PATH
-    export XDG_DATA_DIRS=$HOME/opt/share:$XDG_DATA_DIRS
-fi
+export PATH=$HOME/opt/bin:$HOME/.local/bin:$HOME/bin:$PATH
+export INCLUDE=$HOME/opt/include:$HOME/.local/include:$INCLUDE
+export LIBRARY_PATH=$HOME/opt/lib:$HOME/opt/lib64:$HOME/.local/lib:$LIBRARY_PATH
+export LD_LIBRARY_PATH=$HOME/opt/lib:$HOME/opt/lib64:$HOME/.local/lib:$LD_LIBRARY_PATH
+export XDG_DATA_HOME=$HOME/opt/share:$XDG_DATA_HOME
 
 #debian packaging
 export DEBEMAIL=lainme993@gmail.com
