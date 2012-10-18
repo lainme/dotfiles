@@ -19,8 +19,7 @@ alias pacman="pacman-color"
 alias sshproxy="ssh -qTfnN -D 8707 vps"
 alias dquilt="quilt --quiltrc=$HOME/.quiltrc-dpkg"
 alias genpatch="diff -Naur --strip-trailing-cr"
-alias sage="$HOME/software/sage/sage"
-alias sagenb="$HOME/software/sage/sage -n interface='' open_viewer='False' secure='True'"
+alias sagenb="sage -n interface='' open_viewer='False' secure='True'"
 
 #--------------------------------------------------
 #functions
@@ -54,6 +53,9 @@ export DEBFULLNAME="lainme"
 export DEB_BUILD_OPTIONS=nocheck
 export QUILT_PATCHES=debian/patches
 export QUILT_REFRESH_ARGS="-p ab --no-timestamps --no-index"
+
+#pFUnit
+export PFUNIT=$HOME/software/pFUnit
 
 #--------------------------------------------------
 #others
