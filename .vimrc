@@ -114,54 +114,15 @@ inoremap <F7> <C-o>:call OpenTerminal()<CR>
 
 function! OpenTerminal()
     let s:terminal = "xterm"
-    let s:curpath = expand("%:p:h")
-    silent exec '!'.s:terminal.' -e bash -c "cd \"'.s:curpath.'\";bash" &'."\n redraw!"
+    silent exec '!'.s:terminal.' -e bash -c "cd \"'.expand("%:p:h").'\";bash"'
+    redraw!
 endfunction
 
-"生成ctags
-if ! exists("g:TagCmd")
-    let g:TagCmd='ctags -R -o %:p:h/tags %:p:h'
-endif
-
-noremap <F8> :exec "silent !".g:TagCmd." &\n redraw!"<CR>
-inoremap <F8> <ESC>:exec "w \n silent !".g:TagCmd." &\n redraw!"<CR>
-
-"vimgrep搜索当前工作路径
-noremap <F9> :call ProjGrep()<CR>
-
-function! ProjGrep()
-    if ! exists("g:SearchPath")
-        let g:SearchPath='**'
-    endif
-
-    let s:pattern=input("查询模式:")
-    if s:pattern == ""
-        return
-    endif 
-    let s:path=input("查询路径：",g:SearchPath)
-    
-    exec "vimgrep /".s:pattern."/j ".s:path
-endfunction
-
-"局部拼写检查列表
-noremap <Leader>zg :call AddLocalSpellfile()<CR>
-
-function! AddLocalSpellfile()
-    if ! exists("g:LocalSpellfile")
-        return
-    endif
-
-    silent exec "redir >> ".g:LocalSpellfile
-    silent echon expand("<cword>")."\n"
-    silent redir END
-    silent exec "mkspell! ".g:LocalSpellfile 
-endfunction
-    
 "附加模式行
 noremap <Leader>ml :call AppendModeline()<CR>
 
 function! AppendModeline()
-    let s:modeline = substitute(substitute(substitute(&commentstring,"\\s\*%s\\s\*","%s",""),"%s",printf(" vim: set ft=%s tw=%s: ", &filetype,&textwidth)," "),"^\\s\\+","","")
+    let s:modeline = substitute(substitute(substitute(&commentstring,"\\s\*%s\\s\*","%s",""),"%s",printf(" vim: set ft=%s ff=%s tw=%s:", &filetype,&fileformat,&textwidth)," "),"^\\s\\+","","")
     call append(line("$"),s:modeline)
 endfunction
 
@@ -187,6 +148,7 @@ Bundle 'DirDiff.vim'
 Bundle 'linediff.vim'
 Bundle 'vim-flake8'
 Bundle 'git://github.com/lainme/simplecompile.git'
+Bundle 'git://github.com/lainme/simpleProj.git'
 
 "----------taglist----------
 let Tlist_Exit_OnlyWindow=1
@@ -229,6 +191,11 @@ let g:po_translator="lainme <lainme993@gmail.com>"
 "----------notes----------
 let g:notes_directory="~/Documents/notes"
 let g:notes_suffix=".txt"
+
+"----------simpleProj----------
+noremap <F8> :ProjGenCTags<CR>
+noremap <F9> :ProjGrepFile<CR>
+noremap <Leader>zg :ProjAddSpell<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "分类设置
