@@ -193,7 +193,7 @@ let g:notes_directory="~/Documents/notes"
 let g:notes_suffix=".txt"
 
 "----------simpleProj----------
-noremap <F8> :ProjGenCTags<CR>
+noremap <F8> :ProjGenCtags<CR>
 noremap <F9> :ProjGrepFile<CR>
 noremap <Leader>zg :ProjAddSpell<CR>
 
@@ -208,7 +208,7 @@ let fortran_fold_conditionals=1
 "通用
 autocmd FileType fortran 
     \setlocal foldmethod=syntax |
-    \set efm=%A%f:%l.%c:,%-Z%trror:\ %m,%-Z%tarning:\ %m,%-C%.%#
+    \setlocal efm=%A%f:%l.%c:,%-Z%trror:\ %m,%-Z%tarning:\ %m,%-C%.%#
 
 "设置格式
 autocmd BufNewFile,BufReadPre,BufEnter *.f90  
@@ -224,6 +224,9 @@ autocmd BufNewFile,BufReadPre,BufEnter *.f
 "自动添加文件头
 autocmd BufNewFile *.py 
     \0put=\"#!/usr/bin/env python\<nl># -*- coding: UTF-8 -*-\<nl>\"  
+
+"textwidth
+autocmd BufNewFile,BufRead *.py setlocal textwidth=79
 
 "----------Shell----------
 "自动添加文件头
