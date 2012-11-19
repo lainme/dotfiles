@@ -301,7 +301,7 @@ function install_software(){
     $BUILDCMD -S firefox flashplugin icedtea-web-java7 aliedit #browser
     $BUILDCMD -S eog gimp inkscape #photo
     $BUILDCMD -S dropbox nautilus-dropbox #dropbox
-    $BUILDCMD -S hotot-gtk3-git screen aria2 conky-lua xterm #misc
+    $BUILDCMD -S screen aria2 conky-lua xterm #misc
     $BUILDCMD -S remmina freerdp vino #remote desktop
 
     #special
