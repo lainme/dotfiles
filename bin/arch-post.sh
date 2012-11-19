@@ -318,7 +318,6 @@ function settings_system(){
     cp $USERHOME/Dropbox/sysconf/thinkfan/thinkfan.conf /etc/
 
     #other
-    cp $USERHOME/Dropbox/sysconf/rc.conf /etc/ #rc.conf
     cp -r $USERHOME/Dropbox/sysconf/font-config/* /etc/fonts #ubuntu-font
     cp $USERHOME/Dropbox/sysconf/blacklist.conf /etc/modprobe.d/blacklist.conf #blacklist
     (while :; do echo ""; done ) | sensors-detect #sensors
