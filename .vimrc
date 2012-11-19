@@ -225,9 +225,6 @@ autocmd BufNewFile,BufReadPre,BufEnter *.f
 autocmd BufNewFile *.py 
     \0put=\"#!/usr/bin/env python\<nl># -*- coding: UTF-8 -*-\<nl>\"  
 
-"textwidth
-autocmd BufNewFile,BufRead *.py setlocal textwidth=79
-
 "----------Shell----------
 "自动添加文件头
 autocmd BufNewFile *.sh 

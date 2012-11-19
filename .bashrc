@@ -44,7 +44,7 @@ export EDITOR=vim
 export PATH=$HOME/opt/bin:$HOME/.local/bin:$HOME/bin:$PATH
 export INCLUDE=$HOME/opt/include:$HOME/.local/include:$INCLUDE
 export LIBRARY_PATH=$HOME/opt/lib:$HOME/opt/lib64:$HOME/.local/lib:$LIBRARY_PATH
-export LD_LIBRARY_PATH=$HOME/opt/lib:$HOME/opt/lib64:$HOME/.local/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$HOME/opt/lib:$HOME/opt/lib64:$HOME/.local/lib:$LIBRARY_PATH
 export XDG_DATA_HOME=$HOME/opt/share:$XDG_DATA_HOME
 
 #debian packaging
