@@ -13,14 +13,15 @@ function show_help(){
     echo "The -c/--config option should be given first, then you can override the options in config file"
     echo "-c --config   CONFIG_FILE     - Optional. Configuration file for a build"
     echo "-n --name     PACKAGE_NAME    - Required. Package name."
+    echo "-g --git      GIT_REPO        - Optional. The URL of git repo"
     echo "-b --branch   GIT_MAIN_BRANCH - Optional. Which branch to use. Default is master"
     echo "-u --upstream GIT_ORIG_BRANCH - Optional. Which branch to use as upstream. Default is upstream"
     echo "-r --releases RELEASES        - Optional. Build for which system versions. Default is the version of current system"
     echo "-d --dput     DPUT_REPO       - Optional. Remote repository. If not empty, upload to the specified repositories using dput"
     echo "-s --source   SOURCE_DIR      - Optional. Directory where source exists. If not empty, invoke non-git build"
     echo "-o --orig     ORIG_FILE       - Optional. Path of .orig file, default is created by program"
+    echo "-f --format   FORMAT          - Optional. Source format, can be 'native' or 'quilt'"
     echo "-l --pbuilder FLAG            - Optional. If not zero, locally build the package using pbuilder-dist. Default is 0"
-    echo "-a --alter    FLAG            - Optional. If not zero, do not upload .orig.tar.*. Default is 1"
     echo "-p --commit   FLAG            - Optional. If not zero, commit to git. Default is 0"
     echo "-t --tag      FLAG            - Optional. If not zero, add tag to git. Default is 0"
     echo "-h --help                     - show this help"
@@ -36,7 +37,7 @@ function set_build_dir(){
     if [ "$misc_build" != "0" ];then
         cp -r $source_dir $build_dir/$package_name
     else
-        git clone $GITBASE/$package_name.git -b $git_main_branch $build_dir/$package_name
+        git clone $git_repo -b $git_main_branch $build_dir/$package_name
     fi
 
     #prepare packaging directories
@@ -132,6 +133,12 @@ function deb_packaging(){
         #change directory
         cd $build_dir/$release/$package_name-$major_version
 
+        #run hooks
+        if [ -f debian/build-hooks/hook ];then
+            ./debian/build-hooks/hook $release $package_name $format
+            rm -rf debian/build-hooks
+        fi
+
         #modify
         if [ "$misc_build" == "0" ];then
             rm -rf .git .gitignore
@@ -139,7 +146,7 @@ function deb_packaging(){
         sed -i "1s|\(~$USERNAME\)\().*\)unstable|\1~$release\2$release|" "debian/changelog"
 
         #build
-        if [ "$no_orig" != "0" ];then
+        if [ "$format" == "native" ];then
             debuild -S -sd
         else
             debuild -S -sa
@@ -197,21 +204,22 @@ USEREMAIL=lainme993@gmail.com #user email
 GITBASE=git@github.com:$USERNAME #git base repository URL
 OUTPUT_DIR=$HOME/build #output directory
 PBUILDER_DIR=$HOME/pbuilder #pbuilder-dist directory
-PBUILDER_ARCH=`uname -i` #architecture used for pbuilder (default native)
+PBUILDER_ARCH=`uname -i` #architecture used for pbuilder (default native archtecture)
 LOCAL_REPO="local" #name of local repository (defined in .dput.cf)
 BUILD_OPTIONS=nocheck #do not check
 
 #default values of options
 config_file=""
 package_name=""
+git_repo=""
 git_main_branch="master"
 git_orig_branch="upstream"
-releases=("`lsb_release -cs`")
-dput_repo=("")
+releases=`lsb_release -cs`
+dput_repo=""
 source_dir=""
 orig_file=""
 local_build=0
-no_orig=1
+format="native"
 is_commit=0
 is_tag=0
 
@@ -231,6 +239,7 @@ while [ $# -gt 1 ];do
     case $1 in
         -c|--config)    config_file=$2;source $2;shift 2;; #source config file
         -n|--name)      package_name=$2;shift 2;;
+        -g|--git)       git_repo=$2;shift 2;;
         -b|--branch)    git_main_branch=$2;shift 2;;
         -u|--upstream)  git_orig_branch=$2;shift 2;;
         -r|--releases)  releases=$2;shift 2;;
@@ -238,7 +247,7 @@ while [ $# -gt 1 ];do
         -s|--source)    source_dir=$2;shift 2;;
         -o|--orig)      orig_file=$2;shift 2;;
         -l|--pbuilder)  local_build=$2;shift 2;;
-        -a|--alter)     no_orig=$2;shift 2;;
+        -f|--format)    format=$2;shift 2;;
         -p|--commit)    is_commit=$2;shift 2;;
         -t|--tag)       is_tag=$2;shift 2;;
         -h|--help)      show_help;shift 2;;
@@ -250,6 +259,11 @@ done
 if [ -z $package_name ];then
     echo "Option missing: use -n PACKAGE_NAME to specify the package name"
     exit
+fi
+
+#check git repo
+if [ "$misc_build" == "0" -a -z "$git_repo" ];then
+    git_repo=$GITBASE/$package_name.git
 fi
 
 #check if non-git build
