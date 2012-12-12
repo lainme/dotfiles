@@ -28,7 +28,6 @@ function show_help(){
     echo -e "Individual software installation functions:"
     echo -e ""
     echo -e "\tinstall_yaourt      - install yaourt"
-    echo -e "\tinstall_epstool     - install epstool"
     echo -e "\tinstall_mendeley    - install mendeley"
     echo -e "\tinstall_intel       - install Intel compiler"
     echo -e ""
@@ -125,23 +124,6 @@ function install_yaourt(){
     cd /tmp/yaourt
     makepkg --asroot PKGBUILD
     pacman -U --noconfirm yaourt*.pkg.tar.xz
-}
-
-function install_epstool(){
-    #change directory
-    cd /tmp
-
-    #obtain pkgbuild
-    curl -L https://aur.archlinux.org/packages/ep/epstool/epstool.tar.gz > epstool.tar.gz
-    tar -xzf epstool.tar.gz
-
-    #change download link
-    cd /tmp/epstool
-    sed -i "s|\(source[^\"']*\)[^ ]*\(.*\)|\1 \"$EPSDLINK\" \2|" PKGBUILD
-
-    #build/install
-    makepkg --asroot PKGBUILD
-    $BUILDCMD -U --noconfirm epstool*.pkg.tar.xz
 }
 
 #--------------------------------------------------
@@ -289,7 +271,7 @@ function install_software(){
     fi
 
     #Text editing/processing
-    $BUILDCMD -S texlive-latexextra rubber latex-beamer-ctan minted
+    $BUILDCMD -S texlive-latexextra rubber latex-beamer-ctan minted epstool
     $BUILDCMD -S gvim ctags
 
     #other
@@ -303,9 +285,6 @@ function install_software(){
     $BUILDCMD -S dropbox nautilus-dropbox #dropbox
     $BUILDCMD -S screen aria2 conky-lua xterm #misc
     $BUILDCMD -S remmina freerdp vino #remote desktop
-
-    #special
-    install_epstool
 }
 
 function settings_system(){
@@ -438,9 +417,6 @@ RUNASUSR="sudo -u $USERNAME" #run as normal user
 #Intel compiler version
 INTELNUM=2851
 INTELVER=2013.1.117
-
-#epstool
-EPSDLINK="http://archive.ubuntu.com/ubuntu/pool/universe/e/epstool/epstool_3.08+repack.orig.tar.gz"
 
 if [ -z $1 ];then
     show_help
