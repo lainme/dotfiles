@@ -41,17 +41,17 @@ export TERM=xterm-256color
 export EDITOR=vim
 
 #path
+if [ ! -z $LD_LIBRARY_PATH ];then
+    export PRESERVE_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
+fi
+if [ -z $XDG_DATA_DIRS ];then
+    export XDG_DATA_DIRS=/usr/local/share:/usr/share
+fi
 export PATH=$HOME/opt/bin:$HOME/bin:$PATH
 export INCLUDE=$HOME/opt/include:$INCLUDE
 export LIBRARY_PATH=$HOME/opt/lib:$HOME/opt/lib64:$LIBRARY_PATH
 export XDG_DATA_DIRS=$HOME/opt/share:$XDG_DATA_DIRS
-
-#LD_LIBRARY_PATH
-if [ -z $LD_LIBRARY_PATH ];then
-    export LD_LIBRARY_PATH=$PRESERVE_LD_LIBRARY_PATH
-else
-    export PRESERVE_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
-fi
+export LD_LIBRARY_PATH=$PRESERVE_LD_LIBRARY_PATH
 
 #debian packaging
 export DEBEMAIL=lainme993@gmail.com
