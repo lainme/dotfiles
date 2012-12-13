@@ -1,6 +1,0 @@
-[local]
-method = local
-incoming = ~/mini-dinstall/mini-dinstall/incoming
-allow_non-us_software = 1
-run_dinstall = 0
-post_upload_command = mini-dinstall --batch

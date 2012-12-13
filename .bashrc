@@ -19,7 +19,7 @@ alias pacman="pacman-color"
 alias sshproxy="ssh -qTfnN -D 8707 vps"
 alias dquilt="quilt --quiltrc=$HOME/.quiltrc-dpkg"
 alias genpatch="diff -Naur --strip-trailing-cr"
-alias sagenb="sage -n interface='' open_viewer='False' secure='True'"
+alias sagenb="sage -n interface='' automatic_login=False secure='True'"
 
 #--------------------------------------------------
 #functions
@@ -41,11 +41,17 @@ export TERM=xterm-256color
 export EDITOR=vim
 
 #path
-export PATH=$HOME/opt/bin:$HOME/.local/bin:$HOME/bin:$PATH
-export INCLUDE=$HOME/opt/include:$HOME/.local/include:$INCLUDE
-export LIBRARY_PATH=$HOME/opt/lib:$HOME/opt/lib64:$HOME/.local/lib:$LIBRARY_PATH
-export LD_LIBRARY_PATH=$HOME/opt/lib:$HOME/opt/lib64:$HOME/.local/lib:$LIBRARY_PATH
-export XDG_DATA_HOME=$HOME/opt/share:$XDG_DATA_HOME
+export PATH=$HOME/opt/bin:$HOME/bin:$PATH
+export INCLUDE=$HOME/opt/include:$INCLUDE
+export LIBRARY_PATH=$HOME/opt/lib:$HOME/opt/lib64:$LIBRARY_PATH
+export XDG_DATA_DIRS=$HOME/opt/share:$XDG_DATA_DIRS
+
+#LD_LIBRARY_PATH
+if [ -z $LD_LIBRARY_PATH ];then
+    export LD_LIBRARY_PATH=$PRESERVE_LD_LIBRARY_PATH
+else
+    export PRESERVE_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
+fi
 
 #debian packaging
 export DEBEMAIL=lainme993@gmail.com
@@ -53,9 +59,6 @@ export DEBFULLNAME="lainme"
 export DEB_BUILD_OPTIONS=nocheck
 export QUILT_PATCHES=debian/patches
 export QUILT_REFRESH_ARGS="-p ab --no-timestamps --no-index"
-
-#pFUnit
-export PFUNIT=$HOME/software/pFUnit
 
 #--------------------------------------------------
 #others

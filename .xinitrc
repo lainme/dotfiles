@@ -9,8 +9,7 @@ mpd &
 #pidgin
 pidgin &
 
-#hotot
-hotot-gtk3 &
-
 #be evil
-source $HOME/.evil_init
+if [ -f $HOME/.evil_init ];then
+    source $HOME/.evil_init
+fi
