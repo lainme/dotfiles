@@ -94,7 +94,6 @@ function symlink(){
     #configuration
     mksymlink $USERHOME/config $USERHOME "/(\.config|\.gnome2|\.local)/d;p"
     mksymlink $USERHOME/config/.config $USERHOME/.config
-    mksymlink $USERHOME/config/.gnome2 $USERHOME/.gnome2
     mksymlink $USERHOME/config/.local/share/gnome-shell $USERHOME/.local/share/gnome-shell "/extensions/p"
 
     rm -rf $USERHOME/.git $USERHOME/.gitignore
