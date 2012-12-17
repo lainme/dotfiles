@@ -58,7 +58,7 @@ function set_changelog(){
     version=$version~$USERNAME
 
     if [ "$misc_build" == "0" ];then
-        git_version=`git log origin/$git_orig_branch -n 1 --pretty=format:"git%ai.%h" | sed "s/[-: ]//g"`
+        git_version=`git log origin/$git_orig_branch -n 1 --pretty=format:"git%ai.%h" | sed "s/:[0-9]\{2\} +[0-9]\{4\}//g;s/[-: ]//g"`
         version=`echo $version | sed "s|git[.0-9a-zA-Z]*|$git_version|"`
     fi
 
