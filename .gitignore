@@ -1,5 +1,3 @@
-.gnupg
-.ssh
 *.swp
 .evil*
 .vim/*
@@ -8,8 +6,6 @@
 .irssi/away.log
 .config/*
 !.config/fontconfig/
-.purple
 .local
 .gtk-bookmarks
-.gnome2
 *.orig
