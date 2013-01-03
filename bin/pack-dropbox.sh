@@ -3,8 +3,12 @@
 
 cd $HOME
 
-cp $HOME/bin/arch-post.sh $HOME/
+$HOME/bin/cleandropbox.sh
 
-tar --exclude="home/config/.gnupg/*" --exclude="home/config/.ssh/*" --exclude="home/config/.irssi/*" --exclude="home/config/.config/fcitx/*" --exclude="home/config/.purple/*" --exclude="home/config/.vim/*" --exclude="home/config/.git" --exclude="home/reference/*" --exclude="home/Documents/*" --exclude="home/Music/*" --exclude="home/TA/*" --exclude="home/Pictures/wallpaper" --exclude="Public" --exclude="exchange" --exclude="develop" --exclude="cluster" --exclude="server" --exclude=".dropbox.cache" --exclude=".dropbox" --exclude="sysconf/dropbox.tar.gz" -cpzf $HOME/Dropbox/sysconf/dropbox.tar.gz Dropbox arch-post.sh
+git clone https://gist.github.com/4441125.git arch-post
 
-rm $HOME/arch-post.sh
+cp arch-post/arch-post.sh arch-post.sh
+
+tar --exclude="home/config/.config/fcitx/table/*" --exclude="home/config/.irssi/*" --exclude="home/config/.mpd/*" --exclude="home/config/.vim/*" --exclude="home/config/.git" --exclude="home/Documents/*" --exclude="home/Music/*" --exclude="home/Pictures/Wallpapers" --exclude="home/reference/*" --exclude="home/results/*" --exclude="home/Templates/*" --exclude="Public" --exclude="exchange" --exclude="develop" --exclude="cluster" --exclude="server" --exclude=".dropbox.cache" --exclude=".dropbox" --exclude="sysconf/dropbox.tar.gz" -cpzf $HOME/Dropbox/sysconf/dropbox.tar.gz Dropbox arch-post.sh
+
+rm -rf arch-post arch-post.sh
