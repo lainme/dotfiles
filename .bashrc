@@ -14,6 +14,7 @@ alias pacman="pacman-color"
 #other
 alias sshproxy="ssh -qTfnN"
 alias sagenb="sage -n interface='' automatic_login=False secure='True'"
+alias checksums="setconf PKGBUILD $(makepkg -g 2>/dev/null | pee "head -1 | cut -d= -f1" "cut -d= -f2") ')'"
 
 #--------------------------------------------------
 #functions
