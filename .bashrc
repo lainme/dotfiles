@@ -38,21 +38,8 @@ export EDITOR=vim
 if [ ! -z $LD_LIBRARY_PATH ];then
     export PRESERVE_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
 fi
-if [ -z $XDG_DATA_DIRS ];then
-    export XDG_DATA_DIRS=/usr/local/share:/usr/share
-fi
-export PATH=$HOME/opt/bin:$HOME/bin:$PATH
-export INCLUDE=$HOME/opt/include:$INCLUDE
-export LIBRARY_PATH=$HOME/opt/lib:$HOME/opt/lib64:$LIBRARY_PATH
-export XDG_DATA_DIRS=$HOME/opt/share:$XDG_DATA_DIRS
+export PATH=$HOME/bin:$PATH
 export LD_LIBRARY_PATH=$PRESERVE_LD_LIBRARY_PATH
-
-#debian packaging
-export DEBEMAIL=lainme993@gmail.com
-export DEBFULLNAME="lainme"
-export DEB_BUILD_OPTIONS=nocheck
-export QUILT_PATCHES=debian/patches
-export QUILT_REFRESH_ARGS="-p ab --no-timestamps --no-index"
 
 #--------------------------------------------------
 #others
@@ -60,11 +47,6 @@ export QUILT_REFRESH_ARGS="-p ab --no-timestamps --no-index"
 #bash completion
 if [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
-fi
-
-#git completion on cluster
-if [ -f $HOME/.git-completion.bash ];then
-    source $HOME/.git-completion.bash
 fi
 
 #be evil
