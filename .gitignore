@@ -9,7 +9,6 @@ Templates
 .gtk-bookmarks
 .irssi/config.autosave
 .irssi/away.log
-.local
 .mpd
 .vim/*
 !.vim/colors/
