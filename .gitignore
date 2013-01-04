@@ -5,12 +5,12 @@ reference
 Templates
 .config/*
 !.config/fontconfig/
-.evil*
-.gtk-bookmarks
 .irssi/config.autosave
 .irssi/away.log
 .mpd
 .vim/*
 !.vim/colors/
+.evil*
+.gtk-bookmarks
 *.swp
 *.orig
