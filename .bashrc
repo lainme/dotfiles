@@ -39,7 +39,7 @@ export EDITOR=vim
 if [ ! -z $LD_LIBRARY_PATH ];then
     export PRESERVE_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
 fi
-export PATH=$HOME/bin:$PATH
+export PATH=$HOME/bin:$HOME/.local/bin:$PATH
 export LD_LIBRARY_PATH=$PRESERVE_LD_LIBRARY_PATH
 
 #--------------------------------------------------
