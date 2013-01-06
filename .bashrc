@@ -1,6 +1,10 @@
 #--------------------------------------------------
 #alias
 #--------------------------------------------------
+#lighttpd
+alias webon="lighttpd -f $HOME/.lighttpd.conf"
+alias weboff="killall lighttpd"
+
 #screen
 alias scl="screen -ls"
 alias scq="quitscr"
