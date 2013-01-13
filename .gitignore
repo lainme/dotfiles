@@ -3,6 +3,7 @@ Music
 Pictures
 reference
 Templates
+sysconf
 .config/*
 !.config/fontconfig/
 .irssi/config.autosave
