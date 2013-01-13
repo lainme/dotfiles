@@ -22,7 +22,7 @@ alias checksums='setconf PKGBUILD $(makepkg -g 2>/dev/null | pee "head -1 | cut 
 #--------------------------------------------------
 #functions
 #--------------------------------------------------
-function quitscr() { 
+quitscr() { 
     screen -X -S $1 quit
 }
 
@@ -55,5 +55,5 @@ fi
 
 #be evil
 if [ -f $HOME/.evil_rc ];then
-    source $HOME/.evil_rc
+    . $HOME/.evil_rc
 fi

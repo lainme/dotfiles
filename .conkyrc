@@ -44,7 +44,7 @@ music_player_interval 4.0
 cpu_avg_samples 4
 net_avg_samples 2
 
-#LUAbin
+#LUA
 lua_load ~/bin/conky_widgets.lua
 lua_draw_hook_pre widgets
 

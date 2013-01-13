@@ -7,15 +7,9 @@
 [merge]
 	tool = vimdiff
 [alias]
-	c = commit
 	s = status
 	a = add
-	r = rm
-	pu = push
-	ls = ls-files
-	a-f = add -f
 	c-a = commit -a
-	pu-remote = push origin master
 [diff]
         tool = vimdiff
 [difftool]
