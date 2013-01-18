@@ -147,8 +147,8 @@ Bundle 'notes.vim'
 Bundle 'DirDiff.vim'
 Bundle 'linediff.vim'
 Bundle 'vim-flake8'
-Bundle 'git://github.com/lainme/simplecompile.git'
-Bundle 'git://github.com/lainme/simpleProj.git'
+Bundle 'lainme/simplecompile'
+Bundle 'lainme/simpleProj'
 
 "----------taglist----------
 let Tlist_Exit_OnlyWindow=1
