@@ -1,3 +1,3 @@
 #!/bin/sh
 
-rsync --delete -azvv -e "ssh lainme.com" :/var/www/lainme.com/ $HOME/lighttpd/dokuwiki
+rsync --delete -azvv -e "ssh lainme.com" :/var/www/lainme.com/ $HOME/http/dokuwiki

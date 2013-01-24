@@ -44,6 +44,13 @@ if ! has("gui_running")
     set t_IE=(B
 endif
 
+"GVIM的一些设置
+if has("gui_running")
+    set guioptions=a  "去掉菜单等，自动复制选择的区域
+    set guicursor=a:blinkwait600-blinkoff600-blinkon600 "光标闪烁频率
+    set guifont=Monospace\ 11
+endif
+
 "状态栏设置
 set laststatus=2
 set statusline=%<%h%m%r\ %f%=[%{&filetype},%{&fileencoding},%{&fileformat}]%k\ %-14.(%l/%L,%c%V%)\ %P 
@@ -87,13 +94,6 @@ noremap <Leader>ff :cn<CR>
 noremap <Leader>fd :cp<CR>
 noremap <Leader>fo :copen<CR>
 noremap <Leader>fc :ccl<CR>
-
-"GVIM的一些设置
-if has("gui_running")
-    set guioptions=a  "去掉菜单等，自动复制选择的区域
-    set guicursor=a:blinkwait600-blinkoff600-blinkon600 "光标闪烁频率
-    set guifont=Monospace\ 11
-endif
 
 "缓冲区移动键映射
 noremap <M-left> :bprev!<CR>
@@ -145,7 +145,6 @@ Bundle 'fcitx.vim'
 Bundle 'LaTeX-Box'
 Bundle 'notes.vim'
 Bundle 'DirDiff.vim'
-Bundle 'linediff.vim'
 Bundle 'vim-flake8'
 Bundle 'lainme/simplecompile'
 Bundle 'lainme/simpleProj'
@@ -228,21 +227,7 @@ autocmd BufNewFile *.py
 "----------Shell----------
 "自动添加文件头
 autocmd BufNewFile *.sh 
-    \0put=\"#!/bin/bash\<nl>\" 
-
-"----------HTML----------
-"自动添加文件头
-autocmd BufNewFile *.html,*.htm 
-    \0put='<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">' |
-    \1put='<html xmlns=\"http://www.w3.org/1999/xhtml\" dir=\"ltr\" lang=\"zh-cn\" xml:lang=\"zh-cn\">' |
-    \2put='    <head>' |
-    \3put='        <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" />' |
-    \4put='        <title></title>' |
-    \5put='    </head>' |
-    \6put='    <body>' |
-    \7put='    </body>' |
-    \8put='</html>' |
-    \normal 5G7l
+    \0put=\"#!/bin/sh\<nl>\" 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "其它
