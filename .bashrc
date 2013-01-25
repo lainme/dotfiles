@@ -38,6 +38,11 @@ export TERM=xterm-256color
 #editor
 export EDITOR=vim
 
+#fcitx
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx
+
 #path
 if [ ! -z $LD_LIBRARY_PATH ];then
     export PRESERVE_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
