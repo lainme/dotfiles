@@ -50,7 +50,7 @@ lua_draw_hook_pre widgets
 
 TEXT
 ${voffset 85}${goto 125}${hr 2}
-${voffset -80}${goto 200}CPU: $cpu%    ${freq} MHz   ${execi 3600 sensors | grep "Physical id 0:" | head -n 1 | cut -c18-19}°C${goto 400}MEMORY: $memperc%    $swapperc%${goto 560}DISK: ${hddtemp /dev/sda}°C    / ${fs_bar 10,50 /} ${fs_used_perc /}%    /home ${fs_bar 10,50 /home} ${fs_used_perc /home}%    Linux ${kernel}
+${voffset -80}${goto 200}CPU: $cpu%    ${freq} MHz   ${execi 3600 sensors | sed -n "s/Core 0:[^0-9.]*\([0-9]*\).*/\1/p"}°C  ${goto 400}MEMORY: $memperc%    $swapperc%${goto 560}DISK: ${hddtemp /dev/sda}°C    / ${fs_bar 10,50 /} ${fs_used_perc /}%    /home ${fs_bar 10,50 /home} ${fs_used_perc /home}%    Linux ${kernel}
 ${voffset 25}${goto 200}${font Poky:size=14}M${font WenQuanYi Micro Hei:size=16}MEMORY${goto 460}${font Poky:size=14}g${font WenQuanYi Micro Hei:size=16}MUSIC${goto 700}${font Poky:size=14}w${font WenQuanYi Micro Hei:size=16}NETWORK${goto 920}${font Poky:size=14}S${font WenQuanYi Micro Hei:size=16}CPU${font}
 ${voffset -66}${font WenQuanYi Micro Hei:size=50}${alignr}${time %l:%M}${font}
 ${voffset 12}${goto 200}Name${goto 320}PID${goto 380}MEM% 
