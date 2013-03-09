@@ -125,7 +125,7 @@ function setup_software(){
     $BUILDCMD -S freetype2-ubuntu fontconfig-ubuntu cairo-ubuntu 
 
     # utils
-    $BUILDCMD -S lm_sensors hddtemp bash-completion net-tools ntp openssh ufw moreutils setconf ntfs-3g
+    $BUILDCMD -S lm_sensors hddtemp bash-completion net-tools ntp openssh ufw moreutils setconf ntfs-3g dosfstools
 
     #--------------------------------------------------
     # other softwares
