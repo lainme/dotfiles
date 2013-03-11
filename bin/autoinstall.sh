@@ -177,7 +177,7 @@ function setup_user(){
     $RUNASUSR xdg-user-dirs-update
 
     # symbol link   
-    symlink
+    user_symlink
     
     # avatar
     cp $USERHOME/Dropbox/home/sysconf/account/avatar-gnome.png /var/lib/AccountsService/icons/$USERNAME
