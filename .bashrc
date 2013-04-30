@@ -9,7 +9,6 @@ alias scr="screen -raAd"
 #color output
 alias ls="ls --color=auto"
 alias grep="grep --color=auto"
-alias pacman="pacman-color"
 
 #other
 alias sshproxy="ssh -qTfnN"
