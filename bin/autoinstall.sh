@@ -151,9 +151,10 @@ function setup_software(){
 }
 
 function setup_system(){
-    # ubuntu fonts
+    # fonts
     cp -r $USERHOME/Dropbox/home/sysconf/fontconfig/* /etc/fonts/conf.avail
     cp -r $USERHOME/Dropbox/home/sysconf/fontconfig/* /etc/fonts/conf.d
+    cp -r $USERHOME/Dropbox/home/sysconf/fonts /usr/share/fonts/additions
 
     # other
     cp $USERHOME/Dropbox/home/sysconf/common/blacklist.conf /etc/modprobe.d/blacklist.conf # blacklist
