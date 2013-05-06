@@ -135,7 +135,7 @@ function setup_software(){
     $BUILDCMD -S gvim ctags # text editor
     $BUILDCMD -S evince poppler-data # PDF
     $BUILDCMD -S mendeleydesktop # literature management
-    $BUILDCMD -S git gcc-fortran # development
+    $BUILDCMD -S git # development
     $BUILDCMD -S texlive-latexextra rubber latex-beamer-ctan minted epstool # latex
     $BUILDCMD -S pidgin pidgin-lwqq-git pidgin-libnotify irssi skype # IM
     $BUILDCMD -S mpd mpc mplayer-vaapi gnome-mplayer # video and audio
