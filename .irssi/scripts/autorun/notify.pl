@@ -42,15 +42,15 @@ sub notify {
     }
 
     #当前活动窗口
-    #my $active = 0;
-    #my $active_id = `xprop -root _NET_ACTIVE_WINDOW`;
-    #$active_id =~ s/.*\# //;
-    #my $active_name = `xprop -id "$active_id" WM_NAME`;
-    #$active_name =~ s/[^\"]*\"([^\"]*).*/$1/;
-    #if ($active_name =~ m/screen: irssi/) {
-        #$active = 1;
-    #}
-    #return if ($active eq 1);
+    my $active = 0;
+    my $active_id = `xprop -root _NET_ACTIVE_WINDOW`;
+    $active_id =~ s/.*\# //;
+    my $active_name = `xprop -id "$active_id" WM_NAME`;
+    $active_name =~ s/[^\"]*\"([^\"]*).*/$1/;
+    if ($active_name =~ m/irssi/) {
+        $active = 1;
+    }
+    return if ($active eq 1);
 
     my ($server, $summary, $message) = @_;
 
@@ -59,6 +59,7 @@ sub notify {
     $message = sanitize($message);
 
     my $cmd = "EXEC - notify-send" .
+        " --hint=int:transient:1" .
 	" -i " . Irssi::settings_get_str('notify_icon') .
 	" -t " . Irssi::settings_get_str('notify_time') .
 	" -- '" . $summary . "'" .
