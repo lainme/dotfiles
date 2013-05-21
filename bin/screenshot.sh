@@ -19,4 +19,4 @@ fi
 
 echo $ONAME | xsel -i
 echo $ONAME | xsel -i -b
-notify-send -t 5000 -i gtk-dialog-info "Success" $ONAME
+notify-send --hint=int:transient:1 -t 5000 -i gtk-dialog-info "Success" $ONAME
