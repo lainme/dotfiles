@@ -167,6 +167,7 @@ function setup_system(){
     # systemd services
     systemctl enable gdm
     systemctl enable NetworkManager
+    systemctl enable NetworkManager-dispatcher
     systemctl enable hddtemp
     systemctl enable lm_sensors
     systemctl enable ntpd
