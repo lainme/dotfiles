@@ -130,7 +130,7 @@ function setup_software(){
     #--------------------------------------------------
     # other softwares
     #--------------------------------------------------
-    $BUILDCMD -S fcitx-gtk3 fcitx-gtk2 fcitx-configtool fcitx-cloudpinyin fcitx-googlepinyin # input method
+    $BUILDCMD -S fcitx-gtk3 fcitx-gtk2 fcitx-configtool # input method
     $BUILDCMD -S file-roller p7zip archive-mounter # archiver
     $BUILDCMD -S gvim ctags # text editor
     $BUILDCMD -S evince poppler-data # PDF
