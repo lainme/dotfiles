@@ -9,7 +9,7 @@ set showcmd "显示未完成的命令
 set wildmenu "按<tab>时命令补全 
 set autoindent smartindent "智能缩进
 set whichwrap=b,s,<,>,[,] "设置回绕键 
-set incsearch hlsearch ignorecase smartcase "搜索设置
+set incsearch ignorecase smartcase "搜索设置
 set winaltkeys=no "alt键不用于菜单
 set cursorline "高亮当前行
 set backspace=indent,eol,start "允许用退格删除字符
