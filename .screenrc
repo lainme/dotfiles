@@ -24,8 +24,10 @@ term xterm-256color
 defbce "on"
 
 #快捷键
-bindkey "^[[1;3A" prev
-bindkey "^[[1;3B" next
+bindkey "^p" prev
+bindkey "^n" next
 
 #滚屏
 termcapinfo xterm* ti@:te@
+
+

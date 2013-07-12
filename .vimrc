@@ -144,9 +144,9 @@ inoremap <F3> <ESC>:TlistUpdate<CR>:TlistToggle<CR>
 
 "----------NERD_commenter----------
 let g:NERDShutUp=1
-nnoremap <F4> ,c<space>
-vnoremap <F4> ,c<space>
-inoremap <F4> <C-o>,c<space>
+nmap <F4> ,c<space>
+vmap <F4> ,c<space>
+imap <F4> <C-o>,c<space>
 
 "----------buftabs----------
 let g:buftabs_only_basename=1
