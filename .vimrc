@@ -70,47 +70,28 @@ autocmd BufReadPost *
         \exe "normal g`\"" |
     \endif
 
-"折叠的键映射
-noremap <M-z> zc
-noremap <M-x> zO
-inoremap <M-z> <C-o>zc
-inoremap <M-x> <C-o>zO
-
-"光标移动
-noremap <up> gk
-noremap <down> gj
-inoremap <up> <C-o>gk
-inoremap <down> <C-o>gj
-
-"在窗口间移动
-noremap <C-h> <C-w>h
-noremap <C-l> <C-w>l
-noremap <C-j> <C-w>j
-noremap <C-k> <C-k>k
-
 "quickfix设置
 autocmd QuickFixCmdPost * :cw
-noremap <Leader>ff :cn<CR>
-noremap <Leader>fd :cp<CR>
-noremap <Leader>fo :copen<CR>
-noremap <Leader>fc :ccl<CR>
+nnoremap <Leader>fn :cn<CR>
+nnoremap <Leader>fp :cp<CR>
+nnoremap <Leader>fo :copen<CR>
+nnoremap <Leader>fc :ccl<CR>
 
 "缓冲区移动键映射
-noremap <M-left> :bprev!<CR>
-noremap <M-right> :bnext!<CR>
-inoremap <M-left> <ESC>:bprev!<CR>
-inoremap <M-right> <ESC>:bnext!<CR>
+nnoremap <M-h> :bprev!<CR>
+nnoremap <M-l> :bnext!<CR>
+inoremap <M-h> <ESC>:bprev!<CR>
+inoremap <M-l> <ESC>:bnext!<CR>
 
 "TAG跳转
 nnoremap <c-]> g<c-]>
-vnoremap <c-]> g<c-]>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "工具
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "在当前文件路径打开终端
-noremap <F7> :call OpenTerminal()<CR>
-inoremap <F7> <C-o>:call OpenTerminal()<CR>
+nnoremap <F7> :call OpenTerminal()<CR>
+inoremap <F7> <ESC>:call OpenTerminal()<CR>
 
 function! OpenTerminal()
     let s:terminal = "xterm"
@@ -119,7 +100,7 @@ function! OpenTerminal()
 endfunction
 
 "附加模式行
-noremap <Leader>ml :call AppendModeline()<CR>
+nnoremap <Leader>ml :call AppendModeline()<CR>
 
 function! AppendModeline()
     let s:modeline = substitute(substitute(substitute(&commentstring,"\\s\*%s\\s\*","%s",""),"%s",printf(" vim: set ft=%s ff=%s tw=%s:", &filetype,&fileformat,&textwidth)," "),"^\\s\\+","","")
@@ -158,14 +139,14 @@ let Tlist_Enable_Fold_Column=0
 let Tlist_Auto_Updata=1
 let Tlist_Compact_Format = 1
 let tlist_tex_settings   = 'latex;s:sections;g:graphics;l:labels'
-noremap <F3> :TlistUpdate<CR>:TlistToggle<CR>
+nnoremap <F3> :TlistUpdate<CR>:TlistToggle<CR>
 inoremap <F3> <ESC>:TlistUpdate<CR>:TlistToggle<CR>
 
 "----------NERD_commenter----------
 let g:NERDShutUp=1
-nmap <F4> ,c<space>
-vmap <F4> ,c<space>
-imap <F4> <C-o>,c<space>
+nnoremap <F4> ,c<space>
+vnoremap <F4> ,c<space>
+inoremap <F4> <C-o>,c<space>
 
 "----------buftabs----------
 let g:buftabs_only_basename=1
@@ -175,12 +156,12 @@ let g:buftabs_active_highlight_group="Visual"
 "----------netrw----------
 let g:netrw_liststyle=3
 let g:netrw_list_hide= '^\..*'
-noremap <F2> :Explore<CR>
+nnoremap <F2> :Explore<CR>
 inoremap <F2> <ESC>:Explore<CR>
 
 "----------SimpleCompile----------
-noremap <F5> :SimpleCompile<CR>
-noremap <F6> :SimpleRun<CR>
+nnoremap <F5> :SimpleCompile<CR>
+nnoremap <F6> :SimpleRun<CR>
 inoremap <F5> <ESC>:SimpleCompile<CR>
 inoremap <F6> <ESC>:SimpleRun<CR>
 
@@ -192,9 +173,11 @@ let g:notes_directory="~/Documents/notes"
 let g:notes_suffix=".txt"
 
 "----------simpleProj----------
-noremap <F8> :ProjGenCtags<CR>
-noremap <F9> :ProjGrepFile<CR>
-noremap <Leader>zg :ProjAddSpell<CR>
+nnoremap <F8> :ProjGenCtags<CR>
+nnoremap <F9> :ProjGrepFile<CR>
+inoremap <F8> <ESC>:ProjGenCtags<CR>
+inoremap <F9> <ESC>:ProjGrepFile<CR>
+nnoremap <Leader>zg :ProjAddSpell<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "分类设置
