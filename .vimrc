@@ -78,10 +78,10 @@ nnoremap <Leader>fo :copen<CR>
 nnoremap <Leader>fc :ccl<CR>
 
 "缓冲区移动键映射
-nnoremap <M-h> :bprev!<CR>
-nnoremap <M-l> :bnext!<CR>
-inoremap <M-h> <ESC>:bprev!<CR>
-inoremap <M-l> <ESC>:bnext!<CR>
+nnoremap <M-left> :bprev!<CR>
+nnoremap <M-right> :bnext!<CR>
+inoremap <M-left> <ESC>:bprev!<CR>
+inoremap <M-right> <ESC>:bnext!<CR>
 
 "TAG跳转
 nnoremap <c-]> g<c-]>
