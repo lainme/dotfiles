@@ -24,7 +24,7 @@ Irssi::settings_add_str('notify', 'notify_icon', 'gtk-dialog-info');
 Irssi::settings_add_str('notify', 'notify_time', '5000');
 
 #屏蔽bitlbee中某些特定nick的信息
-my @hidemsg = ("root", "ubuntu-talk", "dict");
+my @hidemsg = ("root");
 
 sub sanitize {
   my ($text) = @_;
@@ -35,12 +35,6 @@ sub sanitize {
 }
 
 sub notify {
-    #OS detection
-    my $os = `uname`;
-    if ($os =~ m/Cygwin/) {
-        return;
-    }
-
     #当前活动窗口
     my $active = 0;
     my $active_id = `xprop -root _NET_ACTIVE_WINDOW`;
