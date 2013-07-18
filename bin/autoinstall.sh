@@ -144,6 +144,7 @@ function setup_software(){
     $BUILDCMD -S dropbox nautilus-dropbox # dropbox
     $BUILDCMD -S screen conky-lua xterm # misc
     $BUILDCMD -S scrot xsel # script
+    $BUILDCMD -S virtualbox # virtual machine
 
     if [ "$SYSTARCH" == "x86_64" ];then # skype on 64bit
         $BUILDCMD -S lib32-libpulse

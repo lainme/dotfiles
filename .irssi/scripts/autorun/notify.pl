@@ -23,8 +23,22 @@ $VERSION = "0.01";
 Irssi::settings_add_str('notify', 'notify_icon', 'gtk-dialog-info');
 Irssi::settings_add_str('notify', 'notify_time', '5000');
 
-#屏蔽bitlbee中某些特定nick的信息
-my @hidemsg = ("root");
+sub hide_message {
+    #屏蔽特定服务器的信息
+    my @hideserver = ();
+    #屏蔽特定频道的信息
+    my @hidechannel = ("bitlbee", "twitter");
+    #屏蔽特定nick的信息
+    my @hidesender = ();
+
+    my ($server, $channel, $sender) = @_;
+
+    if((grep /$server/, @hideserver) or (grep /$channel/, @hidechannel) or (grep /$sender/, @hidesender)){
+        return 1;
+    } else {
+        return 0;
+    }
+}
 
 sub sanitize {
   my ($text) = @_;
@@ -73,19 +87,19 @@ sub print_text_notify {
     $stripped =~ s/^\[.[^\]]+\].// ;
     
     #如果不在屏蔽列表中则提醒
-    if((!grep /$sender/, @hidemsg) or ($server->{tag} ne "bitlbee")){
+    if(!hide_message($server->{tag}, $server->{target}, $sender)){
         notify($server, $summary, $stripped);
     }
 
 }
 
 sub message_private_notify {
-    my ($server, $msg, $nick, $address) = @_;
+    my ($server, $msg, $sender, $address) = @_;
     return if (!$server);
     
     #如果不在屏蔽列表中则提醒
-    if((!grep /$nick/, @hidemsg) or ($server->{tag} ne "bitlbee") or ($msg =~ /lainme/)){
-        notify($server, "来自 ".$nick." 的私人消息", $msg);
+    if(!hide_message($server->{tag}, $server->{target}, $sender)){
+        notify($server, "来自 ".$sender." 的私人消息", $msg);
     }
 }
 
