@@ -77,6 +77,12 @@ nnoremap <Leader>fp :cp<CR>
 nnoremap <Leader>fo :copen<CR>
 nnoremap <Leader>fc :ccl<CR>
 
+"折叠的键映射
+nnoremap <M-z> za
+nnoremap <M-x> zA
+inoremap <M-z> <C-o>za
+inoremap <M-x> <C-o>zA
+
 "缓冲区移动键映射
 nnoremap <M-left> :bprev!<CR>
 nnoremap <M-right> :bnext!<CR>
