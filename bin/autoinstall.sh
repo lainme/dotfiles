@@ -158,6 +158,7 @@ function setup_system(){
     cp -r $USERHOME/Dropbox/home/sysconf/fonts /usr/share/fonts/additions
 
     # other
+    cp $USERHOME/Dropbox/home/sysconf/virtualbox/virtualbox.conf /etc/modules-load.d/virtualbox.conf # virtualbox
     cp $USERHOME/Dropbox/home/sysconf/common/blacklist.conf /etc/modprobe.d/blacklist.conf # blacklist
     (while :; do echo ""; done ) | sensors-detect # sensors
 
