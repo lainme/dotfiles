@@ -192,14 +192,14 @@ function setup_user(){
 #--------------------------------------------------
 function setup_notebook(){
     # power management
-    $BUILDCMD -S tlp ethtool smartmontools tlp-rdw 
+    $BUILDCMD -S tlp tlp-rdw 
 
     # systemd services
-    systemctl enable tlp-init
+    systemctl enable tlp
 }
 
 function setup_thinkpad(){
-    $BUILDCMD -S thinkfan acpi_call-git tp_smapi
+    $BUILDCMD -S thinkfan dkms-acpi_call-git tp_smapi
 
     # thinkfan configuration
     cp $USERHOME/Dropbox/home/sysconf/thinkfan/modprobe.conf /etc/modprobe.d/thinkfan.conf
