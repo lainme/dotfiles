@@ -197,6 +197,7 @@ function setup_notebook(){
 
     # systemd services
     systemctl enable tlp
+    systemctl enable tlp-sleep
 }
 
 function setup_thinkpad(){
