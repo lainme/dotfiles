@@ -1,0 +1,6 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='/home/lainme/.pentadactyl'
+let g:netrw_dirhist_2='/home/lainme/program/pidgin-lwqq/debian'
+let g:netrw_dirhist_3='/home/lainme/program/UGKS'
+let g:netrw_dirhist_4='/home/lainme/Dropbox/home/Documents/MATH1013'
