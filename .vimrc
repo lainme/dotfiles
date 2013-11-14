@@ -109,7 +109,7 @@ endfunction
 nnoremap <Leader>ml :call AppendModeline()<CR>
 
 function! AppendModeline()
-    let s:modeline = substitute(substitute(substitute(&commentstring,"\\s\*%s\\s\*","%s",""),"%s",printf(" vim: set ft=%s ff=%s tw=%s:", &filetype,&fileformat,&textwidth)," "),"^\\s\\+","","")
+    let s:modeline = substitute(substitute(substitute(&commentstring,"\\s\*%s\\s\*","%s",""),"%s",printf(" vim: set textwidth=%s:", &textwidth)," "),"^\\s\\+","","")
     call append(line("$"),s:modeline)
 endfunction
 
