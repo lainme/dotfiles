@@ -30,7 +30,6 @@ set directory=/tmp "设置swp文件目录
 let mapleader="," "设置leader键
 colorscheme lucius "配色主题
 
-"终端下的一些设置
 if ! has("gui_running")
     "修复ALT键
     for i in range(97,122)
@@ -42,10 +41,7 @@ if ! has("gui_running")
     "避免终端退出时乱码
     set t_fs=(B
     set t_IE=(B
-endif
-
-"GVIM的一些设置
-if has("gui_running")
+else
     set guioptions=a  "去掉菜单等，自动复制选择的区域
     set guicursor=a:blinkwait600-blinkoff600-blinkon600 "光标闪烁频率
     set guifont=Monospace\ 11
@@ -96,45 +92,38 @@ nnoremap <c-]> g<c-]>
 "工具
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "在当前文件路径打开终端
-nnoremap <F7> :call OpenTerminal()<CR>
-inoremap <F7> <ESC>:call OpenTerminal()<CR>
+nnoremap <F9> :call OpenTerminal()<CR>
+inoremap <F9> <ESC>:call OpenTerminal()<CR>
 
 function! OpenTerminal()
     let s:terminal = "xterm"
-    silent exec '!'.s:terminal.' -e bash -c "cd \"'.expand("%:p:h").'\";bash"'
+    silent exec '!'.s:terminal.' -e bash -c "cd \"'.expand("%:p:h").'\";bash" &'
     redraw!
-endfunction
-
-"附加模式行
-nnoremap <Leader>ml :call AppendModeline()<CR>
-
-function! AppendModeline()
-    let s:modeline = substitute(substitute(substitute(&commentstring,"\\s\*%s\\s\*","%s",""),"%s",printf(" vim: set textwidth=%s:", &textwidth)," "),"^\\s\\+","","")
-    call append(line("$"),s:modeline)
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "插件设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "----------Vundle----------
-"required
 set rtp+=$HOME/.vim/bundle/vundle/
 call vundle#rc()
 Bundle 'gmarik/vundle'
 
-"script used
 Bundle 'taglist.vim'
 Bundle 'The-NERD-Commenter'
 Bundle 'buftabs'
-Bundle 'po.vim--Jelenak'
-Bundle 'SudoEdit.vim'
 Bundle 'fcitx.vim'
 Bundle 'LaTeX-Box'
 Bundle 'notes.vim'
 Bundle 'DirDiff.vim'
-Bundle 'vim-flake8'
-Bundle 'lainme/simplecompile'
-Bundle 'lainme/simpleProj'
+Bundle 'lainme/simpleCompile'
+Bundle 'lainme/simpleProject'
+
+"----------netrw----------
+let g:netrw_liststyle=3
+let g:netrw_list_hide= '^\..*'
+nnoremap <F2> :Explore<CR>
+inoremap <F2> <ESC>:Explore<CR>
 
 "----------taglist----------
 let Tlist_Exit_OnlyWindow=1
@@ -154,36 +143,27 @@ nmap <F4> ,c<space>
 vmap <F4> ,c<space>
 imap <F4> <C-o>,c<space>
 
+"----------SimpleCompile----------
+"nnoremap <F5> :SimpleCompile<CR>
+"nnoremap <F6> :SimpleRun<CR>
+"inoremap <F5> <ESC>:SimpleCompile<CR>
+"inoremap <F6> <ESC>:SimpleRun<CR>
+
+"----------simpleProj----------
+"nnoremap <F7> :ProjGenCtags<CR>
+"nnoremap <F8> :ProjGrepFile<CR>
+"inoremap <F7> <ESC>:ProjGenCtags<CR>
+"inoremap <F8> <ESC>:ProjGrepFile<CR>
+"nnoremap <Leader>zg :ProjAddSpell<CR>
+
 "----------buftabs----------
 let g:buftabs_only_basename=1
 let g:buftabs_in_statusline=1
 let g:buftabs_active_highlight_group="Visual"
 
-"----------netrw----------
-let g:netrw_liststyle=3
-let g:netrw_list_hide= '^\..*'
-nnoremap <F2> :Explore<CR>
-inoremap <F2> <ESC>:Explore<CR>
-
-"----------SimpleCompile----------
-nnoremap <F5> :SimpleCompile<CR>
-nnoremap <F6> :SimpleRun<CR>
-inoremap <F5> <ESC>:SimpleCompile<CR>
-inoremap <F6> <ESC>:SimpleRun<CR>
-
-"----------po.vim----------
-let g:po_translator="lainme <lainme993@gmail.com>"
-
 "----------notes----------
 let g:notes_directory="~/Documents/notes"
 let g:notes_suffix=".txt"
-
-"----------simpleProj----------
-nnoremap <F8> :ProjGenCtags<CR>
-nnoremap <F9> :ProjGrepFile<CR>
-inoremap <F8> <ESC>:ProjGenCtags<CR>
-inoremap <F9> <ESC>:ProjGrepFile<CR>
-nnoremap <Leader>zg :ProjAddSpell<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "分类设置
@@ -212,11 +192,6 @@ autocmd BufNewFile,BufReadPre,BufEnter *.f
 "自动添加文件头
 autocmd BufNewFile *.py 
     \0put=\"#!/usr/bin/env python\<nl># -*- coding: UTF-8 -*-\<nl>\"  
-
-"----------Shell----------
-"自动添加文件头
-autocmd BufNewFile *.sh 
-    \0put=\"#!/bin/sh\<nl>\" 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "其它
