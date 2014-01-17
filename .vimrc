@@ -144,17 +144,17 @@ vmap <F4> ,c<space>
 imap <F4> <C-o>,c<space>
 
 "----------SimpleCompile----------
-"nnoremap <F5> :SimpleCompile<CR>
-"nnoremap <F6> :SimpleRun<CR>
-"inoremap <F5> <ESC>:SimpleCompile<CR>
-"inoremap <F6> <ESC>:SimpleRun<CR>
+nnoremap <F5> :SimpleCompile<CR>
+nnoremap <F6> :SimpleRun<CR>
+inoremap <F5> <ESC>:SimpleCompile<CR>
+inoremap <F6> <ESC>:SimpleRun<CR>
 
 "----------simpleProj----------
-"nnoremap <F7> :ProjGenCtags<CR>
-"nnoremap <F8> :ProjGrepFile<CR>
-"inoremap <F7> <ESC>:ProjGenCtags<CR>
-"inoremap <F8> <ESC>:ProjGrepFile<CR>
-"nnoremap <Leader>zg :ProjAddSpell<CR>
+nnoremap <F7> :ProjGenCtags<CR>
+nnoremap <F8> :ProjGrepFile<CR>
+inoremap <F7> <ESC>:ProjGenCtags<CR>
+inoremap <F8> <ESC>:ProjGrepFile<CR>
+nnoremap <Leader>zg :ProjAddSpell<CR>
 
 "----------buftabs----------
 let g:buftabs_only_basename=1
