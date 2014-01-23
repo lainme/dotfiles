@@ -6,7 +6,7 @@ Templates
 .config/*
 !.config/fontconfig/
 .evil*
-.irssi/config.autosave
+.irssi/config*
 .irssi/away.log
 .vim/.*
 .vim/spell
