@@ -3,8 +3,11 @@ Music
 Pictures
 sysconf
 Templates
-.config/*
-!.config/fontconfig/
+.config/autostart/
+.config/dconf/
+.config/nautilus/
+.config/mpd/*
+!.config/mpd/mpd.conf
 .evil*
 .irssi/config*
 .irssi/away.log

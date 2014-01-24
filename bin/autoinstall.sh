@@ -173,7 +173,6 @@ function setup_homeserv(){
     $BUILDCMD -S sage-mathematics
     $BUILDCMD -S lighttpd php-cgi php-gd php-sqlite
     $BUILDCMD -S exim
-    $BUILDCMD -S simplejobm
 
     # sage server
     mkdir -p /srv/sage
