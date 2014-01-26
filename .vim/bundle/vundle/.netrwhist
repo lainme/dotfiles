@@ -1,5 +1,5 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =8
+let g:netrw_dirhist_cnt =9
 let g:netrw_dirhist_1='/home/lainme/.pentadactyl'
 let g:netrw_dirhist_2='/home/lainme/program/pidgin-lwqq/debian'
 let g:netrw_dirhist_3='/home/lainme/program/UGKS'
@@ -8,3 +8,4 @@ let g:netrw_dirhist_5='/home/lainme/archive/cross/knudsen/KN0.10'
 let g:netrw_dirhist_6='/home/lainme/archive/cross/knudsen/KN0.10/cross-01'
 let g:netrw_dirhist_7='/home/lainme/software/pointwise/licenses'
 let g:netrw_dirhist_8='/etc/lighttpd/certs'
+let g:netrw_dirhist_9='/home/lainme/Dropbox/home/.config/mpd/playlists'

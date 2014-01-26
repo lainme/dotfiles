@@ -142,7 +142,7 @@ function setup_usrconf(){
 
     # symbol link   
     helper_symlink $USERHOME/Dropbox/home $USERHOME "/(\.config$|\.git$|\.gitignore$|sysconf$)/d;p"
-    helper_symlink $USERHOME/Dropbox/home/.config $USERHOME/.config "/(dconf$)/d;p"
+    helper_symlink $USERHOME/Dropbox/home/.config $USERHOME/.config
     
     # avatar
     cp $USERHOME/Dropbox/home/sysconf/account/avatar-gnome.png /var/lib/AccountsService/icons/$USERNAME
