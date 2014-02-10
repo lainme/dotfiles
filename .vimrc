@@ -91,15 +91,13 @@ nnoremap <c-]> g<c-]>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "工具
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"在当前文件路径打开终端
-nnoremap <F9> :call OpenTerminal()<CR>
-inoremap <F9> <ESC>:call OpenTerminal()<CR>
+"编译当前文件
+nnoremap <F4> :silent exec "make\|redraw!"<CR>
+inoremap <F4> <ESC>:silent exec "make\|redraw!"<CR>
 
-function! OpenTerminal()
-    let s:terminal = "xterm"
-    silent exec '!'.s:terminal.' -e bash -c "cd \"'.expand("%:p:h").'\";bash" &'
-    redraw!
-endfunction
+"在当前文件路径打开终端
+nnoremap <F5> :silent exec "!cd ".expand("%:p:h").";xterm&" \|redraw!<CR>
+inoremap <F5> <ESC>:silent exec "!cd ".expand("%:p:h").";xterm&" \|redraw!<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "插件设置
@@ -114,71 +112,48 @@ Bundle 'The-NERD-Commenter'
 Bundle 'buftabs'
 Bundle 'fcitx.vim'
 Bundle 'LaTeX-Box'
-Bundle 'notes.vim'
 Bundle 'DirDiff.vim'
-Bundle 'lainme/simpleCompile'
 Bundle 'lainme/simpleProject'
 
-"----------netrw----------
-let g:netrw_liststyle=3
-let g:netrw_list_hide= '^\..*'
-nnoremap <F2> :Explore<CR>
-inoremap <F2> <ESC>:Explore<CR>
-
 "----------taglist----------
-let Tlist_Exit_OnlyWindow=1
-let Tlist_Use_Left_Window=1
-let Tlist_Show_One_File=1
-let Tlist_GainFocus_On_ToggleOpen=1
 let Tlist_Enable_Fold_Column=0
-let Tlist_Auto_Updata=1
-let Tlist_Compact_Format = 1
+let Tlist_Exit_OnlyWindow=1
+let Tlist_GainFocus_On_ToggleOpen=1
+let Tlist_Show_One_File=1
 let tlist_tex_settings   = 'latex;s:sections;g:graphics;l:labels'
-nnoremap <F3> :TlistUpdate<CR>:TlistToggle<CR>
-inoremap <F3> <ESC>:TlistUpdate<CR>:TlistToggle<CR>
+nnoremap <F2> :TlistUpdate<CR>:TlistToggle<CR>
+inoremap <F2> <ESC>:TlistUpdate<CR>:TlistToggle<CR>
 
 "----------NERD_commenter----------
 let g:NERDShutUp=1
-nmap <F4> ,c<space>
-vmap <F4> ,c<space>
-imap <F4> <C-o>,c<space>
-
-"----------SimpleCompile----------
-nnoremap <F5> :SimpleCompile<CR>
-nnoremap <F6> :SimpleRun<CR>
-inoremap <F5> <ESC>:SimpleCompile<CR>
-inoremap <F6> <ESC>:SimpleRun<CR>
-
-"----------simpleProj----------
-nnoremap <F7> :ProjGenCtags<CR>
-nnoremap <F8> :ProjGrepFile<CR>
-inoremap <F7> <ESC>:ProjGenCtags<CR>
-inoremap <F8> <ESC>:ProjGrepFile<CR>
-nnoremap <Leader>zg :ProjAddSpell<CR>
+nmap <F3> ,c<space>
+vmap <F3> ,c<space>
+imap <F3> <C-o>,c<space>
 
 "----------buftabs----------
 let g:buftabs_only_basename=1
 let g:buftabs_in_statusline=1
 let g:buftabs_active_highlight_group="Visual"
 
-"----------notes----------
-let g:notes_directory="~/Documents/notes"
-let g:notes_suffix=".txt"
+"----------simpleProj----------
+nnoremap <F6> :ProjGenCtags<CR>
+nnoremap <F7> :ProjGrepFile<CR>
+inoremap <F6> <ESC>:ProjGenCtags<CR>
+inoremap <F7> <ESC>:ProjGrepFile<CR>
+nnoremap <Leader>zg :ProjAddSpell<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "分类设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "----------Fortran----------
-"折叠
 let fortran_fold=1 
 let fortran_fold_conditionals=1
 
-"通用
 autocmd FileType fortran 
     \setlocal foldmethod=syntax |
-    \setlocal efm=%A%f:%l.%c:,%-Z%trror:\ %m,%-Z%tarning:\ %m,%-C%.%#
+    \setlocal makeprg=gfortran\ -ffree-line-length-0\ -o\ %<\ %\ -J\ /tmp |
+    \setlocal efm=%E%f:%l.%c:,%E%f:%l:,%C,%C%p%*[0123456789^],%ZError:\ %m,%C%.%#
 
-"设置格式
 autocmd BufNewFile,BufReadPre,BufEnter *.f90  
     \unlet! fortran_fixed_source |
     \let fortran_free_source=1 |
@@ -189,9 +164,12 @@ autocmd BufNewFile,BufReadPre,BufEnter *.f
     \setlocal softtabstop=6 |
 
 "----------Python----------
-"自动添加文件头
 autocmd BufNewFile *.py 
     \0put=\"#!/usr/bin/env python\<nl># -*- coding: UTF-8 -*-\<nl>\"  
+
+"----------Latex----------
+autocmd FileType tex
+    \setlocal makeprg=rubber\ -m\ xelatex\ -q\ %
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "其它
