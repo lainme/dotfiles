@@ -21,7 +21,6 @@ set tags=tags; "ctags设置
 set sessionoptions=buffers,sesdir,folds,tabpages,winsize "session设置
 set encoding=utf-8 
 set fileencodings=ucs-bom,utf-8,gbk
-set autochdir "自动切换路径
 set runtimepath+=$HOME/.vim "设置runtimepath
 set spellsuggest=best,10 "最佳的10个拼写建议
 set spellfile=$HOME/.vim/spell/en.utf-8.add "设置拼写检查文件
@@ -33,7 +32,7 @@ colorscheme lucius "配色主题
 if ! has("gui_running")
     "修复ALT键
     for i in range(97,122)
-        let c = nr2char(i)
+        let c=nr2char(i)
         exec "set <M-".c.">=\<Esc>".c
     endfor
     set ttimeoutlen=50
@@ -113,19 +112,17 @@ Bundle 'buftabs'
 Bundle 'fcitx.vim'
 Bundle 'LaTeX-Box'
 Bundle 'DirDiff.vim'
-Bundle 'lainme/simpleProject'
 
 "----------taglist----------
 let Tlist_Enable_Fold_Column=0
 let Tlist_Exit_OnlyWindow=1
 let Tlist_GainFocus_On_ToggleOpen=1
 let Tlist_Show_One_File=1
-let tlist_tex_settings   = 'latex;s:sections;g:graphics;l:labels'
+let tlist_tex_settings='latex;s:sections;g:graphics;l:labels'
 nnoremap <F2> :TlistUpdate<CR>:TlistToggle<CR>
 inoremap <F2> <ESC>:TlistUpdate<CR>:TlistToggle<CR>
 
 "----------NERD_commenter----------
-let g:NERDShutUp=1
 nmap <F3> ,c<space>
 vmap <F3> ,c<space>
 imap <F3> <C-o>,c<space>
@@ -134,13 +131,6 @@ imap <F3> <C-o>,c<space>
 let g:buftabs_only_basename=1
 let g:buftabs_in_statusline=1
 let g:buftabs_active_highlight_group="Visual"
-
-"----------simpleProj----------
-nnoremap <F6> :ProjGenCtags<CR>
-nnoremap <F7> :ProjGrepFile<CR>
-inoremap <F6> <ESC>:ProjGenCtags<CR>
-inoremap <F7> <ESC>:ProjGrepFile<CR>
-nnoremap <Leader>zg :ProjAddSpell<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "分类设置
