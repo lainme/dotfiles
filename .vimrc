@@ -111,7 +111,6 @@ Bundle 'The-NERD-Commenter'
 Bundle 'buftabs'
 Bundle 'fcitx.vim'
 Bundle 'LaTeX-Box'
-Bundle 'DirDiff.vim'
 
 "----------taglist----------
 let Tlist_Enable_Fold_Column=0
@@ -138,28 +137,22 @@ let g:buftabs_active_highlight_group="Visual"
 "----------Fortran----------
 let fortran_fold=1 
 let fortran_fold_conditionals=1
+let fortran_free_source=1
 
 autocmd FileType fortran 
     \setlocal foldmethod=syntax |
     \setlocal makeprg=gfortran\ -ffree-line-length-0\ -o\ %<\ %\ -J\ /tmp |
     \setlocal efm=%E%f:%l.%c:,%E%f:%l:,%C,%C%p%*[0123456789^],%ZError:\ %m,%C%.%#
 
-autocmd BufNewFile,BufReadPre,BufEnter *.f90  
-    \unlet! fortran_fixed_source |
-    \let fortran_free_source=1 |
-autocmd BufNewFile,BufReadPre,BufEnter *.f 
-    \unlet! fortran_free_source |
-    \let fortran_fixed_source=1 | 
-    \setlocal shiftwidth=6 | 
-    \setlocal softtabstop=6 |
-
 "----------Python----------
 autocmd BufNewFile *.py 
     \0put=\"#!/usr/bin/env python\<nl># -*- coding: UTF-8 -*-\<nl>\"  
 
 "----------Latex----------
-autocmd FileType tex
-    \setlocal makeprg=rubber\ -m\ xelatex\ -q\ %
+autocmd FileType tex 
+    \setlocal makeprg=rubber\ -m\ xelatex\ -q\ % |
+    \nnoremap <buffer> <F6> :silent exec "!xdg-open ".expand("%:p:r").".pdf" \|redraw!<CR> |
+    \inoremap <buffer> <F6> <ESC>:silent exec "!xdg-open ".expand("%:p:r").".pdf" \|redraw!<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "其它

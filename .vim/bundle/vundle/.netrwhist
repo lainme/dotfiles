@@ -1,8 +1,7 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =6
-let g:netrw_dirhist_1='/home/lainme'
-let g:netrw_dirhist_2='/home/lainme/bin'
-let g:netrw_dirhist_3='/home/lainme/software'
-let g:netrw_dirhist_4='/home/lainme'
-let g:netrw_dirhist_5='/home/lainme/Dropbox/home/.vim/bundle/taglist.vim/doc'
-let g:netrw_dirhist_6='/home/lainme/bin'
+let g:netrw_dirhist_cnt =5
+let g:netrw_dirhist_1='/home/lainme/program/dokuwiki-plugin-miniblog/lang'
+let g:netrw_dirhist_2='/home/lainme/program/dokuwiki-plugin-miniblog/conf'
+let g:netrw_dirhist_3='/home/lainme/program/dokuwiki-plugin-miniblog/syntax'
+let g:netrw_dirhist_4='/home/lainme/program/dokuwiki-plugin-miniblog/helper'
+let g:netrw_dirhist_5='/home/lainme/program/dokuwiki-plugin-miniblog/lang'
