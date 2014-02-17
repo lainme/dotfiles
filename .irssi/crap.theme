@@ -214,5 +214,5 @@ abstracts = {
   sbact_det = " D: $0-";
 };
 formats = {
-  "fe-common/core" = { pubmsg = "{pubmsgnick $2 {pubnick \00312$0}}$1"; };
+  "fe-common/core" = { pubmsg = "{pubmsgnick $2 {pubnick \00302$0}}$1"; };
 };

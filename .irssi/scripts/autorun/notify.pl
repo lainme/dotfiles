@@ -24,11 +24,8 @@ Irssi::settings_add_str('notify', 'notify_icon', 'gtk-dialog-info');
 Irssi::settings_add_str('notify', 'notify_time', '5000');
 
 sub hide_message {
-    #屏蔽特定服务器的信息
-    my @hideserver = ();
-    #屏蔽特定频道的信息
-    my @hidechannel = ("bitlbee", "twitter");
-    #屏蔽特定nick的信息
+    my @hideserver = ("bitlbee");
+    my @hidechannel = ();
     my @hidesender = ();
 
     my ($server, $channel, $sender) = @_;
@@ -49,17 +46,6 @@ sub sanitize {
 }
 
 sub notify {
-    #当前活动窗口
-    #my $active = 0;
-    #my $active_id = `xprop -root _NET_ACTIVE_WINDOW`;
-    #$active_id =~ s/.*\# //;
-    #my $active_name = `xprop -id "$active_id" WM_NAME`;
-    #$active_name =~ s/[^\"]*\"([^\"]*).*/$1/;
-    #if ($active_name =~ m/irssi/) {
-        #$active = 1;
-    #}
-    #return if ($active eq 1);
-
     my ($server, $summary, $message) = @_;
 
     # Make the message entity-safe
@@ -86,7 +72,6 @@ sub print_text_notify {
     my $summary = $dest->{target} . "：" . $sender;
     $stripped =~ s/^\[.[^\]]+\].// ;
     
-    #如果不在屏蔽列表中则提醒
     if(!hide_message($server->{tag}, $server->{target}, $sender)){
         notify($server, $summary, $stripped);
     }
@@ -97,7 +82,6 @@ sub message_private_notify {
     my ($server, $msg, $sender, $address) = @_;
     return if (!$server);
     
-    #如果不在屏蔽列表中则提醒
     if(!hide_message($server->{tag}, $server->{target}, $sender)){
         notify($server, "来自 ".$sender." 的私人消息", $msg);
     }
