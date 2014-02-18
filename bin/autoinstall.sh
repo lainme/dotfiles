@@ -230,7 +230,6 @@ function configure_base(){
 
     # configure sudo
     echo '%wheel ALL=(ALL) ALL' >> /etc/sudoers
-    echo 'Defaults env_keep += "HOME"' >> /etc/sudoers
     
     #--------------------------------------------------
     # set root passwd
