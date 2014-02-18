@@ -5,7 +5,6 @@
 #   - remove CNNIC certificate
 #   - install additional non-free softwares
 #   - ssh key and related
-#   - change evince visibility
 
 #--------------------------------------------------
 # helper functions
