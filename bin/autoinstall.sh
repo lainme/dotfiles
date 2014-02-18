@@ -2,7 +2,6 @@
 # Semi-auto installation of Archlinux. Assume this script and Dropbox directory is already in /tmp directory
 # Steps to be done manually:
 #   - restore the ssl certificate (server)
-#   - remove CNNIC certificate
 #   - install additional non-free softwares
 #   - ssh key and related
 
@@ -169,8 +168,7 @@ function setup_thinkpad(){
 
 function setup_homeserv(){
     $BUILDCMD -S sage-mathematics
-    $BUILDCMD -S lighttpd php-cgi php-gd php-sqlite
-    $BUILDCMD -S exim
+    $BUILDCMD -S lighttpd php-cgi php-gd
 
     # sage server
     mkdir -p /srv/sage
@@ -180,9 +178,6 @@ function setup_homeserv(){
 
     # web server
     cp $USERHOME/Dropbox/home/sysconf/lighttpd/lighttpd.conf /etc/lighttpd/lighttpd.conf
-
-    # email server
-    cp $USERHOME/Dropbox/home/sysconf/exim/exim.conf /etc/mail/exim.conf
 
     # ssh server
     cp $USERHOME/Dropbox/home/sysconf/sshd/sshd_config /etc/ssh/sshd_config
