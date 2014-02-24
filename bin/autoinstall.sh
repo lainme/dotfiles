@@ -97,7 +97,7 @@ function setup_package(){
     $BUILDCMD -S mpd mpc mplayer-vaapi gnome-mplayer # video and audio
     $BUILDCMD -S eog gimp inkscape # image
     $BUILDCMD -S firefox flashplugin icedtea-web-java7 aliedit # browser
-    $BUILDCMD -S texlive-core latex-beamer-ctan rubber-bzr # latex
+    $BUILDCMD -S texlive-latexextra latex-beamer-ctan rubber-bzr # latex
     $BUILDCMD -S conky-lua lm_sensors hddtemp # conky
     $BUILDCMD -S dropbox nautilus-dropbox #dropbox
     $BUILDCMD -S mendeleydesktop git screen xterm virtualbox # misc
