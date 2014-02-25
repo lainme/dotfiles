@@ -7,7 +7,7 @@ sysconf
 .config/nautilus/
 .config/mpd/*
 !.config/mpd/mpd.conf
-.evil*
+.extrarc
 .irssi/config*
 .irssi/away.log
 .vim/.*

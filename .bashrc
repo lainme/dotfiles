@@ -48,7 +48,7 @@ if [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
 fi
 
-#be evil
-if [ -f $HOME/.evil_rc ];then
-    . $HOME/.evil_rc
+#extra
+if [ -f $HOME/.extrarc ];then
+    . $HOME/.extrarc
 fi

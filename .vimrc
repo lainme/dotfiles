@@ -91,8 +91,8 @@ nnoremap <c-]> g<c-]>
 "工具
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "编译当前文件
-nnoremap <F4> :silent exec "make\|redraw!"<CR>
-inoremap <F4> <ESC>:silent exec "make\|redraw!"<CR>
+nnoremap <F4> :silent exec "w\|make\|redraw!"<CR>
+inoremap <F4> <ESC>:silent exec "w\|make\|redraw!"<CR>
 
 "在当前文件路径打开终端
 nnoremap <F5> :silent exec "!cd ".expand("%:p:h").";xterm&" \|redraw!<CR>
