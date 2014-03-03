@@ -216,7 +216,7 @@ function configure_base(){
     # configure user
     #--------------------------------------------------
     # add user
-    groupadd lainme
+    groupadd $USERNAME
     useradd -m -g $USERNAME -G wheel -s /bin/bash $USERNAME
 
     # setup password
