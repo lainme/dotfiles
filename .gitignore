@@ -8,6 +8,8 @@ sysconf
 .config/mpd/*
 !.config/mpd/mpd.conf
 .extrarc
+.fonts/*
+!.fonts/Poky.ttf
 .irssi/config*
 .irssi/away.log
 .vim/.*
