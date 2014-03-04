@@ -112,7 +112,6 @@ function setup_sysconf(){
     # fonts
     cp -r $USERHOME/Dropbox/home/sysconf/fontconfig/* /etc/fonts/conf.avail
     cp -r $USERHOME/Dropbox/home/sysconf/fontconfig/* /etc/fonts/conf.d
-    cp -r $USERHOME/Dropbox/home/sysconf/fonts /usr/share/fonts/additions
 
     # other
     cp $USERHOME/Dropbox/home/sysconf/virtualbox/virtualbox.conf /etc/modules-load.d/virtualbox.conf
