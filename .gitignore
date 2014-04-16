@@ -12,6 +12,7 @@ sysconf
 !.fonts/Poky.ttf
 .irssi/config*
 .irssi/away.log
+.local
 .vim/.*
 .vim/spell
 .vim/bundle/*
