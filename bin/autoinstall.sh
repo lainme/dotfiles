@@ -93,7 +93,7 @@ function setup_package(){
     $BUILDCMD -S gvim ctags # text editor
     $BUILDCMD -S evince poppler-data # pdf
     $BUILDCMD -S file-roller p7zip archive-mounter # archiver
-    $BUILDCMD -S pidgin pidgin-lwqq-git irssi skype # IM
+    $BUILDCMD -S pidgin pidgin-lwqq irssi skype # IM
     $BUILDCMD -S mpd mpc mplayer-vaapi gnome-mplayer # video and audio
     $BUILDCMD -S eog gimp inkscape # image
     $BUILDCMD -S firefox flashplugin icedtea-web-java7 aliedit # browser
