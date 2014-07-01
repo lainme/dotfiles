@@ -6,6 +6,7 @@ sysconf
 .config/dconf/
 .config/nautilus/
 .config/mpd/*
+.config/wesnoth/
 !.config/mpd/mpd.conf
 .extrarc
 .fonts/*
