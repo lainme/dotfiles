@@ -78,17 +78,17 @@ function setup_package(){
     # desktop environment
     #--------------------------------------------------
     # gnome-shell essentials
-    $BUILDCMD -S gdm gnome-shell gnome-control-center nautilus xdg-user-dirs 
+    $BUILDCMD -S gdm gnome-shell gnome-control-center gnome-keyring nautilus xdg-user-dirs 
 
     # look and feel
     $BUILDCMD -Rdd freetype2 fontconfig cairo 2>/dev/null
-    $BUILDCMD -S freetype2-ubuntu fontconfig-ubuntu cairo-ubuntu 
+    $BUILDCMD -S freetype2-ubuntu fontconfig-ubuntu
     $BUILDCMD -S faenza-icon-theme wqy-microhei
 
     #--------------------------------------------------
     # others
     #--------------------------------------------------
-    $BUILDCMD -S ntfs-3g dosfstools ntp ufw openssh bash-completion nautilus-open-terminal # utils
+    $BUILDCMD -S ntfs-3g dosfstools ufw openssh bash-completion # utils
     $BUILDCMD -S fcitx fcitx-gtk2 fcitx-gtk3 fcitx-configtool # IME
     $BUILDCMD -S gvim ctags # text editor
     $BUILDCMD -S evince poppler-data # pdf
@@ -96,7 +96,7 @@ function setup_package(){
     $BUILDCMD -S pidgin pidgin-lwqq irssi skype # IM
     $BUILDCMD -S mpd mpc mplayer-vaapi gnome-mplayer # video and audio
     $BUILDCMD -S eog gimp inkscape # image
-    $BUILDCMD -S firefox flashplugin icedtea-web-java7 aliedit # browser
+    $BUILDCMD -S firefox flashplugin icedtea-web aliedit # browser
     $BUILDCMD -S texlive-latexextra latex-beamer-ctan rubber-bzr # latex
     $BUILDCMD -S conky-lua lm_sensors hddtemp # conky
     $BUILDCMD -S dropbox nautilus-dropbox #dropbox
@@ -128,7 +128,6 @@ function setup_sysconf(){
     systemctl enable NetworkManager-dispatcher
     systemctl enable hddtemp
     systemctl enable lm_sensors
-    systemctl enable ntpd
     systemctl enable ufw
 }
 
@@ -169,7 +168,6 @@ function setup_thinkpad(){
 
 function setup_homeserv(){
     $BUILDCMD -S sage-mathematics
-    $BUILDCMD -S lighttpd php-cgi php-gd
 
     # sage server
     mkdir -p /srv/sage
@@ -177,15 +175,11 @@ function setup_homeserv(){
     usermod -d /srv/sage sagemath
     cp $USERHOME/Dropbox/home/sysconf/sage/sage-notebook.service /etc/systemd/system/sage-notebook.service
 
-    # web server
-    cp $USERHOME/Dropbox/home/sysconf/lighttpd/lighttpd.conf /etc/lighttpd/lighttpd.conf
-
     # ssh server
     cp $USERHOME/Dropbox/home/sysconf/sshd/sshd_config /etc/ssh/sshd_config
 
     # systemd services
     systemctl enable sage-notebook
-    systemctl enable lighttpd
     systemctl enable sshd
 
     # ufw port

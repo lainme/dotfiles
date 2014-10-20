@@ -1,7 +1,4 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =5
-let g:netrw_dirhist_1='/home/lainme/program/dokuwiki-plugin-miniblog/lang'
-let g:netrw_dirhist_2='/home/lainme/program/dokuwiki-plugin-miniblog/conf'
-let g:netrw_dirhist_3='/home/lainme/program/dokuwiki-plugin-miniblog/syntax'
-let g:netrw_dirhist_4='/home/lainme/program/dokuwiki-plugin-miniblog/helper'
-let g:netrw_dirhist_5='/home/lainme/program/dokuwiki-plugin-miniblog/lang'
+let g:netrw_dirhist_cnt =2
+let g:netrw_dirhist_1='/home/lainme/archive/SPACER/example'
+let g:netrw_dirhist_2='/home/lainme/Music'
