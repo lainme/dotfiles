@@ -167,25 +167,14 @@ function setup_thinkpad(){
 }
 
 function setup_homeserv(){
-    $BUILDCMD -S sage-mathematics
-
-    # sage server
-    mkdir -p /srv/sage
-    chown sagemath:sagemath /srv/sage
-    usermod -d /srv/sage sagemath
-    cp $USERHOME/Dropbox/home/sysconf/sage/sage-notebook.service /etc/systemd/system/sage-notebook.service
-
     # ssh server
     cp $USERHOME/Dropbox/home/sysconf/sshd/sshd_config /etc/ssh/sshd_config
 
     # systemd services
-    systemctl enable sage-notebook
     systemctl enable sshd
 
     # ufw port
     ufw allow 22/tcp
-    ufw allow 80/tcp
-    ufw allow 443/tcp
 }
 
 #--------------------------------------------------
