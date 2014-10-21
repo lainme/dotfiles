@@ -100,7 +100,7 @@ function setup_package(){
     $BUILDCMD -S texlive-latexextra latex-beamer-ctan rubber-bzr # latex
     $BUILDCMD -S conky-lua lm_sensors hddtemp # conky
     $BUILDCMD -S dropbox nautilus-dropbox #dropbox
-    $BUILDCMD -S mendeleydesktop git screen xterm virtualbox # misc
+    $BUILDCMD -S mendeleydesktop git screen xterm # misc
     $BUILDCMD -S scrot xsel setconf # script
 
     if [ "$SYSTARCH" == "x86_64" ];then # skype on 64bit
@@ -114,7 +114,6 @@ function setup_sysconf(){
     cp -r $USERHOME/Dropbox/home/sysconf/fontconfig/* /etc/fonts/conf.d
 
     # other
-    cp $USERHOME/Dropbox/home/sysconf/virtualbox/virtualbox.conf /etc/modules-load.d/virtualbox.conf
     cp $USERHOME/Dropbox/home/sysconf/common/blacklist.conf /etc/modprobe.d/blacklist.conf
     (while :; do echo ""; done ) | sensors-detect
 
