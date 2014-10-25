@@ -43,11 +43,6 @@ export LD_LIBRARY_PATH=$PRESERVE_LD_LIBRARY_PATH
 #--------------------------------------------------
 #others
 #--------------------------------------------------
-#bash completion
-if [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-fi
-
 #extra
 if [ -f $HOME/.extrarc ];then
     . $HOME/.extrarc
