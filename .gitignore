@@ -2,6 +2,7 @@ Documents
 Music
 Pictures
 sysconf
+bin/crossrun.sh
 .config/autostart/
 .config/dconf/
 .config/nautilus/
