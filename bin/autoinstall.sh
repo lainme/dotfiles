@@ -128,6 +128,7 @@ function setup_sysconf(){
     systemctl enable hddtemp
     systemctl enable lm_sensors
     systemctl enable ufw
+    systemctl enable dkms
 }
 
 function setup_usrconf(){
