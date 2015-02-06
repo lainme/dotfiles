@@ -99,6 +99,15 @@ inoremap <F4> <ESC>:silent exec "w\|make\|redraw!"<CR>
 nnoremap <F5> :silent exec "!cd ".expand("%:p:h").";xterm&" \|redraw!<CR>
 inoremap <F5> <ESC>:silent exec "!cd ".expand("%:p:h").";xterm&" \|redraw!<CR>
 
+"附加模式行
+nnoremap <Leader>ml :call AppendModeline()<CR>
+function! AppendModeline()
+    let s:setting = printf(" vim: set ft=%s ff=%s tw=%s:", &filetype, &fileformat, &textwidth)
+    let s:modeline = substitute(&commentstring, "%s", s:setting, "")
+    call append(line("$"),"")
+    call append(line("$"),s:modeline)
+endfunction
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "插件设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
