@@ -167,11 +167,17 @@ function setup_thinkpad(){
 }
 
 function setup_homeserv(){
-    # ssh server
+    $BUILDCMD -S fail2ban
+
+    # ssh server and fail2ban
+    mkdir -p /etc/systemd/system/fail2ban.service.d/
     cp $USERHOME/Dropbox/home/sysconf/sshd/sshd_config /etc/ssh/sshd_config
+    cp $USERHOME/Dropbox/home/sysconf/fail2ban/jail.local /etc/fail2ban/jail.local
+    cp $USERHOME/Dropbox/home/sysconf/fail2ban/capabilities.conf /etc/systemd/system/fail2ban.service.d/capabilities.conf
 
     # systemd services
     systemctl enable sshd
+    systemctl enable fail2ban
 
     # ufw port
     ufw allow 22/tcp
