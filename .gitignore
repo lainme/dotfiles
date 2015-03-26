@@ -3,6 +3,7 @@ Music
 Pictures
 sysconf
 bin/crossrun.sh
+bin/syncrepo.sh
 .config/autostart/
 .config/dconf/
 .config/nautilus/

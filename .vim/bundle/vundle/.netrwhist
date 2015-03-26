@@ -1,8 +1,9 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =6
+let g:netrw_dirhist_cnt =7
 let g:netrw_dirhist_1='/home/lainme/archive/SPACER/example'
 let g:netrw_dirhist_2='/home/lainme/Music'
 let g:netrw_dirhist_3='/home/lainme/archive/SPACER/src/UTIL/gridset'
 let g:netrw_dirhist_4='/home/lainme/program/UGKS'
 let g:netrw_dirhist_5='/home/lainme/program/UGKS/src'
 let g:netrw_dirhist_6='/home/lainme/Dropbox/home/Documents/iccp9'
+let g:netrw_dirhist_7='/etc/nginx'
