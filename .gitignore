@@ -20,3 +20,4 @@ bin/syncrepo.sh
 .vim/spell
 .vim/bundle/*
 !.vim/bundle/vundle/
+.vim/bundle/vundle/.netrwhist

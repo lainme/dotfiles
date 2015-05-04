@@ -94,7 +94,7 @@ function setup_package(){
     $BUILDCMD -S evince poppler-data # pdf
     $BUILDCMD -S file-roller p7zip archive-mounter # archiver
     $BUILDCMD -S pidgin pidgin-lwqq irssi skype # IM
-    $BUILDCMD -S mpd mpc mplayer-vaapi gnome-mplayer # video and audio
+    $BUILDCMD -S mpd mpc mplayer gnome-mplayer # video and audio
     $BUILDCMD -S eog gimp inkscape # image
     $BUILDCMD -S firefox flashplugin icedtea-web aliedit # browser
     $BUILDCMD -S texlive-latexextra latex-beamer-ctan rubber-bzr # latex
