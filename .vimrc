@@ -160,7 +160,7 @@ autocmd BufNewFile *.py
 
 "----------Latex----------
 autocmd FileType tex 
-    \setlocal makeprg=rubber\ -m\ xelatex\ --shell-escape\ -q\ % |
+    \setlocal makeprg=rubber\ --inplace\ -m\ xelatex\ --shell-escape\ -q\ % |
     \nnoremap <buffer> <F6> :silent exec "!xdg-open ".expand("%:p:r").".pdf" \|redraw!<CR> |
     \inoremap <buffer> <F6> <ESC>:silent exec "!xdg-open ".expand("%:p:r").".pdf" \|redraw!<CR>
 
