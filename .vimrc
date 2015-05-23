@@ -6,9 +6,9 @@ set mouse=a "鼠标
 set number "显示行号
 set showmatch "显示匹配的括号
 set showcmd "显示未完成的命令
-set wildmenu "按<tab>时命令补全 
+set wildmenu "按<tab>时命令补全
 set autoindent smartindent "智能缩进
-set whichwrap=b,s,<,>,[,] "设置回绕键 
+set whichwrap=b,s,<,>,[,] "设置回绕键
 set incsearch hlsearch ignorecase smartcase "搜索设置
 set winaltkeys=no "alt键不用于菜单
 set cursorline "高亮当前行
@@ -19,7 +19,7 @@ set title "动态标题
 set cmdheight=2 "设置命令栏高度
 set tags=tags; "ctags设置
 set sessionoptions=buffers,sesdir,folds,tabpages,winsize "session设置
-set encoding=utf-8 
+set encoding=utf-8
 set fileencodings=ucs-bom,utf-8,gbk
 set runtimepath+=$HOME/.vim "设置runtimepath
 set spellsuggest=best,10 "最佳的10个拼写建议
@@ -49,7 +49,7 @@ endif
 
 "状态栏设置
 set laststatus=2
-set statusline=%<%h%m%r\ %f%=[%{&filetype},%{&fileencoding},%{&fileformat}]%k\ %-14.(%l/%L,%c%V%)\ %P 
+set statusline=%<%h%m%r\ %f%=[%{&filetype},%{&fileencoding},%{&fileformat}]%k\ %-14.(%l/%L,%c%V%)\ %P
 
 "备份设置
 set backup
@@ -57,14 +57,17 @@ set backupdir=/tmp
 
 "用四个空格代替<tab>
 set expandtab smarttab
-set shiftwidth=4 
-set softtabstop=4 
+set shiftwidth=4
+set softtabstop=4
 
 "重置光标到上次会话的位置
-autocmd BufReadPost * 
-    \if line("'\"") > 0 && line("'\"") <= line("$") |
-        \exe "normal g`\"" |
-    \endif
+autocmd BufReadPost *
+    \ if line("'\"") > 0 && line("'\"") <= line("$") |
+        \ exe "normal g`\"" |
+    \ endif
+
+"自动删除多余的空格
+autocmd BufWritePre * :%s/\s\+$//e
 
 "quickfix设置
 autocmd QuickFixCmdPost * :cw
@@ -145,24 +148,24 @@ let g:buftabs_active_highlight_group="Visual"
 "分类设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "----------Fortran----------
-let fortran_fold=1 
+let fortran_fold=1
 let fortran_fold_conditionals=1
 let fortran_free_source=1
 
-autocmd FileType fortran 
-    \setlocal foldmethod=syntax |
-    \setlocal makeprg=gfortran\ -ffree-line-length-0\ -o\ %<\ %\ -J\ /tmp |
-    \setlocal efm=%E%f:%l.%c:,%E%f:%l:,%C,%C%p%*[0123456789^],%ZError:\ %m,%C%.%#
+autocmd FileType fortran
+    \ setlocal foldmethod=syntax |
+    \ setlocal makeprg=gfortran\ -ffree-line-length-0\ -o\ %<\ %\ -J\ /tmp |
+    \ setlocal efm=%E%f:%l.%c:,%E%f:%l:,%C,%C%p%*[0123456789^],%ZError:\ %m,%C%.%#
 
 "----------Python----------
-autocmd BufNewFile *.py 
-    \0put=\"#!/usr/bin/env python\<nl># -*- coding: UTF-8 -*-\<nl>\"  
+autocmd BufNewFile *.py
+    \ 0put=\"#!/usr/bin/env python\<nl># -*- coding: UTF-8 -*-\<nl>\"
 
 "----------Latex----------
-autocmd FileType tex 
-    \setlocal makeprg=rubber\ --inplace\ -m\ xelatex\ --shell-escape\ -q\ % |
-    \nnoremap <buffer> <F6> :silent exec "!xdg-open ".expand("%:p:r").".pdf" \|redraw!<CR> |
-    \inoremap <buffer> <F6> <ESC>:silent exec "!xdg-open ".expand("%:p:r").".pdf" \|redraw!<CR>
+autocmd FileType tex
+    \ setlocal makeprg=rubber\ --inplace\ -m\ xelatex\ --shell-escape\ -q\ % |
+    \ nnoremap <buffer> <F6> :silent exec "!xdg-open ".expand("%:p:r").".pdf" \|redraw!<CR> |
+    \ inoremap <buffer> <F6> <ESC>:silent exec "!xdg-open ".expand("%:p:r").".pdf" \|redraw!<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "其它
