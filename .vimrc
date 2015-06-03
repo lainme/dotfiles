@@ -124,6 +124,7 @@ Bundle 'The-NERD-Commenter'
 Bundle 'buftabs'
 Bundle 'fcitx.vim'
 Bundle 'LaTeX-Box'
+Bundle 'LanguageTool'
 
 "----------taglist----------
 let Tlist_Enable_Fold_Column=0
@@ -143,6 +144,9 @@ imap <F3> <C-o>,c<space>
 let g:buftabs_only_basename=1
 let g:buftabs_in_statusline=1
 let g:buftabs_active_highlight_group="Visual"
+
+"----------LanguageTool----------
+let g:languagetool_jar="$HOME/software/LanguageTool/languagetool-commandline.jar"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "分类设置
