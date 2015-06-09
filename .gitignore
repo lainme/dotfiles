@@ -1,6 +1,7 @@
 Documents
 Music
 Pictures
+program
 sysconf
 bin/crossrun.sh
 bin/syncrepo.sh
@@ -16,9 +17,9 @@ bin/syncrepo.sh
 .irssi/config*
 .irssi/away.log
 .local
+.shadowsocks/
 .vim/.*
 .vim/spell
 .vim/bundle/*
 !.vim/bundle/vundle/
 .vim/bundle/vundle/.netrwhist
-.shadowsocks/
