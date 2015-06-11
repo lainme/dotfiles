@@ -18,7 +18,7 @@ set foldmethod=indent "默认的缩进模式
 set title "动态标题
 set cmdheight=2 "设置命令栏高度
 set tags=tags; "ctags设置
-set sessionoptions=buffers,sesdir,folds,tabpages,winsize "session设置
+set sessionoptions=buffers,sesdir,folds,tabpages,winsize,options "session设置
 set encoding=utf-8
 set fileencodings=ucs-bom,utf-8,gbk
 set runtimepath+=$HOME/.vim "设置runtimepath
