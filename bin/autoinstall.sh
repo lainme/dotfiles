@@ -18,7 +18,7 @@ function helper_command(){
 
 function helper_install(){
     args=("$@")
-    
+
     # if not install, return
     if [ "${args[0]}" != "-S" ];then
         yaourt --noconfirm $@ 1> /dev/null
@@ -26,7 +26,7 @@ function helper_install(){
     fi
 
     # check if install
-    for ((i=1; i<=$#-1; i++));do  
+    for ((i=1; i<=$#-1; i++));do
         string=`pacman -Qi ${args[i]} 2> /dev/null`
         if [ -z "$string" ];then
             echo "Installing: ${args[i]}"
@@ -37,7 +37,7 @@ function helper_install(){
 
 function helper_symlink(){
     args=("$@")
-    
+
     if [ -z $3 ];then
         regex="/.*/p"
     else
@@ -78,7 +78,7 @@ function setup_package(){
     # desktop environment
     #--------------------------------------------------
     # gnome-shell essentials
-    $BUILDCMD -S gdm gnome-shell gnome-control-center gnome-keyring nautilus xdg-user-dirs 
+    $BUILDCMD -S gdm gnome-shell gnome-control-center gnome-keyring nautilus xdg-user-dirs
 
     # look and feel
     $BUILDCMD -Rdd freetype2 fontconfig cairo 2>/dev/null
@@ -99,7 +99,8 @@ function setup_package(){
     $BUILDCMD -S firefox flashplugin icedtea-web aliedit # browser
     $BUILDCMD -S texlive-latexextra latex-beamer-ctan rubber-bzr # latex
     $BUILDCMD -S conky-lua lm_sensors hddtemp # conky
-    $BUILDCMD -S dropbox nautilus-dropbox #dropbox
+    $BUILDCMD -S dropbox nautilus-dropbox # dropbox
+    $BUILDCMD -S dnscrypt-proxy dnsmasq # dns
     $BUILDCMD -S mendeleydesktop git screen xterm # misc
     $BUILDCMD -S scrot xsel setconf # script
 
@@ -112,6 +113,11 @@ function setup_sysconf(){
     # fonts
     cp -r $USERHOME/Dropbox/home/sysconf/fontconfig/* /etc/fonts/conf.avail
     cp -r $USERHOME/Dropbox/home/sysconf/fontconfig/* /etc/fonts/conf.d
+
+    # dns
+    mkdir -p /etc/systemd/system/dnscrypt-proxy.socket.d/
+    cp -r $USERHOME/Dropbox/home/sysconf/dnscrypt/override.conf /etc/systemd/system/dnscrypt-proxy.socket.d/
+    cp -r $USERHOME/Dropbox/home/sysconf/dnscrypt/dnsmasq.conf /etc/dnsmasq.conf
 
     # other
     cp $USERHOME/Dropbox/home/sysconf/common/blacklist.conf /etc/modprobe.d/blacklist.conf
@@ -129,18 +135,20 @@ function setup_sysconf(){
     systemctl enable lm_sensors
     systemctl enable ufw
     systemctl enable dkms
+    systemctl enable dnscrypt-proxy
+    systemctl enable dnsmasq
 }
 
 function setup_usrconf(){
     # update user directory
     $RUNASUSR xdg-user-dirs-update
 
-    # symbol link   
+    # symbol link
     helper_symlink $USERHOME/Dropbox/home $USERHOME "/(\.config$|\.local$|\.git$|\.gitignore$|sysconf$)/d;p"
     helper_symlink $USERHOME/Dropbox/home/.config $USERHOME/.config
     helper_symlink $USERHOME/Dropbox/home/.local/share/gnome-shell $USERHOME/.local/share/gnome-shell
     helper_symlink $USERHOME/Dropbox/home/.local/share/wesnoth $USERHOME/.local/share/wesnoth
-    
+
     # avatar
     cp $USERHOME/Dropbox/home/sysconf/account/avatar-gnome.png /var/lib/AccountsService/icons/$USERNAME
     cp $USERHOME/Dropbox/home/sysconf/account/gnome-account.conf /var/lib/AccountsService/users/$USERNAME
@@ -148,7 +156,7 @@ function setup_usrconf(){
 
 function setup_notebook(){
     # power management
-    $BUILDCMD -S tlp tlp-rdw 
+    $BUILDCMD -S tlp tlp-rdw
 
     # systemd services
     systemctl enable tlp
@@ -215,7 +223,7 @@ function configure_base(){
 
     # configure sudo
     echo '%wheel ALL=(ALL) ALL' >> /etc/sudoers
-    
+
     #--------------------------------------------------
     # set root passwd
     #--------------------------------------------------
@@ -234,7 +242,7 @@ function configure_base(){
     done
     locale-gen
     echo "LANG=${OSLOCALE[0]}" > /etc/locale.conf
-    
+
     # timezone
     ln -sf /usr/share/zoneinfo/$TIMEZONE /etc/localtime
 
@@ -257,7 +265,7 @@ function configure_base(){
     grub-install --target=i386-pc --recheck $GRUBDEVI
 
     # configure
-    cp /tmp/Dropbox/home/sysconf/common/grub.conf /etc/default/grub 
+    cp /tmp/Dropbox/home/sysconf/common/grub.conf /etc/default/grub
     grub-mkconfig -o /boot/grub/grub.cfg
 
     #--------------------------------------------------
@@ -289,14 +297,14 @@ function configure_post(){
 # main
 #--------------------------------------------------
 # main configuration
-USERNAME=lainme 
+USERNAME=lainme
 USERHOME=/home/$USERNAME
 HOSTNAME=$USERNAME
 SYSTARCH=x86_64
 OSLOCALE=("en_US.UTF-8")
 TIMEZONE="Asia/Hong_Kong"
 CPIOHOOK=()
-GRUBDEVI=/dev/sda 
+GRUBDEVI=/dev/sda
 VIDEODRI=intel
 
 # switching configuration
@@ -306,10 +314,10 @@ HOMESERV=0
 
 # installation commands
 BUILDCMD="helper_install"
-RUNASUSR="sudo -u $USERNAME" 
+RUNASUSR="sudo -u $USERNAME"
 
 if [ -z $1 ];then
-    helper_command 
+    helper_command
 else
     $@
 fi
