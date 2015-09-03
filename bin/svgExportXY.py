@@ -4,7 +4,7 @@
 import re
 
 def main():
-    method   = input("Please input the parsing method 1) XML 2) direct (Enter 1 or 2):\n")
+    method   = input("Please input the parsing method 1) relative 2) absolute (Enter 1 or 2):\n")
     strLoc   = input("Please input the path data:\n")
     strFirst = input("Please input the coordinates of starting point (comma or space seperated):\n")
     strLast  = input("Please input the coordinates of end point (comma or space seperated):\n")
@@ -26,7 +26,7 @@ def main():
     coord_y = [realFirst[1]+(realLast[1]-realFirst[1])/(rawLast[1]-rawFirst[1])*(rawCoord[i]-rawFirst[1]) for i in range(1,len(rawCoord),2)]
 
     f=open("svgExportXY.dat","w")
-    
+
     i = 0
     while (i<len(coord_x)):
         f.write("\t".join([str(coord_x[i]),str(coord_y[i]),"\n"]))
