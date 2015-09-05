@@ -97,7 +97,7 @@ function setup_package(){
     $BUILDCMD -S mpd mpc mplayer gnome-mplayer # video and audio
     $BUILDCMD -S eog gimp inkscape # image
     $BUILDCMD -S firefox flashplugin icedtea-web aliedit # browser
-    $BUILDCMD -S texlive-latexextra latex-beamer-ctan rubber-bzr # latex
+    $BUILDCMD -S texlive-latexextra texlive-pictures latex-beamer-ctan rubber-bzr # latex
     $BUILDCMD -S conky-lua lm_sensors hddtemp # conky
     $BUILDCMD -S dropbox nautilus-dropbox # dropbox
     $BUILDCMD -S dnscrypt-proxy dnsmasq # dns
