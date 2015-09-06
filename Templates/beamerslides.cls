@@ -1,5 +1,6 @@
-\ProvidesClass{slides}
+\def\pgfsysdriver{pgfsys-dvipdfm.def}
 \NeedsTeXFormat{LaTeX2e}
+\ProvidesClass{beamerslides}
 \DeclareOption{zh}{\newcommand{\showchinese}{}}
 \DeclareOption{notes}{\newcommand{\shownotes}{}}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{beamer}}
@@ -13,13 +14,10 @@
 \RequirePackage{subcaption}
 \RequirePackage[compatibility=false]{caption}
 \RequirePackage{xcolor}
-
-%  ----  Defined colors  ----------------------------
-\colorlet{lightblue}{blue!12}
+\RequirePackage{pgfplots}
 
 %  ----  Presenter mode  ----------------------------
 \@ifundefined{shownotes}{}{
-    \def\pgfsysdriver{pgfsys-dvipdfm.def}
     \RequirePackage{pgfpages}
     \setbeameroption{show notes on second screen=right}
 }
@@ -30,6 +28,12 @@
     \setCJKmainfont{SimSun}
 }
 
+%  ----  Plot settings  -----------------------------
+\pgfplotsset{compat=1.12}
+
+%  ----  Defined colors  ----------------------------
+\colorlet{boxcolor}{blue!12}
+
 %  ----  Slides style  ------------------------------
 \usetheme{Singapore}
 \usecolortheme{rose}
@@ -39,15 +43,8 @@
 {parent=itemize/enumerate body}
 
 \setbeamercolor{alerted text}{fg=blue}
-\setbeamercolor{box}{fg=black,bg=lightblue}
+\setbeamercolor{box}{fg=black,bg=boxcolor}
 \let\oldalert\alert
 \renewcommand{\alert}[1]{\oldalert{\bf #1}}
-
-%  ----  Paragraph style  ---------------------------
-\linespread{1.2}
-\setlength{\parindent}{0em}
-\setlength{\parskip}{1em}
-\setlength{\tabcolsep}{1em}
-\setlength{\jot}{1em}
 
 % vim: set ft=tex ff=unix tw=70:
