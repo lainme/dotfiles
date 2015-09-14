@@ -121,6 +121,7 @@ function setup_sysconf(){
 
     # other
     cp $USERHOME/Dropbox/home/sysconf/common/blacklist.conf /etc/modprobe.d/blacklist.conf
+    cp $USERHOME/Dropbox/home/sysconf/common/netfilter.conf /etc/modules-load.d/netfilter.conf
     (while :; do echo ""; done ) | sensors-detect
 
     # ufw
