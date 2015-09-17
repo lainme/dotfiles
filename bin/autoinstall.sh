@@ -88,7 +88,7 @@ function setup_package(){
     #--------------------------------------------------
     # others
     #--------------------------------------------------
-    $BUILDCMD -S ntfs-3g dosfstools ufw openssh bash-completion # utils
+    $BUILDCMD -S ntfs-3g dosfstools ufw openssh bash-completion nautilus-open-terminal # utils
     $BUILDCMD -S fcitx fcitx-gtk2 fcitx-gtk3 fcitx-configtool # IME
     $BUILDCMD -S gvim ctags # text editor
     $BUILDCMD -S evince poppler-data # pdf
@@ -98,7 +98,6 @@ function setup_package(){
     $BUILDCMD -S eog gimp inkscape # image
     $BUILDCMD -S firefox flashplugin icedtea-web aliedit # browser
     $BUILDCMD -S texlive-latexextra texlive-pictures latex-beamer-ctan rubber-bzr # latex
-    $BUILDCMD -S conky-lua lm_sensors hddtemp # conky
     $BUILDCMD -S dropbox nautilus-dropbox # dropbox
     $BUILDCMD -S dnscrypt-proxy dnsmasq # dns
     $BUILDCMD -S mendeleydesktop git screen xterm # misc
@@ -122,7 +121,6 @@ function setup_sysconf(){
     # other
     cp $USERHOME/Dropbox/home/sysconf/common/blacklist.conf /etc/modprobe.d/blacklist.conf
     cp $USERHOME/Dropbox/home/sysconf/common/netfilter.conf /etc/modules-load.d/netfilter.conf
-    (while :; do echo ""; done ) | sensors-detect
 
     # ufw
     ufw enable
@@ -132,12 +130,8 @@ function setup_sysconf(){
     systemctl enable gdm
     systemctl enable NetworkManager
     systemctl enable NetworkManager-dispatcher
-    systemctl enable hddtemp
-    systemctl enable lm_sensors
     systemctl enable ufw
     systemctl enable dkms
-    systemctl enable dnscrypt-proxy
-    systemctl enable dnsmasq
 }
 
 function setup_usrconf(){
@@ -165,7 +159,7 @@ function setup_notebook(){
 }
 
 function setup_thinkpad(){
-    $BUILDCMD -S thinkfan dkms-acpi_call-git tp_smapi
+    $BUILDCMD -S thinkfan acpi_call tp_smapi
 
     # thinkfan configuration
     cp $USERHOME/Dropbox/home/sysconf/thinkfan/modprobe.conf /etc/modprobe.d/thinkfan.conf
@@ -259,15 +253,21 @@ function configure_base(){
     mkinitcpio -p linux
 
     #--------------------------------------------------
-    # grub
+    # boot
     #--------------------------------------------------
-    # install
-    pacman -S --noconfirm grub-bios os-prober
-    grub-install --target=i386-pc --recheck $GRUBDEVI
+    if [ "$PARTTYPE" == "GPT" ];then # GPT partition
+        bootctl install
+        echo -e "title\tArch Linux\nlinux\t/vmlinuz-linux\ninitrd\t/initramfs-linux.img\noptions\troot=$ROOTDEVI rw" > /boot/loader/entries/arch.conf
+        echo -e "timeout\t5\ndefault\tarch" > /boot/loader/loader.conf
+    else
+        # install
+        pacman -S --noconfirm grub-bios os-prober
+        grub-install --target=i386-pc --recheck $GRUBDEVI
 
-    # configure
-    cp /tmp/Dropbox/home/sysconf/common/grub.conf /etc/default/grub
-    grub-mkconfig -o /boot/grub/grub.cfg
+        # configure
+        cp /tmp/Dropbox/home/sysconf/common/grub.conf /etc/default/grub
+        grub-mkconfig -o /boot/grub/grub.cfg
+    fi
 
     #--------------------------------------------------
     # prepare Dropbox directory
@@ -305,6 +305,8 @@ SYSTARCH=x86_64
 OSLOCALE=("en_US.UTF-8")
 TIMEZONE="Asia/Hong_Kong"
 CPIOHOOK=()
+PARTTYPE=GPT
+ROOTDEVI=/dev/sda6
 GRUBDEVI=/dev/sda
 VIDEODRI=intel
 
