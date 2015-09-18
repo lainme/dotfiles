@@ -123,7 +123,6 @@ function setup_sysconf(){
     # systemd services
     systemctl enable gdm
     systemctl enable NetworkManager
-    systemctl enable NetworkManager-dispatcher
     systemctl enable ufw
 }
 
