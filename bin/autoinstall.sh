@@ -89,7 +89,7 @@ function setup_package(){
     # others
     #--------------------------------------------------
     $BUILDCMD -S ntfs-3g dosfstools ufw openssh bash-completion nautilus-open-terminal # utils
-    $BUILDCMD -S fcitx fcitx-gtk2 fcitx-gtk3 fcitx-configtool # IME
+    $BUILDCMD -S fcitx fcitx-gtk2 fcitx-gtk3 fcitx-qt4 fcitx-qt5 fcitx-configtool # IME
     $BUILDCMD -S gvim ctags # text editor
     $BUILDCMD -S evince poppler-data # pdf
     $BUILDCMD -S file-roller p7zip archive-mounter # archiver
