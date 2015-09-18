@@ -9,7 +9,7 @@ bin/syncrepo.sh
 .config/dconf/
 .config/nautilus/
 .config/mpd/*
-.config/wesnoth/
+.config/fcitx/
 !.config/mpd/mpd.conf
 .extrarc
 .fonts/*
