@@ -103,9 +103,11 @@ function setup_package(){
     $BUILDCMD -S scrot xsel setconf # script
     $BUILDCMD -S paraview # CFD
     $BUILDCMD -S wine wine-mono wine_gecko winetricks # wine
+    $BUILDCMD -S steam # game
 
-    if [ "$SYSTARCH" == "x86_64" ];then # sound for 32bit program
-        $BUILDCMD -S lib32-libpulse lib32-alsa-plugins lib32-openal
+    if [ "$SYSTARCH" == "x86_64" ];then
+        $BUILDCMD -S lib32-libpulse lib32-alsa-plugins lib32-openal # sound
+        $BUILDCMD -S lib32-libldap # required by bigfish client
     fi
 }
 
