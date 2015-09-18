@@ -88,11 +88,11 @@ function setup_package(){
     #--------------------------------------------------
     # others
     #--------------------------------------------------
-    $BUILDCMD -S ntfs-3g dosfstools ufw openssh bash-completion nautilus-open-terminal # utils
+    $BUILDCMD -S ntfs-3g dosfstools ufw openssh bash-completion nautilus-open-terminal gnome-disk-utility # utils
     $BUILDCMD -S fcitx fcitx-gtk2 fcitx-gtk3 fcitx-qt4 fcitx-qt5 fcitx-configtool # IME
     $BUILDCMD -S gvim ctags # text editor
     $BUILDCMD -S evince poppler-data # pdf
-    $BUILDCMD -S file-roller p7zip archive-mounter # archiver
+    $BUILDCMD -S file-roller p7zip # archiver
     $BUILDCMD -S pidgin pidgin-lwqq irssi skype # IM
     $BUILDCMD -S mpd mpc mplayer gnome-mplayer # video and audio
     $BUILDCMD -S eog gimp inkscape # image
@@ -101,6 +101,7 @@ function setup_package(){
     $BUILDCMD -S dropbox nautilus-dropbox # dropbox
     $BUILDCMD -S mendeleydesktop git screen xterm # misc
     $BUILDCMD -S scrot xsel setconf # script
+    $BUILDCMD -S paraview # CFD
 
     if [ "$SYSTARCH" == "x86_64" ];then # skype on 64bit
         $BUILDCMD -S lib32-libpulse
