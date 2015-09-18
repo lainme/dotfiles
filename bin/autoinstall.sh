@@ -102,6 +102,7 @@ function setup_package(){
     $BUILDCMD -S mendeleydesktop git screen xterm # misc
     $BUILDCMD -S scrot xsel setconf # script
     $BUILDCMD -S paraview # CFD
+    $BUILDCMD -S wine wine-mono wine_gecko winetricks # wine
 
     if [ "$SYSTARCH" == "x86_64" ];then # skype on 64bit
         $BUILDCMD -S lib32-libpulse
