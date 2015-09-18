@@ -151,7 +151,7 @@ function setup_notebook(){
 }
 
 function setup_thinkpad(){
-    $BUILDCMD -S thinkfan acpi_call tp_smapi
+    $BUILDCMD -S thinkfan acpi_call
 
     # thinkfan configuration
     cp $USERHOME/Dropbox/home/sysconf/thinkfan/modprobe.conf /etc/modprobe.d/thinkfan.conf
