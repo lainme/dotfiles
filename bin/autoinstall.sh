@@ -131,7 +131,6 @@ function setup_sysconf(){
     systemctl enable NetworkManager
     systemctl enable NetworkManager-dispatcher
     systemctl enable ufw
-    systemctl enable dkms
 }
 
 function setup_usrconf(){
