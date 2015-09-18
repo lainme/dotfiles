@@ -104,8 +104,8 @@ function setup_package(){
     $BUILDCMD -S paraview # CFD
     $BUILDCMD -S wine wine-mono wine_gecko winetricks # wine
 
-    if [ "$SYSTARCH" == "x86_64" ];then # skype on 64bit
-        $BUILDCMD -S lib32-libpulse
+    if [ "$SYSTARCH" == "x86_64" ];then # sound for 32bit program
+        $BUILDCMD -S lib32-libpulse lib32-alsa-plugins lib32-openal
     fi
 }
 
