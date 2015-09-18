@@ -134,7 +134,6 @@ function setup_usrconf(){
     helper_symlink $USERHOME/Dropbox/home $USERHOME "/(\.config$|\.local$|\.git$|\.gitignore$|sysconf$)/d;p"
     helper_symlink $USERHOME/Dropbox/home/.config $USERHOME/.config
     helper_symlink $USERHOME/Dropbox/home/.local/share/gnome-shell $USERHOME/.local/share/gnome-shell
-    helper_symlink $USERHOME/Dropbox/home/.local/share/wesnoth $USERHOME/.local/share/wesnoth
 
     # avatar
     cp $USERHOME/Dropbox/home/sysconf/account/avatar-gnome.png /var/lib/AccountsService/icons/$USERNAME
