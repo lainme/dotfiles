@@ -99,7 +99,6 @@ function setup_package(){
     $BUILDCMD -S firefox flashplugin icedtea-web aliedit # browser
     $BUILDCMD -S texlive-latexextra texlive-pictures latex-beamer-ctan rubber-bzr # latex
     $BUILDCMD -S dropbox nautilus-dropbox # dropbox
-    $BUILDCMD -S dnscrypt-proxy dnsmasq # dns
     $BUILDCMD -S mendeleydesktop git screen xterm # misc
     $BUILDCMD -S scrot xsel setconf # script
 
@@ -112,11 +111,6 @@ function setup_sysconf(){
     # fonts
     cp -r $USERHOME/Dropbox/home/sysconf/fontconfig/* /etc/fonts/conf.avail
     cp -r $USERHOME/Dropbox/home/sysconf/fontconfig/* /etc/fonts/conf.d
-
-    # dns
-    mkdir -p /etc/systemd/system/dnscrypt-proxy.socket.d/
-    cp -r $USERHOME/Dropbox/home/sysconf/dnscrypt/override.conf /etc/systemd/system/dnscrypt-proxy.socket.d/
-    cp -r $USERHOME/Dropbox/home/sysconf/dnscrypt/dnsmasq.conf /etc/dnsmasq.conf
 
     # other
     cp $USERHOME/Dropbox/home/sysconf/common/blacklist.conf /etc/modprobe.d/blacklist.conf
