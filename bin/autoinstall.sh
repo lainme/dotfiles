@@ -98,7 +98,7 @@ function setup_package(){
     $BUILDCMD -S eog gimp inkscape # image
     $BUILDCMD -S firefox flashplugin aliedit # browser
     $BUILDCMD -S texlive-latexextra texlive-pictures latex-beamer-ctan rubber-bzr # latex
-    $BUILDCMD -S dropbox nautilus-dropbox # dropbox
+    $BUILDCMD -S dropbox nautilus-dropbox bcloud # online storage
     $BUILDCMD -S mendeleydesktop git screen xterm # misc
     $BUILDCMD -S scrot xsel setconf # script
     $BUILDCMD -S paraview # CFD
