@@ -11,13 +11,12 @@ alias ls="ls --color=auto"
 alias grep="grep --color=auto"
 
 #other
-alias sshproxy="ssh -qTfnN"
 alias checksums='setconf PKGBUILD $(makepkg -g 2>/dev/null | pee "head -1 | cut -d= -f1" "cut -d= -f2") ")"'
 
 #--------------------------------------------------
 #functions
 #--------------------------------------------------
-quitscr() { 
+quitscr() {
     screen -X -S $1 quit
 }
 
