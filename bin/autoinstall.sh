@@ -88,7 +88,7 @@ function setup_package(){
     #--------------------------------------------------
     # others
     #--------------------------------------------------
-    $BUILDCMD -S ntfs-3g dosfstools ufw openssh bash-completion nautilus-open-terminal gnome-disk-utility # utils
+    $BUILDCMD -S ntfs-3g dosfstools ufw openssh bash-completion nautilus-open-terminal gnome-disk-utility gparted # utils
     $BUILDCMD -S fcitx fcitx-gtk2 fcitx-gtk3 fcitx-qt4 fcitx-qt5 fcitx-configtool # IME
     $BUILDCMD -S gvim ctags # text editor
     $BUILDCMD -S evince poppler-data # pdf
@@ -101,7 +101,6 @@ function setup_package(){
     $BUILDCMD -S dropbox nautilus-dropbox bcloud # online storage
     $BUILDCMD -S mendeleydesktop git screen xterm # misc
     $BUILDCMD -S scrot xsel setconf # script
-    $BUILDCMD -S paraview # CFD
     $BUILDCMD -S wine wine-mono wine_gecko winetricks # wine
     $BUILDCMD -S steam # game
 
