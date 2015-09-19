@@ -99,10 +99,9 @@ function setup_package(){
     $BUILDCMD -S firefox flashplugin aliedit # browser
     $BUILDCMD -S texlive-latexextra texlive-pictures latex-beamer-ctan rubber-bzr # latex
     $BUILDCMD -S dropbox nautilus-dropbox bcloud # online storage
-    $BUILDCMD -S mendeleydesktop git screen xterm # misc
     $BUILDCMD -S scrot xsel setconf # script
     $BUILDCMD -S wine wine-mono wine_gecko winetricks # wine
-    $BUILDCMD -S steam # game
+    $BUILDCMD -S mendeleydesktop git screen xterm steam shadowsocks # misc
 
     if [ "$SYSTARCH" == "x86_64" ];then
         $BUILDCMD -S lib32-libpulse lib32-alsa-plugins lib32-openal # sound
