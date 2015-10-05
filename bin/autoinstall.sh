@@ -101,6 +101,7 @@ function setup_package(){
     $BUILDCMD -S dropbox nautilus-dropbox # online storage
     $BUILDCMD -S scrot xsel setconf # script
     $BUILDCMD -S wine wine-mono wine_gecko winetricks # wine
+    $BUILDCMD -S libreoffice-fresh libreoffice-fresh-zh-CN # office
     $BUILDCMD -S mendeleydesktop git screen xterm steam shadowsocks # misc
 
     if [ "$SYSTARCH" == "x86_64" ];then
