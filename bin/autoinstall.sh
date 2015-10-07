@@ -153,14 +153,7 @@ function setup_notebook(){
 }
 
 function setup_thinkpad(){
-    $BUILDCMD -S thinkfan acpi_call
-
-    # thinkfan configuration
-    cp $USERHOME/Dropbox/home/sysconf/thinkfan/modprobe.conf /etc/modprobe.d/thinkfan.conf
-    cp $USERHOME/Dropbox/home/sysconf/thinkfan/thinkfan.conf /etc/
-
-    # systemd services
-    systemctl enable thinkfan
+    $BUILDCMD -S acpi_call
 }
 
 function setup_homeserv(){
