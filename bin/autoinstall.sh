@@ -103,6 +103,7 @@ function setup_package(){
     $BUILDCMD -S wine wine-mono wine_gecko winetricks # wine
     $BUILDCMD -S libreoffice-fresh libreoffice-fresh-zh-CN # office
     $BUILDCMD -S mendeleydesktop git screen xterm steam shadowsocks # misc
+    $BUILDCMD -S dnscrypt-proxy dnsmasq # dns
 
     if [ "$SYSTARCH" == "x86_64" ];then
         $BUILDCMD -S lib32-libpulse lib32-alsa-plugins lib32-openal # sound
@@ -114,6 +115,11 @@ function setup_sysconf(){
     # fonts
     cp -r $USERHOME/Dropbox/home/sysconf/fontconfig/* /etc/fonts/conf.avail
     cp -r $USERHOME/Dropbox/home/sysconf/fontconfig/* /etc/fonts/conf.d
+
+    # dns
+    mkdir -p /etc/systemd/system/dnscrypt-proxy.socket.d/
+    cp -r $USERHOME/Dropbox/home/sysconf/dnscrypt/override.conf /etc/systemd/system/dnscrypt-proxy.socket.d/
+    cp -r $USERHOME/Dropbox/home/sysconf/dnscrypt/dnsmasq.conf /etc/dnsmasq.conf
 
     # other
     cp $USERHOME/Dropbox/home/sysconf/common/blacklist.conf /etc/modprobe.d/blacklist.conf
@@ -127,6 +133,8 @@ function setup_sysconf(){
     systemctl enable gdm
     systemctl enable NetworkManager
     systemctl enable ufw
+    systemctl enable dnsmasq
+    systemctl enable dnscrypt-proxy
 }
 
 function setup_usrconf(){
