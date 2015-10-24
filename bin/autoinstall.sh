@@ -83,12 +83,14 @@ function setup_package(){
     # look and feel
     $BUILDCMD -Rdd freetype2 fontconfig cairo 2>/dev/null
     $BUILDCMD -S freetype2-ubuntu fontconfig-ubuntu
-    $BUILDCMD -S faenza-icon-theme wqy-microhei
+    $BUILDCMD -S gnome-backgrounds faenza-icon-theme wqy-microhei
 
     #--------------------------------------------------
     # others
     #--------------------------------------------------
-    $BUILDCMD -S ntfs-3g dosfstools ufw openssh bash-completion nautilus-open-terminal gnome-disk-utility gparted # utils
+    $BUILDCMD -S ufw openssh # network tools
+    $BUILDCMD -S ntfs-3g dosfstools gnome-disk-utility gparted # disk tools
+    $BUILDCMD -S bash-completion nautilus-open-terminal # other tools
     $BUILDCMD -S fcitx fcitx-gtk2 fcitx-gtk3 fcitx-qt4 fcitx-qt5 fcitx-configtool # IME
     $BUILDCMD -S gvim ctags # text editor
     $BUILDCMD -S evince poppler-data # pdf
