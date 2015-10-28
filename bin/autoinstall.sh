@@ -104,8 +104,8 @@ function setup_package(){
     $BUILDCMD -S scrot xsel setconf # script
     $BUILDCMD -S wine wine-mono wine_gecko winetricks # wine
     $BUILDCMD -S libreoffice-fresh libreoffice-fresh-zh-CN # office
-    $BUILDCMD -S mendeleydesktop git screen xterm steam shadowsocks gnome-calendar # misc
-    $BUILDCMD -S dnscrypt-proxy dnsmasq # dns
+    $BUILDCMD -S mendeleydesktop git screen xterm steam gnome-calendar # misc
+    $BUILDCMD -S shadowsocks-libev dnscrypt-proxy dnsmasq # proxy
 
     if [ "$SYSTARCH" == "x86_64" ];then
         $BUILDCMD -S lib32-libpulse lib32-alsa-plugins lib32-openal # sound
@@ -118,10 +118,14 @@ function setup_sysconf(){
     cp -r $USERHOME/Dropbox/home/sysconf/fontconfig/* /etc/fonts/conf.avail
     cp -r $USERHOME/Dropbox/home/sysconf/fontconfig/* /etc/fonts/conf.d
 
-    # dns
+    # proxy
     mkdir -p /etc/systemd/system/dnscrypt-proxy.socket.d/
-    cp -r $USERHOME/Dropbox/home/sysconf/dnscrypt/override.conf /etc/systemd/system/dnscrypt-proxy.socket.d/
-    cp -r $USERHOME/Dropbox/home/sysconf/dnscrypt/dnsmasq.conf /etc/dnsmasq.conf
+    mkdir -p /etc/dnsmasq.d/
+    mkdir -p /etc/shadowsocks/
+    cp -r $USERHOME/Dropbox/home/sysconf/shadowsocks/dnscrypt.conf /etc/systemd/system/dnscrypt-proxy.socket.d/override.conf
+    cp -r $USERHOME/Dropbox/home/sysconf/shadowsocks/dnsmasq/dnsmasq.conf /etc/dnsmasq.conf
+    cp -r $USERHOME/Dropbox/home/sysconf/shadowsocks/dnsmasq/*china* /etc/dnsmasq.d/
+    cp -r $USERHOME/Dropbox/home/sysconf/shadowsocks/shadowsocks.json /etc/shadowsocks/config.json
 
     # other
     cp $USERHOME/Dropbox/home/sysconf/common/blacklist.conf /etc/modprobe.d/blacklist.conf
@@ -135,8 +139,9 @@ function setup_sysconf(){
     systemctl enable gdm
     systemctl enable NetworkManager
     systemctl enable ufw
-    systemctl enable dnsmasq
     systemctl enable dnscrypt-proxy
+    systemctl enable dnsmasq
+    systemctl enable shadowsocks-libev@config.service
 }
 
 function setup_usrconf(){
