@@ -100,7 +100,7 @@ function setup_package(){
     $BUILDCMD -S eog gimp inkscape # image
     $BUILDCMD -S firefox flashplugin aliedit # browser
     $BUILDCMD -S texlive-latexextra texlive-pictures latex-beamer-ctan rubber-bzr # latex
-    $BUILDCMD -S dropbox nautilus-dropbox # online storage
+    $BUILDCMD -S dropbox nautilus-dropbox bcloud # online storage
     $BUILDCMD -S scrot xsel setconf # script
     $BUILDCMD -S wine wine-mono wine_gecko winetricks # wine
     $BUILDCMD -S libreoffice-fresh libreoffice-fresh-zh-CN # office
