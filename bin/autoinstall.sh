@@ -139,9 +139,6 @@ function setup_sysconf(){
     systemctl enable gdm
     systemctl enable NetworkManager
     systemctl enable ufw
-    systemctl enable dnscrypt-proxy
-    systemctl enable dnsmasq
-    systemctl enable shadowsocks-libev@config.service
 }
 
 function setup_usrconf(){
