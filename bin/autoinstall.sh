@@ -95,7 +95,6 @@ function setup_package(){
     $BUILDCMD -S gvim ctags # text editor
     $BUILDCMD -S evince poppler-data # pdf
     $BUILDCMD -S file-roller p7zip # archiver
-    $BUILDCMD -S irssi skype # IM
     $BUILDCMD -S mpd mpc mplayer gnome-mplayer # video and audio
     $BUILDCMD -S eog gimp inkscape # image
     $BUILDCMD -S firefox flashplugin aliedit # browser
@@ -104,7 +103,7 @@ function setup_package(){
     $BUILDCMD -S scrot xsel setconf # script
     $BUILDCMD -S wine wine-mono wine_gecko winetricks # wine
     $BUILDCMD -S libreoffice-fresh libreoffice-fresh-zh-CN # office
-    $BUILDCMD -S mendeleydesktop git screen xterm steam gnome-calendar # misc
+    $BUILDCMD -S mendeleydesktop git screen xterm steam gnome-calendar skype # misc
     $BUILDCMD -S shadowsocks-libev dnscrypt-proxy dnsmasq # proxy
 
     if [ "$SYSTARCH" == "x86_64" ];then
