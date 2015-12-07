@@ -1,7 +1,6 @@
 #!/bin/bash
 # Semi-auto installation of Archlinux. Assume this script and Dropbox directory is already in /tmp directory
 # Steps to be done manually:
-#   - restore the ssl certificate (server)
 #   - install additional non-free softwares
 #   - ssh key and related
 
@@ -122,7 +121,7 @@ function setup_sysconf(){
     cp $USERHOME/Dropbox/home/sysconf/cow/cow.service /etc/systemd/system/
 
     # other
-    cp $USERHOME/Dropbox/home/sysconf/common/blacklist.conf /etc/modprobe.d/blacklist.conf
+    cp $USERHOME/Dropbox/home/sysconf/common/nobeep.conf /etc/modprobe.d/nobeep.conf
     cp $USERHOME/Dropbox/home/sysconf/common/netfilter.conf /etc/modules-load.d/netfilter.conf
 
     # ufw
@@ -163,7 +162,7 @@ function setup_thinkpad(){
 }
 
 function setup_homeserv(){
-    cp $USERHOME/Dropbox/home/sysconf/sshd/sshd_config /etc/ssh/sshd_config
+    cp $USERHOME/Dropbox/home/sysconf/common/sshd_config /etc/ssh/sshd_config
     systemctl enable sshd
     ufw allow 22
 }
