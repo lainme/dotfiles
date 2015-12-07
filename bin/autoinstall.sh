@@ -103,8 +103,7 @@ function setup_package(){
     $BUILDCMD -S scrot xsel setconf # script
     $BUILDCMD -S wine wine-mono wine_gecko winetricks # wine
     $BUILDCMD -S libreoffice-fresh libreoffice-fresh-zh-CN # office
-    $BUILDCMD -S mendeleydesktop git screen xterm steam gnome-calendar skype # misc
-    $BUILDCMD -S shadowsocks-libev dnscrypt-proxy dnsmasq # proxy
+    $BUILDCMD -S mendeleydesktop git screen xterm steam gnome-calendar skype cow # misc
 
     if [ "$SYSTARCH" == "x86_64" ];then
         $BUILDCMD -S lib32-libpulse lib32-alsa-plugins lib32-openal # sound
@@ -118,13 +117,9 @@ function setup_sysconf(){
     cp -r $USERHOME/Dropbox/home/sysconf/fontconfig/* /etc/fonts/conf.d
 
     # proxy
-    mkdir -p /etc/systemd/system/dnscrypt-proxy.socket.d/
-    mkdir -p /etc/dnsmasq.d/
-    mkdir -p /etc/shadowsocks/
-    cp -r $USERHOME/Dropbox/home/sysconf/shadowsocks/dnscrypt.conf /etc/systemd/system/dnscrypt-proxy.socket.d/override.conf
-    cp -r $USERHOME/Dropbox/home/sysconf/shadowsocks/dnsmasq/dnsmasq.conf /etc/dnsmasq.conf
-    cp -r $USERHOME/Dropbox/home/sysconf/shadowsocks/dnsmasq/*china* /etc/dnsmasq.d/
-    cp -r $USERHOME/Dropbox/home/sysconf/shadowsocks/shadowsocks.json /etc/shadowsocks/config.json
+    mkdir -p /etc/cow
+    cp $USERHOME/Dropbox/home/sysconf/cow/rc /etc/cow/rc
+    cp $USERHOME/Dropbox/home/sysconf/cow/cow.service /etc/systemd/system/
 
     # other
     cp $USERHOME/Dropbox/home/sysconf/common/blacklist.conf /etc/modprobe.d/blacklist.conf
@@ -138,6 +133,7 @@ function setup_sysconf(){
     systemctl enable gdm
     systemctl enable NetworkManager
     systemctl enable ufw
+    systemctl enable cow
 }
 
 function setup_usrconf(){
@@ -145,9 +141,8 @@ function setup_usrconf(){
     $RUNASUSR xdg-user-dirs-update
 
     # symbol link
-    helper_symlink $USERHOME/Dropbox/home $USERHOME "/(\.config$|\.local$|\.git$|\.gitignore$|sysconf$)/d;p"
+    helper_symlink $USERHOME/Dropbox/home $USERHOME "/(\.config$|\.git$|\.gitignore$|sysconf$)/d;p"
     helper_symlink $USERHOME/Dropbox/home/.config $USERHOME/.config
-    helper_symlink $USERHOME/Dropbox/home/.local/share/gnome-shell $USERHOME/.local/share/gnome-shell
 
     # avatar
     cp $USERHOME/Dropbox/home/sysconf/account/avatar-gnome.png /var/lib/AccountsService/icons/$USERNAME
@@ -168,20 +163,9 @@ function setup_thinkpad(){
 }
 
 function setup_homeserv(){
-    $BUILDCMD -S fail2ban
-
-    # ssh server and fail2ban
-    mkdir -p /etc/systemd/system/fail2ban.service.d/
     cp $USERHOME/Dropbox/home/sysconf/sshd/sshd_config /etc/ssh/sshd_config
-    cp $USERHOME/Dropbox/home/sysconf/fail2ban/jail.local /etc/fail2ban/jail.local
-    cp $USERHOME/Dropbox/home/sysconf/fail2ban/capabilities.conf /etc/systemd/system/fail2ban.service.d/capabilities.conf
-
-    # systemd services
     systemctl enable sshd
-    systemctl enable fail2ban
-
-    # ufw port
-    ufw allow 22/tcp
+    ufw allow 22
 }
 
 #--------------------------------------------------
