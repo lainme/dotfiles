@@ -96,7 +96,7 @@ function setup_package(){
     $BUILDCMD -S file-roller p7zip # archiver
     $BUILDCMD -S mpd mpc mplayer gnome-mplayer # video and audio
     $BUILDCMD -S eog gimp inkscape # image
-    $BUILDCMD -S firefox flashplugin aliedit # browser
+    $BUILDCMD -S firefox flashplugin aliedit pentadactyl-git # browser
     $BUILDCMD -S texlive-latexextra texlive-pictures latex-beamer-ctan rubber-bzr # latex
     $BUILDCMD -S dropbox nautilus-dropbox bcloud # online storage
     $BUILDCMD -S scrot xsel setconf # script
