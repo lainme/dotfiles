@@ -6,7 +6,7 @@ ARCHIVE := $(wildcard *.cls) $(MAINOUT).tex $(MAINOUT).bib $(MAINOUT).pdf $(wild
 
 all: $(MAINOUT).pdf
 
-$(MAINOUT).pdf: %.pdf: %.tex $(OUTSDIR) $(FIGURES)
+$(MAINOUT).pdf: %.pdf: %.tex $(OUTSDIR) $(OUTSDIR)/%.bib $(FIGURES)
 	rubber --warn all --into $(OUTSDIR) -m xelatex --shell-escape -q $<
 	cp $(OUTSDIR)/$@ .
 
@@ -16,6 +16,9 @@ $(FIGSDIR)/%.eps: $(FIGSDIR)/%.tex
 
 $(OUTSDIR):
 	mkdir -p $@
+
+$(OUTSDIR)/%.bib: %.bib
+	cp $< $@
 
 zip: $(MAINOUT).pdf
 	7za a -l -tzip $(MAINOUT).zip $(ARCHIVE)

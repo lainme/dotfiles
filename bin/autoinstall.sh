@@ -102,6 +102,7 @@ function setup_package(){
     $BUILDCMD -S scrot xsel setconf # script
     $BUILDCMD -S wine wine-mono wine_gecko winetricks # wine
     $BUILDCMD -S libreoffice-fresh libreoffice-fresh-zh-CN # office
+    $BUILDCMD -S sagemath sage-notebook # sage
     $BUILDCMD -S mendeleydesktop git screen xterm steam gnome-calendar skype cow # misc
 
     if [ "$SYSTARCH" == "x86_64" ];then
@@ -115,11 +116,6 @@ function setup_sysconf(){
     cp -r $USERHOME/Dropbox/home/sysconf/fontconfig/* /etc/fonts/conf.avail
     cp -r $USERHOME/Dropbox/home/sysconf/fontconfig/* /etc/fonts/conf.d
 
-    # proxy
-    mkdir -p /etc/cow
-    cp $USERHOME/Dropbox/home/sysconf/cow/rc /etc/cow/rc
-    cp $USERHOME/Dropbox/home/sysconf/cow/cow.service /etc/systemd/system/
-
     # other
     cp $USERHOME/Dropbox/home/sysconf/common/nobeep.conf /etc/modprobe.d/nobeep.conf
     cp $USERHOME/Dropbox/home/sysconf/common/netfilter.conf /etc/modules-load.d/netfilter.conf
@@ -132,7 +128,6 @@ function setup_sysconf(){
     systemctl enable gdm
     systemctl enable NetworkManager
     systemctl enable ufw
-    systemctl enable cow
 }
 
 function setup_usrconf(){
@@ -140,12 +135,18 @@ function setup_usrconf(){
     $RUNASUSR xdg-user-dirs-update
 
     # symbol link
-    helper_symlink $USERHOME/Dropbox/home $USERHOME "/(\.config$|\.git$|\.gitignore$|sysconf$)/d;p"
+    helper_symlink $USERHOME/Dropbox/home $USERHOME "/(\.config$|\.sage$|\.git$|\.gitignore$|sysconf$)/d;p"
     helper_symlink $USERHOME/Dropbox/home/.config $USERHOME/.config
+    helper_symlink $USERHOME/Dropbox/home/.sage $USERHOME/.sage
 
     # avatar
     cp $USERHOME/Dropbox/home/sysconf/account/avatar-gnome.png /var/lib/AccountsService/icons/$USERNAME
     cp $USERHOME/Dropbox/home/sysconf/account/gnome-account.conf /var/lib/AccountsService/users/$USERNAME
+
+    # services
+    systemctl --user enable mpd
+    systemctl --user enable sage
+    systemctl --user enable cow
 }
 
 function setup_notebook(){
@@ -161,12 +162,6 @@ function setup_thinkpad(){
     $BUILDCMD -S acpi_call
 }
 
-function setup_homeserv(){
-    cp $USERHOME/Dropbox/home/sysconf/common/sshd_config /etc/ssh/sshd_config
-    systemctl enable sshd
-    ufw allow 22
-}
-
 #--------------------------------------------------
 # main functions
 #--------------------------------------------------
@@ -175,8 +170,8 @@ function configure_base(){
     # configure pacman
     #--------------------------------------------------
     # configuration files
-    cp /tmp/Dropbox/home/sysconf/pacman/mirrorlist  /etc/pacman.d/mirrorlist
-    cp /tmp/Dropbox/home/sysconf/pacman/pacman.conf /etc/pacman.conf
+    cp /tmp/Dropbox/home/sysconf/common/pacman.conf /etc/pacman.conf
+    vi /etc/pacman.d/mirrorlist
 
     # architecture change
     if [ "$SYSTARCH" != "x86_64" ];then
@@ -269,10 +264,6 @@ function configure_post(){
     if [ "$THINKPAD" == "1" ];then
         setup_thinkpad
     fi
-
-    if [ "$HOMESERV" == "1" ];then
-        setup_homeserv
-    fi
 }
 
 #--------------------------------------------------
@@ -294,7 +285,6 @@ VIDEODRI=intel
 # switching configuration
 NOTEBOOK=1
 THINKPAD=1
-HOMESERV=0
 
 # installation commands
 BUILDCMD="helper_install"

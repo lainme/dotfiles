@@ -23,3 +23,5 @@ bin/syncrepo.sh
 .vim/bundle/*
 !.vim/bundle/vundle/
 .vim/bundle/vundle/.netrwhist
+.cow
+.sage
