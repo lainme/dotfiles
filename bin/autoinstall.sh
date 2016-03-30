@@ -127,6 +127,7 @@ function setup_sysconf(){
     # systemd services
     systemctl enable gdm
     systemctl enable NetworkManager
+    systemctl enable NetworkManager-dispatcher
     systemctl enable ufw
 }
 
@@ -156,10 +157,11 @@ function setup_notebook(){
     # systemd services
     systemctl enable tlp
     systemctl enable tlp-sleep
+    systemctl disable systemd-rfkill.service
 }
 
 function setup_thinkpad(){
-    $BUILDCMD -S acpi_call
+    $BUILDCMD -S acpi_call tp_smapi
 }
 
 #--------------------------------------------------
