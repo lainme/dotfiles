@@ -119,6 +119,7 @@ function setup_sysconf(){
     # other
     cp $USERHOME/Dropbox/home/sysconf/common/nobeep.conf /etc/modprobe.d/nobeep.conf
     cp $USERHOME/Dropbox/home/sysconf/common/netfilter.conf /etc/modules-load.d/netfilter.conf
+    cp $USERHOME/Dropbox/home/sysconf/common/wgetrc /etc/wgetrc
 
     # ufw
     ufw enable

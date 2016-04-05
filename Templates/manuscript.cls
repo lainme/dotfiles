@@ -1,5 +1,6 @@
 \ProvidesClass{manuscript}
 \NeedsTeXFormat{LaTeX2e}
+\DeclareOption{nocheck}{\newcommand{\nocheck}{}}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \ProcessOptions
 \LoadClass[12pt]{article}
@@ -16,7 +17,11 @@
 \RequirePackage{amsmath,amsthm,amssymb}
 \RequirePackage{graphicx}
 \RequirePackage[justification=raggedright]{subcaption}
-\RequirePackage[norefs,nocites,ignoreunlbld]{refcheck}
+
+%  ----  Reference check  ---------------------------
+\@ifundefined{nocheck}{
+    \RequirePackage[norefs,nocites,ignoreunlbld]{refcheck}
+}{}
 
 %  ----  Paragraph style  ---------------------------
 \linespread{1.3}
