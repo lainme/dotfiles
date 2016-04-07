@@ -121,6 +121,9 @@ function setup_sysconf(){
     cp $USERHOME/Dropbox/home/sysconf/common/netfilter.conf /etc/modules-load.d/netfilter.conf
     cp $USERHOME/Dropbox/home/sysconf/common/wgetrc /etc/wgetrc
 
+    # tranditional network name
+    ln -s /dev/null /etc/udev/rules.d/80-net-setup-link.rules
+
     # ufw
     ufw enable
     ufw default deny
