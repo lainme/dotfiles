@@ -15,25 +15,6 @@ function helper_command(){
     echo -e "\tconfigure_post   - configure system after reboot"
 }
 
-function helper_install(){
-    args=("$@")
-
-    # if not install, return
-    if [ "${args[0]}" != "-S" ];then
-        yaourt --noconfirm $@ 1> /dev/null
-        return
-    fi
-
-    # check if install
-    for ((i=1; i<=$#-1; i++));do
-        string=`pacman -Qi ${args[i]} 2> /dev/null`
-        if [ -z "$string" ];then
-            echo "Installing: ${args[i]}"
-            yaourt --noconfirm $1 ${args[i]} 1> /dev/null # install
-        fi
-    done
-}
-
 function helper_symlink(){
     args=("$@")
 
@@ -76,12 +57,12 @@ function setup_package(){
     #--------------------------------------------------
     # desktop environment
     #--------------------------------------------------
-    # gnome-shell essentials
-    $BUILDCMD -S gdm gnome-shell gnome-control-center gnome-keyring nautilus xdg-user-dirs
-
     # look and feel
     $BUILDCMD -Rdd freetype2 fontconfig cairo 2>/dev/null
     $BUILDCMD -S freetype2-ubuntu fontconfig-ubuntu
+
+    # desktop essentials
+    $BUILDCMD -S gdm gnome-shell gnome-control-center gnome-keyring nautilus xdg-user-dirs
     $BUILDCMD -S gnome-backgrounds faenza-icon-theme wqy-microhei
 
     #--------------------------------------------------
@@ -140,9 +121,8 @@ function setup_usrconf(){
     $RUNASUSR xdg-user-dirs-update
 
     # symbol link
-    helper_symlink $USERHOME/Dropbox/home $USERHOME "/(\.config$|\.sage$|\.git$|\.gitignore$|sysconf$)/d;p"
+    helper_symlink $USERHOME/Dropbox/home $USERHOME "/(\.config$|\.git$|\.gitignore$|sysconf$)/d;p"
     helper_symlink $USERHOME/Dropbox/home/.config $USERHOME/.config
-    helper_symlink $USERHOME/Dropbox/home/.sage $USERHOME/.sage
 
     # avatar
     cp $USERHOME/Dropbox/home/sysconf/account/avatar-gnome.png /var/lib/AccountsService/icons/$USERNAME
@@ -176,6 +156,7 @@ function configure_base(){
     # configure pacman
     #--------------------------------------------------
     # configuration files
+    pacman -S --noconfirm wget
     cp /tmp/Dropbox/home/sysconf/common/pacman.conf /etc/pacman.conf
     vi /etc/pacman.d/mirrorlist
 
@@ -185,7 +166,7 @@ function configure_base(){
     fi
 
     # install necessary packages
-    pacman -Syu --noconfirm linux-headers sudo yajl yaourt
+    pacman -S --noconfirm linux-headers sudo yajl yaourt
 
     #--------------------------------------------------
     # configure user
@@ -293,7 +274,7 @@ NOTEBOOK=1
 THINKPAD=1
 
 # installation commands
-BUILDCMD="helper_install"
+BUILDCMD="yaourt --noconfirm --needed"
 RUNASUSR="sudo -u $USERNAME"
 
 if [ -z $1 ];then
