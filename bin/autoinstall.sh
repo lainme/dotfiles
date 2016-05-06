@@ -3,6 +3,7 @@
 # Steps to be done manually:
 #   - install additional non-free softwares
 #   - ssh key and related
+# Add hosts: 31.184.194.81
 
 #--------------------------------------------------
 # helper functions
