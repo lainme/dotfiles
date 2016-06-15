@@ -80,7 +80,7 @@ function setup_package(){
     $BUILDCMD -S eog gimp inkscape # image
     $BUILDCMD -S firefox flashplugin aliedit # browser
     $BUILDCMD -S texlive-latexextra texlive-pictures texlive-publishers latex-beamer-ctan rubber-bzr # latex
-    $BUILDCMD -S dropbox nautilus-dropbox bcloud rsync wget # file transfers
+    $BUILDCMD -S dropbox nautilus-dropbox rsync wget # file transfers
     $BUILDCMD -S scrot xsel setconf # script
     $BUILDCMD -S wine wine-mono wine_gecko winetricks # wine
     $BUILDCMD -S sagemath sage-notebook # sage
