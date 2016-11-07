@@ -18,7 +18,6 @@ bin/serverdeploy.sh
 .irssi/config*
 .irssi/away.log
 .local
-.shadowsocks/
 .vim/.*
 .vim/spell
 .vim/bundle/*
@@ -26,3 +25,4 @@ bin/serverdeploy.sh
 .vim/bundle/vundle/.netrwhist
 .cow
 .sage
+.ssh

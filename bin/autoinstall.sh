@@ -130,11 +130,12 @@ function setup_usrconf(){
     $RUNASUSR xdg-user-dirs-update
 
     # symbol link
-    helper_symlink $USERHOME/Dropbox/home $USERHOME "/(\.config$|\.local$|\.cow$|\.sage$|\.git$|\.gitignore$|sysconf$)/d;p"
-    helper_symlink $USERHOME/Dropbox/home/.config $USERHOME/.config
-    helper_symlink $USERHOME/Dropbox/home/.cow    $USERHOME/.cow
-    helper_symlink $USERHOME/Dropbox/home/.sage   $USERHOME/.sage
-    helper_symlink $USERHOME/Dropbox/home/.local/share $USERHOME/.local/share
+    helper_symlink $USERHOME/Dropbox/home $USERHOME "/(\.config$|\.local$|\.cow$|\.ssh$|\.sage$|\.git$|\.gitignore$|sysconf$)/d;p"
+    helper_symlink $USERHOME/Dropbox/home/.config       $USERHOME/.config
+    helper_symlink $USERHOME/Dropbox/home/.cow          $USERHOME/.cow
+    helper_symlink $USERHOME/Dropbox/home/.sage         $USERHOME/.sage
+    helper_symlink $USERHOME/Dropbox/home/.local/share  $USERHOME/.local/share
+    helper_symlink $USERHOME/Dropbox/home/.ssh          $USERHOME/.ssh
 
     # avatar
     cp $USERHOME/Dropbox/home/sysconf/account/avatar-gnome.png /var/lib/AccountsService/icons/$USERNAME
