@@ -6,6 +6,7 @@ sysconf
 bin/crossrun.sh
 bin/syncrepo.sh
 bin/serverdeploy.sh
+intel
 .config/autostart/
 .config/dconf/
 .config/nautilus/
