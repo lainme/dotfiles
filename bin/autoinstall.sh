@@ -69,7 +69,7 @@ function setup_package(){
     #--------------------------------------------------
     # others
     #--------------------------------------------------
-    $BUILDCMD -S ufw openssh dnscrypt-proxy dnsmasq # network tools
+    $BUILDCMD -S ufw openssh # network tools
     $BUILDCMD -S ntfs-3g dosfstools gnome-disk-utility gparted # disk tools
     $BUILDCMD -S bash-completion nautilus-open-terminal # other tools
     $BUILDCMD -S fcitx fcitx-gtk2 fcitx-gtk3 fcitx-qt4 fcitx-qt5 fcitx-configtool # IME
@@ -97,13 +97,6 @@ function setup_sysconf(){
     cp -r $USERHOME/Dropbox/home/sysconf/fontconfig/* /etc/fonts/conf.avail
     cp -r $USERHOME/Dropbox/home/sysconf/fontconfig/* /etc/fonts/conf.d
 
-    # dns
-    mkdir -p /etc/systemd/system/dnscrypt-proxy.service.d/
-    mkdir -p /etc/systemd/system/dnscrypt-proxy.socket.d/
-    cp $USERHOME/Dropbox/home/sysconf/common/dnscrypt-proxy.service /etc/systemd/system/dnscrypt-proxy.service.d/override.conf
-    cp $USERHOME/Dropbox/home/sysconf/common/dnscrypt-proxy.socket /etc/systemd/system/dnscrypt-proxy.socket.d/override.conf
-    cp $USERHOME/Dropbox/home/sysconf/common/dnsmasq.conf /etc/dnsmasq.conf
-
     # other
     cp $USERHOME/Dropbox/home/sysconf/common/nobeep.conf /etc/modprobe.d/nobeep.conf
     cp $USERHOME/Dropbox/home/sysconf/common/netfilter.conf /etc/modules-load.d/netfilter.conf
@@ -121,8 +114,6 @@ function setup_sysconf(){
     systemctl enable NetworkManager
     systemctl enable NetworkManager-dispatcher
     systemctl enable ufw
-    systemctl enable dnscrypt-proxy
-    systemctl enable dnsmasq
 }
 
 function setup_usrconf(){
