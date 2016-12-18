@@ -198,6 +198,7 @@ function configure_base(){
     #--------------------------------------------------
     # hostname
     echo "$HOSTNAME" > /etc/hostname
+    echo "127.0.0.1    $HOSTNAME.localdomain   $HOSTNAME" >> /etc/hosts
 
     # locale
     for locale in ${OSLOCALE[*]}; do
