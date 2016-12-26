@@ -153,6 +153,19 @@ function setup_thinkpad(){
     $BUILDCMD -S acpi_call tp_smapi
 }
 
+function setup_remotecf(){
+    echo "SSH: port for ssh-server"
+    read port
+    ufw allow $port
+
+    conf="Protocol 2\nPort $port\n"
+    conf="$conf\nChallengeResponseAuthentication no\nPasswordAuthentication no\nPermitRootLogin no\nServerKeyBits 2048\n"
+    conf="$conf\nAllowGroups $USERNAME\nAllowUsers $USERNAME\n"
+    conf="$conf\nSubsystem sftp /usr/lib/openssh/sftp-server"
+    echo -e $conf > /etc/ssh/sshd_config
+    systemctl restart ssh
+}
+
 #--------------------------------------------------
 # main functions
 #--------------------------------------------------
@@ -257,6 +270,10 @@ function configure_post(){
     if [ "$THINKPAD" == "1" ];then
         setup_thinkpad
     fi
+
+    if [ "$REMOTECF" == "1" ];then
+        setup_remotecf
+    fi
 }
 
 #--------------------------------------------------
@@ -278,6 +295,7 @@ VIDEODRI=intel
 # switching configuration
 NOTEBOOK=1
 THINKPAD=1
+REMOTECF=1
 
 # installation commands
 BUILDCMD="yaourt --noconfirm --needed"
