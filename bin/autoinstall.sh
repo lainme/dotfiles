@@ -163,7 +163,7 @@ function setup_remotecf(){
     conf="$conf\nAllowGroups $USERNAME\nAllowUsers $USERNAME\n"
     conf="$conf\nSubsystem sftp /usr/lib/openssh/sftp-server"
     echo -e $conf > /etc/ssh/sshd_config
-    systemctl restart ssh
+    systemctl restart sshd
 }
 
 #--------------------------------------------------
