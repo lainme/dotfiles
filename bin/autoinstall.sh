@@ -146,7 +146,7 @@ function setup_notebook(){
     # systemd services
     systemctl enable tlp
     systemctl enable tlp-sleep
-    systemctl disable systemd-rfkill.service
+    systemctl mask systemd-rfkill.service
 }
 
 function setup_thinkpad(){
