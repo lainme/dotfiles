@@ -69,6 +69,7 @@ function setup_package(){
     #--------------------------------------------------
     # others
     #--------------------------------------------------
+    $BUILDCMD -S tlp tlp-rdw ethtool smartmontools x86_energy_perf_policy # tlp
     $BUILDCMD -S ufw openssh # network tools
     $BUILDCMD -S ntfs-3g dosfstools gnome-disk-utility gparted # disk tools
     $BUILDCMD -S bash-completion nautilus-open-terminal # other tools
@@ -114,6 +115,9 @@ function setup_sysconf(){
     systemctl enable NetworkManager
     systemctl enable NetworkManager-dispatcher
     systemctl enable ufw
+    systemctl enable tlp
+    systemctl enable tlp-sleep
+    systemctl mask systemd-rfkill.service
 }
 
 function setup_usrconf(){
@@ -137,16 +141,6 @@ function setup_usrconf(){
     systemctl --user enable mpd
     systemctl --user enable sage
     systemctl --user enable cow
-}
-
-function setup_notebook(){
-    # power management
-    $BUILDCMD -S tlp tlp-rdw
-
-    # systemd services
-    systemctl enable tlp
-    systemctl enable tlp-sleep
-    systemctl mask systemd-rfkill.service
 }
 
 function setup_thinkpad(){
@@ -263,10 +257,6 @@ function configure_post(){
     setup_sysconf
     setup_usrconf
 
-    if [ "$NOTEBOOK" == "1" ];then
-        setup_notebook
-    fi
-
     if [ "$THINKPAD" == "1" ];then
         setup_thinkpad
     fi
@@ -293,7 +283,6 @@ GRUBDEVI=/dev/sda
 VIDEODRI=intel
 
 # switching configuration
-NOTEBOOK=1
 THINKPAD=1
 REMOTECF=1
 
