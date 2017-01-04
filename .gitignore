@@ -12,6 +12,7 @@ intel
 .config/nautilus/
 .config/mpd/*
 .config/fcitx/
+.config/Mendeley Ltd./
 !.config/mpd/mpd.conf
 .extrarc
 .fonts/*

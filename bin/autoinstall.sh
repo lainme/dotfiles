@@ -25,24 +25,28 @@ function helper_symlink(){
         regex=$3
     fi
 
-    # find all files
-    files=(`find -L $1 -mindepth 1 -maxdepth 1 | sed -rn "$regex"`)
-
     # target dir
     $RUNASUSR mkdir -p $2
 
-    for file in ${files[*]}; do
+    OIFS="$IFS"
+    IFS=$'\n'
+    for file in `find -L $1 -mindepth 1 -maxdepth 1 | sed -rn "$regex"`; do
+        IFS="$OIFS"
+
         # strip file name
         file=${file##*/}
 
         # delete existing
-        if [ ! -h $2/$file ];then
-            rm -rf $2/$file
+        if [ ! -h "$2/$file" ];then
+            rm -rf "$2/$file"
         fi
 
         # make symbol link
-        $RUNASUSR ln -sf $1/$file $2/
+        $RUNASUSR ln -sf "$1/$file" $2/
+
+        IFS=$'\n'
     done
+    IFS="$OIFS"
 }
 
 #--------------------------------------------------
@@ -126,12 +130,13 @@ function setup_usrconf(){
 
     # symbol link
     helper_symlink $USERHOME/Dropbox/home $USERHOME "/(\.config$|\.local$|\.cow$|\.ssh$|\.sage$|\.git$|\.gitignore$|sysconf$|intel$)/d;p"
-    helper_symlink $USERHOME/Dropbox/home/.config       $USERHOME/.config
-    helper_symlink $USERHOME/Dropbox/home/.cow          $USERHOME/.cow
-    helper_symlink $USERHOME/Dropbox/home/.sage         $USERHOME/.sage
-    helper_symlink $USERHOME/Dropbox/home/.local/share  $USERHOME/.local/share
-    helper_symlink $USERHOME/Dropbox/home/.ssh          $USERHOME/.ssh
-    helper_symlink $USERHOME/Dropbpx/home/intel         $USERHOME/intel
+    helper_symlink $USERHOME/Dropbox/home/.local/share      $USERHOME/.local/share "/(data$)/d;p"
+    helper_symlink $USERHOME/Dropbox/home/.local/share/data $USERHOME/.local/share/data
+    helper_symlink $USERHOME/Dropbox/home/.config           $USERHOME/.config
+    helper_symlink $USERHOME/Dropbox/home/.cow              $USERHOME/.cow
+    helper_symlink $USERHOME/Dropbox/home/.sage             $USERHOME/.sage
+    helper_symlink $USERHOME/Dropbox/home/.ssh              $USERHOME/.ssh
+    helper_symlink $USERHOME/Dropbpx/home/intel             $USERHOME/intel
 
     # avatar
     cp $USERHOME/Dropbox/home/sysconf/account/avatar-gnome.png /var/lib/AccountsService/icons/$USERNAME
