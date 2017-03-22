@@ -3,7 +3,6 @@
 # Steps to be done manually:
 #   - install additional non-free softwares
 #   - ssh key and related
-# Add hosts: 31.184.194.81
 
 #--------------------------------------------------
 # helper functions
@@ -97,15 +96,15 @@ function setup_package(){
     fi
 }
 
-function setup_sysconf(){
+function setup_system(){
     # fonts
-    cp -r $USERHOME/Dropbox/home/sysconf/fontconfig/* /etc/fonts/conf.avail
-    cp -r $USERHOME/Dropbox/home/sysconf/fontconfig/* /etc/fonts/conf.d
+    cp -r $USERHOME/Dropbox/system/fontconfig/* /etc/fonts/conf.avail
+    cp -r $USERHOME/Dropbox/system/fontconfig/* /etc/fonts/conf.d
 
     # other
-    cp $USERHOME/Dropbox/home/sysconf/common/nobeep.conf /etc/modprobe.d/nobeep.conf
-    cp $USERHOME/Dropbox/home/sysconf/common/netfilter.conf /etc/modules-load.d/netfilter.conf
-    cp $USERHOME/Dropbox/home/sysconf/common/wgetrc /etc/wgetrc
+    cp $USERHOME/Dropbox/system/common/nobeep.conf /etc/modprobe.d/nobeep.conf
+    cp $USERHOME/Dropbox/system/common/netfilter.conf /etc/modules-load.d/netfilter.conf
+    cp $USERHOME/Dropbox/system/common/wgetrc /etc/wgetrc
 
     # tranditional network name
     ln -s /dev/null /etc/udev/rules.d/80-net-setup-link.rules
@@ -129,7 +128,7 @@ function setup_usrconf(){
     $RUNASUSR xdg-user-dirs-update
 
     # symbol link
-    helper_symlink $USERHOME/Dropbox/home $USERHOME "/(\.config$|\.local$|\.cow$|\.ssh$|\.sage$|\.git$|\.gitignore$|sysconf$|intel$)/d;p"
+    helper_symlink $USERHOME/Dropbox/home $USERHOME "/(\.config$|\.local$|\.cow$|\.ssh$|\.sage$|\.git$|\.gitignore$|intel$)/d;p"
     helper_symlink $USERHOME/Dropbox/home/.local/share      $USERHOME/.local/share "/(data$)/d;p"
     helper_symlink $USERHOME/Dropbox/home/.local/share/data $USERHOME/.local/share/data
     helper_symlink $USERHOME/Dropbox/home/.config           $USERHOME/.config
@@ -139,8 +138,8 @@ function setup_usrconf(){
     helper_symlink $USERHOME/Dropbpx/home/intel             $USERHOME/intel
 
     # avatar
-    cp $USERHOME/Dropbox/home/sysconf/account/avatar-gnome.png /var/lib/AccountsService/icons/$USERNAME
-    cp $USERHOME/Dropbox/home/sysconf/account/gnome-account.conf /var/lib/AccountsService/users/$USERNAME
+    cp $USERHOME/Dropbox/system/account/avatar-gnome.png /var/lib/AccountsService/icons/$USERNAME
+    cp $USERHOME/Dropbox/system/account/gnome-account.conf /var/lib/AccountsService/users/$USERNAME
 
     # services
     systemctl --user enable mpd
@@ -174,7 +173,7 @@ function configure_base(){
     #--------------------------------------------------
     # configuration files
     pacman -S --noconfirm wget
-    cp /tmp/Dropbox/home/sysconf/common/pacman.conf /etc/pacman.conf
+    cp /tmp/Dropbox/system/common/pacman.conf /etc/pacman.conf
     vi /etc/pacman.d/mirrorlist
 
     # architecture change
@@ -246,7 +245,7 @@ function configure_base(){
         grub-install --target=i386-pc --recheck $GRUBDEVI
 
         # configure
-        cp /tmp/Dropbox/home/sysconf/common/grub.conf /etc/default/grub
+        cp /tmp/Dropbox/system/common/grub.conf /etc/default/grub
         grub-mkconfig -o /boot/grub/grub.cfg
     fi
 
@@ -259,7 +258,7 @@ function configure_base(){
 
 function configure_post(){
     setup_package
-    setup_sysconf
+    setup_system
     setup_usrconf
 
     if [ "$THINKPAD" == "1" ];then
