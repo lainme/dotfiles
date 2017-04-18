@@ -24,9 +24,9 @@
 }{}
 
 %  ----  Paragraph style  ---------------------------
-\linespread{1.3}
+\linespread{1.4}
 \setlength{\parindent}{0em}
-\setlength{\parskip}{1.3em}
+\setlength{\parskip}{1.4em}
 \setlength{\tabcolsep}{1em}
 \setlength{\jot}{1em}
 
