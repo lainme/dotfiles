@@ -135,7 +135,6 @@ function setup_usrconf(){
     helper_symlink $USERHOME/Dropbox/home/.cow              $USERHOME/.cow
     helper_symlink $USERHOME/Dropbox/home/.sage             $USERHOME/.sage
     helper_symlink $USERHOME/Dropbox/home/.ssh              $USERHOME/.ssh
-    helper_symlink $USERHOME/Dropbpx/home/intel             $USERHOME/intel
 
     # avatar
     cp $USERHOME/Dropbox/system/account/avatar-gnome.png /var/lib/AccountsService/icons/$USERNAME
