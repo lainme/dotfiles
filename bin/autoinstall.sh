@@ -14,6 +14,7 @@
 # helper functions
 #--------------------------------------------------
 function helper_command(){
+# Installation2
     echo -e "DESCRIPTION: Archlinux installation script. Most functionalities requires root permissions"
     echo -e "USAGE: autoinstall.sh FUNCTION-NAME"
     echo -e ""
@@ -73,7 +74,7 @@ function setup_package(){
 
     # desktop essentials
     $BUILDCMD -S gdm gnome-shell gnome-control-center gnome-keyring nautilus xdg-user-dirs
-    $BUILDCMD -S gnome-backgrounds faenza-icon-theme wqy-microhei gnome-calendar
+    $BUILDCMD -S gnome-backgrounds faenza-icon-theme wqy-microhei
 
     #--------------------------------------------------
     # others
