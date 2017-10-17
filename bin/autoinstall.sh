@@ -55,7 +55,7 @@ function setup_package(){
     #--------------------------------------------------
     # Xorg and drivers
     #--------------------------------------------------
-    $BUILDCMD -S xorg-server xorg-xinit xorg-server-utils mesa
+    $BUILDCMD -S xorg-server xorg-xinit xorg-apps mesa
     $BUILDCMD -S xf86-video-$VIDEODRI xf86-input-synaptics
 
     #--------------------------------------------------
@@ -63,32 +63,32 @@ function setup_package(){
     #--------------------------------------------------
     # look and feel
     $BUILDCMD -Rdd freetype2 fontconfig cairo 2>/dev/null
-    $BUILDCMD -S freetype2-ubuntu fontconfig-ubuntu
+    $BUILDCMD -S freetype2 fontconfig-ubuntu
 
     # desktop essentials
     $BUILDCMD -S gdm gnome-shell gnome-control-center gnome-keyring nautilus xdg-user-dirs
-    $BUILDCMD -S gnome-backgrounds faenza-icon-theme wqy-microhei
+    $BUILDCMD -S gnome-backgrounds faenza-icon-theme wqy-microhei gnome-calendar
 
     #--------------------------------------------------
     # others
     #--------------------------------------------------
     $BUILDCMD -S tlp tlp-rdw ethtool smartmontools x86_energy_perf_policy # tlp
-    $BUILDCMD -S ufw openssh # network tools
+    $BUILDCMD -S ufw openssh cow shadowsocks-libev # network tools
     $BUILDCMD -S ntfs-3g dosfstools gnome-disk-utility gparted # disk tools
-    $BUILDCMD -S bash-completion nautilus-open-terminal # other tools
+    $BUILDCMD -S bash-completion nautilus-open-terminal cups xterm git screen cpio # other tools
     $BUILDCMD -S fcitx fcitx-gtk2 fcitx-gtk3 fcitx-qt4 fcitx-qt5 fcitx-configtool # IME
     $BUILDCMD -S gvim ctags # text editor
-    $BUILDCMD -S evince poppler-data # pdf
+    $BUILDCMD -S evince poppler-data mendeleydesktop # pdf
     $BUILDCMD -S file-roller p7zip # archiver
     $BUILDCMD -S mpd mpc mplayer gnome-mplayer # video and audio
     $BUILDCMD -S eog gimp inkscape # image
     $BUILDCMD -S firefox flashplugin aliedit # browser
-    $BUILDCMD -S texlive-latexextra texlive-pictures texlive-publishers latex-beamer-ctan rubber # latex
+    $BUILDCMD -S texlive-latexextra texlive-pictures texlive-publishers latex-beamer-ctan rubber-git wps-office # office
     $BUILDCMD -S dropbox nautilus-dropbox rsync wget # file transfers
     $BUILDCMD -S scrot xsel setconf # script
     $BUILDCMD -S wine wine-mono wine_gecko winetricks # wine
     $BUILDCMD -S sagemath sage-notebook # sage
-    $BUILDCMD -S mendeleydesktop git screen xterm steam gnome-calendar skype cow wps-office # misc
+    $BUILDCMD -S steam skype # misc
 
     if [ "$SYSTARCH" == "x86_64" ];then
         $BUILDCMD -S lib32-libpulse lib32-alsa-plugins lib32-openal # sound
@@ -121,6 +121,7 @@ function setup_system(){
     systemctl enable tlp
     systemctl enable tlp-sleep
     systemctl mask systemd-rfkill.service
+    systemctl enable org.cups.cupsd.service
 }
 
 function setup_usrconf(){
