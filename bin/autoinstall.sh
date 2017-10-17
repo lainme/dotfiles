@@ -1,8 +1,14 @@
 #!/bin/bash
-# Semi-auto installation of Archlinux. Assume this script and Dropbox directory is already in /tmp directory
-# Steps to be done manually:
-#   - install additional non-free softwares
-#   - ssh key and related
+#
+# 1. Modify pacstrap to change "-Sy" to "-S" for pacman (offline only)
+# 2. Manual install archlinux-keyring in the host (offline only)
+# 3. Copy pacman files to the target (offline only)
+# 4. Copy Dropbox folder and this script to /mnt then to /tmp after chroot.
+# 3. Run configure_base after chroot
+# 4. Run configure_post after reboot
+# 5. Install local packages (offline only)
+# 6. Install non-free softwares
+# 7. Setup ssh keys (online only)
 
 #--------------------------------------------------
 # helper functions
@@ -73,22 +79,30 @@ function setup_package(){
     # others
     #--------------------------------------------------
     $BUILDCMD -S tlp tlp-rdw ethtool smartmontools x86_energy_perf_policy # tlp
-    $BUILDCMD -S ufw openssh cow shadowsocks-libev # network tools
+    $BUILDCMD -S ufw openssh shadowsocks-libev # network tools
     $BUILDCMD -S ntfs-3g dosfstools gnome-disk-utility gparted # disk tools
-    $BUILDCMD -S bash-completion nautilus-open-terminal cups xterm git screen cpio # other tools
+    $BUILDCMD -S bash-completion nautilus-open-terminal cups xterm git screen cpiomendeleydesktop  # other tool2
     $BUILDCMD -S fcitx fcitx-gtk2 fcitx-gtk3 fcitx-qt4 fcitx-qt5 fcitx-configtool # IME
     $BUILDCMD -S gvim ctags # text editor
     $BUILDCMD -S evince poppler-data mendeleydesktop # pdf
     $BUILDCMD -S file-roller p7zip # archiver
     $BUILDCMD -S mpd mpc mplayer gnome-mplayer # video and audio
     $BUILDCMD -S eog gimp inkscape # image
-    $BUILDCMD -S firefox flashplugin aliedit # browser
-    $BUILDCMD -S texlive-latexextra texlive-pictures texlive-publishers latex-beamer-ctan rubber-git wps-office # office
+    $BUILDCMD -S firefox flashplugin # browser
+    $BUILDCMD -S texlive-latexextra texlive-pictures texlive-publishers wps-office # office
     $BUILDCMD -S dropbox nautilus-dropbox rsync wget # file transfers
     $BUILDCMD -S scrot xsel setconf # script
     $BUILDCMD -S wine wine-mono wine_gecko winetricks # wine
     $BUILDCMD -S sagemath sage-notebook # sage
-    $BUILDCMD -S steam skype # misc
+    $BUILDCMD -S steam # misc
+
+    # local packages
+    if [ "$OFFLINES" == "0" ];then
+        $BUILDCMD -S cow-proxy # network tools
+        $BUILDCMD -S aliedit # browser
+        $BUILDCMD -S latex-beamer-ctan rubber-git # office
+        $BUILDCMD -S skype # misc
+    fi
 
     if [ "$SYSTARCH" == "x86_64" ];then
         $BUILDCMD -S lib32-libpulse lib32-alsa-plugins lib32-openal # sound
@@ -289,6 +303,7 @@ VIDEODRI=intel
 # switching configuration
 THINKPAD=1
 REMOTECF=1
+OFFLINES=0
 
 # installation commands
 BUILDCMD="yaourt --noconfirm --needed"
