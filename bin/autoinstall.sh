@@ -1,20 +1,30 @@
 #!/bin/bash
 #
-# 1. Modify pacstrap to change "-Sy" to "-S" for pacman (offline only)
-# 2. Manual install archlinux-keyring in the host (offline only)
-# 3. Copy pacman files to the target (offline only)
-# 4. Copy Dropbox folder and this script to /mnt then to /tmp after chroot.
-# 3. Run configure_base after chroot
-# 4. Run configure_post after reboot
-# 5. Install local packages (offline only)
-# 6. Install non-free softwares
-# 7. Setup ssh keys (online only)
+# 01. Mount partitions to /mnt
+# 02. Change pacman mirrors (online only)
+# 03. Modify pacstrap to change "-Sy" to "-S" for pacman (offline only)
+# 04. Manual install archlinux-keyring in the host (offline only)
+# 05. Copy pacman files to the target (offline only)
+# 06. Install package: pacstrap /mnt base base-devel
+# 07. Generate fstab: genfstab -U /mnt >> /mnt/etc/fstab
+# 08. Copy Dropbox folder and this script to /mnt with cp -rp
+# 09. Chroot: arch-chroot /mnt
+# 10. Move Dropbox folder and this cript to /mnt/tmp
+# 11. Modify this script as appropriate.
+# 12. Run configure_base.
+# 13. Exit chroot and reboot
+# 14. Run configure_post with root.
+# 15. Install local packages (offline only)
+# 16. Install aliedit package
+# 16. Manully run systemctl --user parts.
+# 17. Setup ssh keys (online only)
+# 18. Install non-free softwares
 
 #--------------------------------------------------
 # helper functions
 #--------------------------------------------------
 function helper_command(){
-# Installation2
+# Installation
     echo -e "DESCRIPTION: Archlinux installation script. Most functionalities requires root permissions"
     echo -e "USAGE: autoinstall.sh FUNCTION-NAME"
     echo -e ""
@@ -60,29 +70,30 @@ function helper_symlink(){
 #--------------------------------------------------
 function setup_package(){
     #--------------------------------------------------
+    # prepare
+    #--------------------------------------------------
+    $BUILDCMD -S archlinux-keyring archlinuxcn-keyring fontconfig-ubuntu
+
+    #--------------------------------------------------
     # Xorg and drivers
     #--------------------------------------------------
     $BUILDCMD -S xorg-server xorg-xinit xorg-apps mesa
-    $BUILDCMD -S xf86-video-$VIDEODRI xf86-input-synaptics
+    $BUILDCMD -S xf86-video-intel xf86-video-ati xf86-video-nouveau xf86-input-synaptics
 
     #--------------------------------------------------
     # desktop environment
     #--------------------------------------------------
-    # look and feel
-    $BUILDCMD -Rdd freetype2 fontconfig cairo 2>/dev/null
-    $BUILDCMD -S freetype2 fontconfig-ubuntu
-
     # desktop essentials
-    $BUILDCMD -S gdm gnome-shell gnome-control-center gnome-keyring nautilus xdg-user-dirs
+    $BUILDCMD -S gdm gnome-shell gnome-control-center gnome-keyring nautilus xdg-user-dirs gnome-tweak-tool gnome-shell-extension-topicons-plus-git
     $BUILDCMD -S gnome-backgrounds faenza-icon-theme wqy-microhei
 
     #--------------------------------------------------
     # others
     #--------------------------------------------------
     $BUILDCMD -S tlp tlp-rdw ethtool smartmontools x86_energy_perf_policy # tlp
-    $BUILDCMD -S ufw openssh shadowsocks-libev # network tools
+    $BUILDCMD -S dhclient ufw openssh shadowsocks-libev # network tools
     $BUILDCMD -S ntfs-3g dosfstools gnome-disk-utility gparted # disk tools
-    $BUILDCMD -S bash-completion nautilus-open-terminal cups xterm git screen cpiomendeleydesktop  # other tool2
+    $BUILDCMD -S bash-completion nautilus-open-terminal cups xterm git screen cpio cron # other tool
     $BUILDCMD -S fcitx fcitx-gtk2 fcitx-gtk3 fcitx-qt4 fcitx-qt5 fcitx-configtool # IME
     $BUILDCMD -S gvim ctags # text editor
     $BUILDCMD -S evince poppler-data mendeleydesktop # pdf
@@ -91,18 +102,16 @@ function setup_package(){
     $BUILDCMD -S eog gimp inkscape # image
     $BUILDCMD -S firefox flashplugin # browser
     $BUILDCMD -S texlive-latexextra texlive-pictures texlive-publishers wps-office # office
-    $BUILDCMD -S dropbox nautilus-dropbox rsync wget # file transfers
+    $BUILDCMD -S dropbox dropbox-cli nautilus-dropbox rsync wget # file transfers
     $BUILDCMD -S scrot xsel setconf # script
     $BUILDCMD -S wine wine-mono wine_gecko winetricks # wine
     $BUILDCMD -S sagemath sage-notebook # sage
-    $BUILDCMD -S steam # misc
+    $BUILDCMD -S steam skypeforlinux-bin # misc
 
     # local packages
     if [ "$OFFLINES" == "0" ];then
         $BUILDCMD -S cow-proxy # network tools
-        $BUILDCMD -S aliedit # browser
         $BUILDCMD -S latex-beamer-ctan rubber-git # office
-        $BUILDCMD -S skype # misc
     fi
 
     if [ "$SYSTARCH" == "x86_64" ];then
@@ -157,9 +166,9 @@ function setup_usrconf(){
     cp $USERHOME/Dropbox/system/account/gnome-account.conf /var/lib/AccountsService/users/$USERNAME
 
     # services
-    systemctl --user enable mpd
-    systemctl --user enable sage
-    systemctl --user enable cow
+    # systemctl --user enable mpd
+    # systemctl --user enable sage
+    # systemctl --user enable cow
 }
 
 function setup_thinkpad(){
@@ -299,7 +308,6 @@ CPIOHOOK=()
 PARTTYPE=GPT
 ROOTDEVI=/dev/sda6
 GRUBDEVI=/dev/sda
-VIDEODRI=intel
 
 # switching configuration
 THINKPAD=1
