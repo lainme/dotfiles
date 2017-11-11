@@ -84,8 +84,9 @@ function setup_package(){
     # desktop environment
     #--------------------------------------------------
     # desktop essentials
-    $BUILDCMD -S gdm gnome-shell gnome-control-center gnome-keyring nautilus xdg-user-dirs gnome-tweak-tool gnome-shell-extension-topicons-plus-git
+    $BUILDCMD -S gdm gnome-shell gnome-control-center gnome-keyring nautilus xdg-user-dirs
     $BUILDCMD -S gnome-backgrounds faenza-icon-theme wqy-microhei
+    $BUILDCMD -S gnome-tweak-tool gnome-shell-extension-topicons-plus-git gnome-calendar
 
     #--------------------------------------------------
     # others
@@ -93,25 +94,28 @@ function setup_package(){
     $BUILDCMD -S tlp tlp-rdw ethtool smartmontools x86_energy_perf_policy # tlp
     $BUILDCMD -S dhclient ufw openssh shadowsocks-libev # network tools
     $BUILDCMD -S ntfs-3g dosfstools gnome-disk-utility gparted # disk tools
-    $BUILDCMD -S bash-completion nautilus-open-terminal cups xterm git screen cpio cron # other tool
+    $BUILDCMD -S bash-completion nautilus-open-terminal cups xterm screen cpio cron # other tools
+    $BUILDCMD -S gcc-fortran cmake # development tools
     $BUILDCMD -S fcitx fcitx-gtk2 fcitx-gtk3 fcitx-qt4 fcitx-qt5 fcitx-configtool # IME
     $BUILDCMD -S gvim ctags # text editor
     $BUILDCMD -S evince poppler-data mendeleydesktop # pdf
     $BUILDCMD -S file-roller p7zip # archiver
     $BUILDCMD -S mpd mpc mplayer gnome-mplayer # video and audio
     $BUILDCMD -S eog gimp inkscape # image
-    $BUILDCMD -S firefox flashplugin # browser
+    $BUILDCMD -S firefox google-chrome flashplugin icedtea-web # browser
     $BUILDCMD -S texlive-latexextra texlive-pictures texlive-publishers wps-office # office
-    $BUILDCMD -S dropbox dropbox-cli nautilus-dropbox rsync wget # file transfers
+    $BUILDCMD -S dropbox dropbox-cli nautilus-dropbox rsync wget aria2 git # file transfers
     $BUILDCMD -S scrot xsel setconf # script
     $BUILDCMD -S wine wine-mono wine_gecko winetricks # wine
     $BUILDCMD -S sagemath sage-notebook # sage
     $BUILDCMD -S steam skypeforlinux-bin # misc
+    $BUILDCMD -S jre8-openjdk # dependencies for non-free softwares
 
     # local packages
     if [ "$OFFLINES" == "0" ];then
         $BUILDCMD -S cow-proxy # network tools
         $BUILDCMD -S latex-beamer-ctan rubber-git # office
+        $BUILDCMD -S bcloud-git # file transfers
     fi
 
     if [ "$SYSTARCH" == "x86_64" ];then
