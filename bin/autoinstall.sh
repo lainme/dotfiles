@@ -72,7 +72,8 @@ function setup_package(){
     #--------------------------------------------------
     # prepare
     #--------------------------------------------------
-    $BUILDCMD -S archlinux-keyring archlinuxcn-keyring fontconfig-ubuntu
+    $BUILDCMD -S archlinux-keyring archlinuxcn-keyring
+    $BUILDCMD -S fontconfig-ubuntu
 
     #--------------------------------------------------
     # Xorg and drivers
@@ -86,7 +87,7 @@ function setup_package(){
     # desktop essentials
     $BUILDCMD -S gdm gnome-shell gnome-control-center gnome-keyring nautilus xdg-user-dirs
     $BUILDCMD -S gnome-backgrounds faenza-icon-theme wqy-microhei
-    $BUILDCMD -S gnome-tweak-tool gnome-shell-extension-topicons-plus-git gnome-calendar
+    $BUILDCMD -S gnome-tweak-tool gnome-shell-extension-topicons-plus-git
 
     #--------------------------------------------------
     # others
@@ -94,17 +95,17 @@ function setup_package(){
     $BUILDCMD -S tlp tlp-rdw ethtool smartmontools x86_energy_perf_policy # tlp
     $BUILDCMD -S dhclient ufw openssh shadowsocks-libev # network tools
     $BUILDCMD -S ntfs-3g dosfstools gnome-disk-utility gparted # disk tools
-    $BUILDCMD -S bash-completion nautilus-open-terminal cups xterm screen cpio cron # other tools
-    $BUILDCMD -S gcc-fortran cmake # development tools
+    $BUILDCMD -S bash-completion nautilus-open-terminal cups xterm screen cron # other tools
+    $BUILDCMD -S gcc-fortran cmake openmpi # development tools
     $BUILDCMD -S fcitx fcitx-gtk2 fcitx-gtk3 fcitx-qt4 fcitx-qt5 fcitx-configtool # IME
     $BUILDCMD -S gvim ctags # text editor
     $BUILDCMD -S evince poppler-data mendeleydesktop # pdf
-    $BUILDCMD -S file-roller p7zip # archiver
+    $BUILDCMD -S file-roller p7zip cpio # archiver
     $BUILDCMD -S mpd mpc mplayer gnome-mplayer # video and audio
     $BUILDCMD -S eog gimp inkscape # image
     $BUILDCMD -S firefox google-chrome flashplugin icedtea-web # browser
     $BUILDCMD -S texlive-latexextra texlive-pictures texlive-publishers wps-office # office
-    $BUILDCMD -S dropbox dropbox-cli nautilus-dropbox rsync wget aria2 git # file transfers
+    $BUILDCMD -S dropbox dropbox-cli nautilus-dropbox rsync wget aria2 git gvfs-mtp # file transfers
     $BUILDCMD -S scrot xsel setconf # script
     $BUILDCMD -S wine wine-mono wine_gecko winetricks # wine
     $BUILDCMD -S sagemath sage-notebook # sage
@@ -160,7 +161,8 @@ function setup_usrconf(){
     helper_symlink $USERHOME/Dropbox/home $USERHOME "/(\.config$|\.local$|\.cow$|\.ssh$|\.sage$|\.git$|\.gitignore$|intel$)/d;p"
     helper_symlink $USERHOME/Dropbox/home/.local/share      $USERHOME/.local/share "/(data$)/d;p"
     helper_symlink $USERHOME/Dropbox/home/.local/share/data $USERHOME/.local/share/data
-    helper_symlink $USERHOME/Dropbox/home/.config           $USERHOME/.config
+    helper_symlink $USERHOME/Dropbox/home/.config           $USERHOME/.config "/(dconf$)/d;p"
+    helper_symlink $USERHOME/Dropbox/home/.config/dconf     $USERHOME/.config/dconf
     helper_symlink $USERHOME/Dropbox/home/.cow              $USERHOME/.cow
     helper_symlink $USERHOME/Dropbox/home/.sage             $USERHOME/.sage
     helper_symlink $USERHOME/Dropbox/home/.ssh              $USERHOME/.ssh
