@@ -86,7 +86,7 @@ function setup_package(){
     #--------------------------------------------------
     # desktop essentials
     $BUILDCMD -S gdm gnome-shell gnome-control-center gnome-keyring nautilus xdg-user-dirs
-    $BUILDCMD -S gnome-backgrounds faenza-icon-theme wqy-microhei
+    $BUILDCMD -S gnome-backgrounds faenza-icon-theme wqy-microhei ttf-inconsolata
     $BUILDCMD -S gnome-tweak-tool gnome-shell-extension-topicons-plus-git
 
     #--------------------------------------------------
@@ -109,8 +109,7 @@ function setup_package(){
     $BUILDCMD -S scrot xsel setconf # script
     $BUILDCMD -S wine wine-mono wine_gecko winetricks # wine
     $BUILDCMD -S sagemath sage-notebook # sage
-    $BUILDCMD -S steam skypeforlinux-bin # misc
-    $BUILDCMD -S jre8-openjdk # dependencies for non-free softwares
+    $BUILDCMD -S steam skypeforlinux-bin paraview # misc
 
     # local packages
     if [ "$OFFLINES" == "0" ];then
@@ -171,10 +170,13 @@ function setup_usrconf(){
     cp $USERHOME/Dropbox/system/account/avatar-gnome.png /var/lib/AccountsService/icons/$USERNAME
     cp $USERHOME/Dropbox/system/account/gnome-account.conf /var/lib/AccountsService/users/$USERNAME
 
-    # services
-    # systemctl --user enable mpd
-    # systemctl --user enable sage
-    # systemctl --user enable cow
+    # fix background locating
+    ln -sf $USERHOME/Pictures/Wallpapers $USERHOME/.cache/gnome-control-center/backgrounds
+
+    # services (may need to run outside the script)
+    systemctl --user enable mpd
+    systemctl --user enable sage
+    systemctl --user enable cow
 }
 
 function setup_thinkpad(){
