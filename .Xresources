@@ -26,7 +26,7 @@ xterm*preeditType: Root
 xterm*xftAntialias: true
 xterm*faceName: Inconsolata
 xterm*faceNameDoublesize: WenQuanYi MicroHei Mono
-xterm*faceSize: 14
+xterm*faceSize: 12
 
 !tango颜色搭配
 xterm*color0: #1e1e1e

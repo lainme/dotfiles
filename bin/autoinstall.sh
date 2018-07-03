@@ -73,7 +73,6 @@ function setup_package(){
     # prepare
     #--------------------------------------------------
     $BUILDCMD -S archlinux-keyring archlinuxcn-keyring
-    $BUILDCMD -S fontconfig-ubuntu
 
     #--------------------------------------------------
     # Xorg and drivers
@@ -109,7 +108,7 @@ function setup_package(){
     $BUILDCMD -S scrot xsel setconf # script
     $BUILDCMD -S wine wine-mono wine_gecko winetricks # wine
     $BUILDCMD -S sagemath sage-notebook # sage
-    $BUILDCMD -S steam skypeforlinux-bin paraview # misc
+    $BUILDCMD -S steam skypeforlinux-bin paraview jre8-openjdk # misc
 
     # local packages
     if [ "$OFFLINES" == "0" ];then
@@ -121,6 +120,7 @@ function setup_package(){
     if [ "$SYSTARCH" == "x86_64" ];then
         $BUILDCMD -S lib32-libpulse lib32-alsa-plugins lib32-openal # sound
         $BUILDCMD -S lib32-libldap # required by bigfish client
+        $BUILDCMD -S lib32-gtk2 lib32-gtk3 lib32-gdk-pixbuf2 lib32-libva lib32-libpng12 # steam
     fi
 }
 
