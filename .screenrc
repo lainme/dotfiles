@@ -20,7 +20,7 @@ altscreen on
 partial on
 
 #256色支持
-term xterm-256color
+term screen-256color
 defbce "on"
 
 #快捷键
@@ -29,5 +29,3 @@ bindkey "^[[1;3B" next
 
 #滚屏
 termcapinfo xterm* ti@:te@
-
-
