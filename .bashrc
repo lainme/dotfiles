@@ -27,11 +27,7 @@ quitscr() {
 export PS1="\u@\h:\w\$ "
 
 #xterm-256
-if [ ! -z `echo $STY` ];then
-    export TERM=screen-256color
-else
-    export TERM=xterm-256color
-fi
+export TERM=xterm-256color
 
 #editor
 export EDITOR=vim

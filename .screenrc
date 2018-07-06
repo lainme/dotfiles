@@ -20,7 +20,7 @@ altscreen on
 partial on
 
 #256色支持
-term screen-256color
+term xterm-256color
 defbce "on"
 
 #快捷键
