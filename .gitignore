@@ -1,12 +1,7 @@
-bin/crossrun.sh
-bin/syncrepo.sh
-bin/serverdeploy.sh
-bin/cloudxns.sh
 Documents
 intel
 Music
 Pictures
-sysconf
 .config/autostart/
 .config/dconf/
 .config/nautilus/

@@ -151,7 +151,7 @@ function setup_system(){
     systemctl enable org.cups.cupsd.service
 }
 
-function setup_usrconf(){
+function setup_person(){
     # update user directory
     $RUNASUSR xdg-user-dirs-update
 
@@ -176,13 +176,28 @@ function setup_usrconf(){
     systemctl --user enable mpd
     systemctl --user enable sage
     systemctl --user enable cow
+
+    # ssh client
+    sudo -u $USERNAME ssh-keygen -t rsa
+    echo "SSH: please upload the public key to the servers"
+    cat $USERHOME/.ssh/id_rsa.pub
+    read -p "Enter to continue"
+
+    # server backup
+    mkdir -p $USERHOME/archive
+    for domain in ${MYDOMAIN[*]}; do
+        cd $USERHOME/archive
+        git clone ssh://lainme@$domain:/home/lainme/repository $domain
+    done
+    command="0 * * * * /home/$USERNAME/bin/serverbackup.sh &> /dev/null"
+    (echo "$command") | crontab -u $USERNAME -
 }
 
 function setup_thinkpad(){
     $BUILDCMD -S acpi_call tp_smapi
 }
 
-function setup_remotecf(){
+function setup_homeserv(){
     echo "SSH: port for ssh-server"
     read port
     ufw allow $port
@@ -193,6 +208,10 @@ function setup_remotecf(){
     conf="$conf\nSubsystem sftp /usr/lib/openssh/sftp-server"
     echo -e $conf > /etc/ssh/sshd_config
     systemctl restart sshd
+
+    # ddns
+    command="*/5 * * * * /home/$USERNAME/bin/ddns.sh &> /dev/null"
+    (echo "$command") | crontab -u $USERNAME -
 }
 
 #--------------------------------------------------
@@ -290,14 +309,14 @@ function configure_base(){
 function configure_post(){
     setup_package
     setup_system
-    setup_usrconf
+    setup_person
 
     if [ "$THINKPAD" == "1" ];then
         setup_thinkpad
     fi
 
-    if [ "$REMOTECF" == "1" ];then
-        setup_remotecf
+    if [ "$HOMESERV" == "1" ];then
+        setup_homeserv
     fi
 }
 
@@ -315,10 +334,11 @@ CPIOHOOK=()
 PARTTYPE=GPT
 ROOTDEVI=/dev/sda6
 GRUBDEVI=/dev/sda
+MYDOMAIN=("lainme.com")
 
 # switching configuration
 THINKPAD=1
-REMOTECF=1
+HOMESERV=1
 OFFLINES=0
 
 # installation commands
