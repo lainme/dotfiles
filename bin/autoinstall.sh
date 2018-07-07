@@ -97,7 +97,7 @@ function setup_package(){
     $BUILDCMD -S gcc-fortran cmake openmpi # development tools
     $BUILDCMD -S fcitx fcitx-gtk2 fcitx-gtk3 fcitx-qt4 fcitx-qt5 fcitx-configtool # IME
     $BUILDCMD -S gvim ctags # text editor
-    $BUILDCMD -S evince poppler-data mendeleydesktop # pdf
+    $BUILDCMD -S evince poppler-data mendeleydesktop masterpdfeditor # pdf
     $BUILDCMD -S file-roller p7zip cpio # archiver
     $BUILDCMD -S mpd mpc mplayer gnome-mplayer # video and audio
     $BUILDCMD -S eog gimp inkscape # image
