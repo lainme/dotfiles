@@ -268,17 +268,12 @@ function configure_application_wordpress(){
 
 function configure_application_dokuwiki(){
     HTTPROOT=$1
-    CRONTIME=$2
 
     # dokuwiki site
     mkdir -p $HTTPHOME/$HTTPROOT
     rsync -va /home/$USERNAME/repository/http/$HTTPROOT/ $HTTPHOME/$HTTPROOT/
     mkdir -p $HTTPHOME/$HTTPROOT/data/{attic,media_attic,cache,index,locks,tmp}
     cd $HTTPHOME/$HTTPROOT/bin && php indexer.php
-
-    # dokuwiki cron
-    command="$CRONTIME bash $HTTPHOME/$HTTPROOT/bin/cleanwiki.sh &> /dev/null"
-    (echo -e "$command") | crontab -u $HTTPUSER -
 
     # dokuwiki permissions
     chown -R $HTTPUSER:$HTTPUSER $HTTPHOME/$HTTPROOT
@@ -386,7 +381,7 @@ function configure_server_sites(){
     configure_encryption_letsencrypt "0 0 1 * *" "$DOMAINNM"
     configure_http_php
     configure_http_nginx "0 1 1 * *"
-    configure_application_dokuwiki "$DOMAINNM" "0 1 * * 0"
+    configure_application_dokuwiki "$DOMAINNM"
     configure_http_imageopt "0 2 * * 0"
     configure_http_binding
 }
