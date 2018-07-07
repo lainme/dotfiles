@@ -158,13 +158,13 @@ function setup_person(){
 
     # symbol link
     helper_symlink $USERHOME/Dropbox/home $USERHOME "/(\.config$|\.local$|\.cow$|\.ssh$|\.sage$|\.git$|\.gitignore$|intel$)/d;p"
-    helper_symlink $USERHOME/Dropbox/home/.local/share      $USERHOME/.local/share "/(data$)/d;p"
-    helper_symlink $USERHOME/Dropbox/home/.local/share/data $USERHOME/.local/share/data
-    helper_symlink $USERHOME/Dropbox/home/.config           $USERHOME/.config "/(dconf$)/d;p"
-    helper_symlink $USERHOME/Dropbox/home/.config/dconf     $USERHOME/.config/dconf
-    helper_symlink $USERHOME/Dropbox/home/.cow              $USERHOME/.cow
-    helper_symlink $USERHOME/Dropbox/home/.sage             $USERHOME/.sage
-    helper_symlink $USERHOME/Dropbox/home/.ssh              $USERHOME/.ssh
+    helper_symlink $USERHOME/Dropbox/home/.local/share              $USERHOME/.local/share "/(data|gnome-shell$)/d;p"
+    helper_symlink $USERHOME/Dropbox/home/.local/share/data         $USERHOME/.local/share/data
+    helper_symlink $USERHOME/Dropbox/home/.local/share/gnome-shell  $USERHOME/.local/share/gnome-shell
+    helper_symlink $USERHOME/Dropbox/home/.config                   $USERHOME/.config
+    helper_symlink $USERHOME/Dropbox/home/.cow                      $USERHOME/.cow
+    helper_symlink $USERHOME/Dropbox/home/.sage                     $USERHOME/.sage
+    helper_symlink $USERHOME/Dropbox/home/.ssh                      $USERHOME/.ssh
 
     # avatar
     cp $USERHOME/Dropbox/system/account/avatar-gnome.png /var/lib/AccountsService/icons/$USERNAME
