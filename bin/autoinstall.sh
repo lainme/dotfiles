@@ -93,7 +93,7 @@ function setup_package(){
     $BUILDCMD -S tlp tlp-rdw ethtool smartmontools x86_energy_perf_policy # tlp
     $BUILDCMD -S dhclient ufw openssh shadowsocks-libev # network tools
     $BUILDCMD -S ntfs-3g dosfstools gnome-disk-utility gparted # disk tools
-    $BUILDCMD -S bash-completion nautilus-open-terminal cups xterm screen cron # other tools
+    $BUILDCMD -S bash-completion cups xterm screen cron # other tools
     $BUILDCMD -S gcc-fortran cmake openmpi # development tools
     $BUILDCMD -S fcitx fcitx-gtk2 fcitx-gtk3 fcitx-qt4 fcitx-qt5 fcitx-configtool # IME
     $BUILDCMD -S gvim ctags # text editor
@@ -107,7 +107,7 @@ function setup_package(){
     $BUILDCMD -S scrot xsel setconf # script
     $BUILDCMD -S wine wine-mono wine_gecko winetricks # wine
     $BUILDCMD -S sagemath sage-notebook # sage
-    $BUILDCMD -S steam skypeforlinux-bin paraview jre8-openjdk # misc
+    $BUILDCMD -S steam skypeforlinux-stable-bin paraview jre8-openjdk # misc
 
     # local packages
     if [ "$OFFLINES" == "0" ];then
@@ -145,6 +145,7 @@ function setup_system(){
     systemctl mask systemd-rfkill.socket # for tlp.
     systemctl enable gdm
     systemctl enable NetworkManager
+    systemctl enable NetworkManager-dispatcher
     systemctl enable ufw
     systemctl enable tlp
     systemctl enable tlp-sleep
@@ -184,10 +185,10 @@ function setup_person(){
     read -p "Enter to continue"
 
     # server backup
-    mkdir -p $USERHOME/archive
+    $RUNASUSR mkdir -p $USERHOME/archive
     for domain in ${MYDOMAIN[*]}; do
         cd $USERHOME/archive
-        git clone ssh://lainme@$domain:/home/lainme/repository $domain
+        $RUNASUSR git clone ssh://lainme@$domain:/home/lainme/repository $domain
     done
     command="0 * * * * /home/$USERNAME/bin/serverbackup.sh &> /dev/null"
     (echo "$command") | crontab -u $USERNAME -
