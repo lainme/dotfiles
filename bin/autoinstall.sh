@@ -24,7 +24,6 @@
 # helper functions
 #--------------------------------------------------
 function helper_command(){
-# Installation
     echo -e "DESCRIPTION: Archlinux installation script. Most functionalities requires root permissions"
     echo -e "USAGE: autoinstall.sh FUNCTION-NAME"
     echo -e ""
@@ -142,13 +141,13 @@ function setup_system(){
     ufw default deny
 
     # systemd services
+    systemctl mask systemd-rfkill.service # for tlp.
+    systemctl mask systemd-rfkill.socket # for tlp.
     systemctl enable gdm
     systemctl enable NetworkManager
-    systemctl enable NetworkManager-dispatcher
     systemctl enable ufw
     systemctl enable tlp
     systemctl enable tlp-sleep
-    systemctl mask systemd-rfkill.service
     systemctl enable org.cups.cupsd.service
 }
 
