@@ -94,26 +94,25 @@ function setup_package(){
     $BUILDCMD -S dhclient ufw openssh shadowsocks-libev # network tools
     $BUILDCMD -S ntfs-3g dosfstools gnome-disk-utility gparted # disk tools
     $BUILDCMD -S bash-completion cups xterm screen cron # other tools
-    $BUILDCMD -S gcc-fortran cmake openmpi # development tools
+    $BUILDCMD -S gcc-fortran cmake # development tools
     $BUILDCMD -S fcitx fcitx-gtk2 fcitx-gtk3 fcitx-qt4 fcitx-qt5 fcitx-configtool # IME
     $BUILDCMD -S gvim ctags # text editor
     $BUILDCMD -S evince poppler-data mendeleydesktop masterpdfeditor # pdf
     $BUILDCMD -S file-roller p7zip cpio # archiver
     $BUILDCMD -S mpd mpc mplayer gnome-mplayer # video and audio
     $BUILDCMD -S eog gimp inkscape # image
-    $BUILDCMD -S firefox google-chrome flashplugin icedtea-web # browser
+    $BUILDCMD -S firefox google-chrome flashplugin # browser
     $BUILDCMD -S texlive-latexextra texlive-pictures texlive-publishers wps-office # office
     $BUILDCMD -S dropbox dropbox-cli nautilus-dropbox rsync wget aria2 git gvfs-mtp # file transfers
     $BUILDCMD -S scrot xsel setconf # script
     $BUILDCMD -S wine wine-mono wine_gecko winetricks # wine
     $BUILDCMD -S sagemath sage-notebook # sage
-    $BUILDCMD -S steam skypeforlinux-stable-bin paraview jre8-openjdk # misc
+    $BUILDCMD -S steam skypeforlinux-preview-bin # misc
 
     # local packages
     if [ "$OFFLINES" == "0" ];then
         $BUILDCMD -S cow-proxy # network tools
-        $BUILDCMD -S latex-beamer-ctan rubber-git # office
-        $BUILDCMD -S bcloud-git # file transfers
+        $BUILDCMD -S latex-beamer rubber-git # office
     fi
 
     if [ "$SYSTARCH" == "x86_64" ];then

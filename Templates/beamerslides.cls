@@ -31,20 +31,16 @@
 %  ----  Plot settings  -----------------------------
 \pgfplotsset{compat=1.12}
 
-%  ----  Defined colors  ----------------------------
-\colorlet{boxcolor}{blue!12}
-
 %  ----  Slides style  ------------------------------
-\usetheme{Singapore}
-\usecolortheme{rose}
 \usefonttheme[onlymath]{serif}
 \setbeamertemplate{caption}[numbered]
 \setbeamerfont*{itemize/enumerate subbody}
 {parent=itemize/enumerate body}
 
-\setbeamercolor{alerted text}{fg=blue}
-\setbeamercolor{box}{fg=black,bg=boxcolor}
+%  ----  Macros  ------------------------------
 \let\oldalert\alert
 \renewcommand{\alert}[1]{\oldalert{\bf #1}}
+
+\let\@@magyar@captionfix\relax
 
 % vim: set ft=tex ff=unix tw=70:

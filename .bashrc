@@ -39,6 +39,10 @@ fi
 export PATH=$HOME/bin:$PATH
 export LD_LIBRARY_PATH=$PRESERVE_LD_LIBRARY_PATH
 
+if [ -d $HOME/.texlive/texmf ]; then
+    export TEXMFHOME=$HOME/.texlive/texmf
+fi
+
 #--------------------------------------------------
 #others
 #--------------------------------------------------
