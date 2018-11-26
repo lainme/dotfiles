@@ -43,7 +43,9 @@ function configure_common_system(){
     if [[ -f /etc/cron.daily/apt.disabled ]];then # fix possible broken templates
         mv /etc/cron.daily/apt.disabled /etc/cron.daily/apt
     fi
-    chmod +x /etc/cron.daily/apt # fix possible broken templates
+    if [[ -f /etc/cron.daily/apt ]]; then
+        chmod +x /etc/cron.daily/apt # fix possible broken templates
+    fi
 
     # localization
     dpkg-reconfigure tzdata
@@ -131,7 +133,8 @@ function configure_protection_iptables(){
     sh /etc/iptables.sh
 
     sed -i "s|exit 0|sh /etc/iptables.sh\nexit 0|" /etc/rc.local
-    cp -r /home/$USERNAME/repository/system/systemd/iptables.service /etc/systemd/system/
+    conf="[Unit]\nDescription=Add Firewall Rules to iptables\n[Service]\nType=oneshot\nExecStart=/etc/iptables.sh\n[Install]\nWantedBy=multi-user.target"
+    echo -e $conf > /etc/systemd/system/iptables.service
     systemctl enable iptables.service
     systemctl start iptables.service
 }

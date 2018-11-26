@@ -10,12 +10,14 @@ Pictures
 .config/Mendeley Ltd./
 !.config/mpd/mpd.conf
 .cow
+.ddns
 .extrarc
 .fonts/*
 !.fonts/Poky.ttf
 .local
 .sage
 .ssh
+.subversion
 .vim/.*
 .vim/spell
 .vim/bundle/*

@@ -91,7 +91,7 @@ function setup_package(){
     # others
     #--------------------------------------------------
     $BUILDCMD -S tlp tlp-rdw ethtool smartmontools x86_energy_perf_policy # tlp
-    $BUILDCMD -S dhclient ufw openssh shadowsocks-libev # network tools
+    $BUILDCMD -S dhclient ufw openssh shadowsocks-libev networkmanager-vpnc # network tools
     $BUILDCMD -S ntfs-3g dosfstools gnome-disk-utility gparted # disk tools
     $BUILDCMD -S bash-completion cups xterm screen cron # other tools
     $BUILDCMD -S gcc-fortran cmake # development tools
@@ -156,7 +156,7 @@ function setup_person(){
     $RUNASUSR xdg-user-dirs-update
 
     # symbol link
-    helper_symlink $USERHOME/Dropbox/home $USERHOME "/(\.config$|\.local$|\.cow$|\.ssh$|\.sage$|\.git$|\.gitignore$|intel$)/d;p"
+    helper_symlink $USERHOME/Dropbox/home $USERHOME "/(\.config$|\.local$|\.cow$|\.ssh$|\.sage$|\.git$|\.gitignore$|\.subversion$|intel$)/d;p"
     helper_symlink $USERHOME/Dropbox/home/.local/share              $USERHOME/.local/share "/(data|gnome-shell$)/d;p"
     helper_symlink $USERHOME/Dropbox/home/.local/share/data         $USERHOME/.local/share/data
     helper_symlink $USERHOME/Dropbox/home/.local/share/gnome-shell  $USERHOME/.local/share/gnome-shell
@@ -164,6 +164,7 @@ function setup_person(){
     helper_symlink $USERHOME/Dropbox/home/.cow                      $USERHOME/.cow
     helper_symlink $USERHOME/Dropbox/home/.sage                     $USERHOME/.sage
     helper_symlink $USERHOME/Dropbox/home/.ssh                      $USERHOME/.ssh
+    helper_symlink $USERHOME/Dropbox/home/.subversion               $USERHOME/.subversion
 
     # avatar
     cp $USERHOME/Dropbox/system/account/avatar-gnome.png /var/lib/AccountsService/icons/$USERNAME

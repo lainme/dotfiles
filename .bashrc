@@ -33,12 +33,14 @@ export TERM=xterm-256color
 export EDITOR=vim
 
 #path
+export PATH=$HOME/bin:$HOME/.software/bin:$PATH
+export INCLUDE=$HOME/.software/include:$INCLUDE
+export LIBRARY_PATH=$HOME/.software/lib:$LIBRARY_PATH
+export LD_LIBRARY_PATH=$HOME/.software/lib:$LD_LIBRARY_PATH
 if [ ! -z $LD_LIBRARY_PATH ];then
     export PRESERVE_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
 fi
-export PATH=$HOME/bin:$PATH
 export LD_LIBRARY_PATH=$PRESERVE_LD_LIBRARY_PATH
-
 if [ -d $HOME/.texlive/texmf ]; then
     export TEXMFHOME=$HOME/.texlive/texmf
 fi
