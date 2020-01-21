@@ -89,7 +89,7 @@ function configure_common_person(){
     CRONTIME=$1
 
     # retrive repository
-    mv /home/root/repository /home/$USERNAME/
+    mv /root/repository /home/$USERNAME/
 
     # configuration for normal user
     cd /home/$USERNAME && sudo -u $USERNAME find repository/dotfiles/ -maxdepth 1 -mindepth 1 -exec ln -sf {} . \;
@@ -111,7 +111,8 @@ function configure_common_person(){
 function configure_protection_iptables(){
     PORTS=($1)
 
-    conf="iptables -F\niptables -X\niptables -A INPUT -i lo -j ACCEPT"
+    conf="#!/bin/bash"
+    conf="$conf\niptables -F\niptables -X\niptables -A INPUT -i lo -j ACCEPT"
     conf="$conf\niptables -A INPUT -i '!lo' -d 127.0.0.0/8 -j REJECT\niptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT"
     for port in ${PORTS[*]}; do
         conf="$conf\niptables -A INPUT -p tcp --dport $port -j ACCEPT"
@@ -132,7 +133,6 @@ function configure_protection_iptables(){
     chmod +x /etc/iptables.sh
     sh /etc/iptables.sh
 
-    sed -i "s|exit 0|sh /etc/iptables.sh\nexit 0|" /etc/rc.local
     conf="[Unit]\nDescription=Add Firewall Rules to iptables\n[Service]\nType=oneshot\nExecStart=/etc/iptables.sh\n[Install]\nWantedBy=multi-user.target"
     echo -e $conf > /etc/systemd/system/iptables.service
     systemctl enable iptables.service
@@ -381,12 +381,12 @@ function configure_server_sites(){
 
     configure_common_person "0 0 * * 0" "$DOMAINNM"
     configure_protection_iptables "80 443"
-    configure_encryption_letsencrypt "0 0 1 * *" "$DOMAINNM"
     configure_http_php
     configure_http_nginx "0 1 1 * *"
     configure_application_dokuwiki "$DOMAINNM"
     configure_http_imageopt "0 2 * * 0"
     configure_http_binding
+    configure_encryption_letsencrypt "0 0 1 * *" "$DOMAINNM"
 }
 
 function configure_server_shadowsocks(){

@@ -45,7 +45,7 @@ if ! has("gui_running")
 else
     set guioptions=a  "去掉菜单等，自动复制选择的区域
     set guicursor=a:blinkwait600-blinkoff600-blinkon600 "光标闪烁频率
-    set guifont=Monospace\ 11
+    set guifont=Inconsolata\ 12
 endif
 
 "状态栏设置

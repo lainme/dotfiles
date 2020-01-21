@@ -204,7 +204,7 @@ function setup_homeserv(){
     ufw allow $port
 
     conf="Protocol 2\nPort $port\n"
-    conf="$conf\nChallengeResponseAuthentication no\nPasswordAuthentication no\nPermitRootLogin no\nServerKeyBits 2048\n"
+    conf="$conf\nChallengeResponseAuthentication no\nPasswordAuthentication no\nPermitRootLogin no\n"
     conf="$conf\nAllowGroups $USERNAME\nAllowUsers $USERNAME\n"
     conf="$conf\nSubsystem sftp /usr/lib/openssh/sftp-server"
     echo -e $conf > /etc/ssh/sshd_config

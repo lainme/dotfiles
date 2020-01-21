@@ -1,16 +1,13 @@
 #--------------------------------------------------
 #alias
 #--------------------------------------------------
-#screen
 alias scl="screen -ls"
 alias scq="quitscr"
 alias scr="screen -raAd"
 
-#color output
-alias ls="ls --color=auto"
-alias grep="grep --color=auto"
+alias ls="ls --color=always"
+alias grep="grep --color=always"
 
-#other
 alias checksums='setconf PKGBUILD $(makepkg -g 2>/dev/null | pee "head -1 | cut -d= -f1" "cut -d= -f2") ")"'
 
 #--------------------------------------------------
@@ -23,32 +20,26 @@ quitscr() {
 #--------------------------------------------------
 #environment variables
 #--------------------------------------------------
-#set prompt
-export PS1="\u@\h:\w\$ "
-
-#xterm-256
+export PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "
 export TERM=xterm-256color
-
-#editor
 export EDITOR=vim
 
-#path
-export PATH=$HOME/bin:$HOME/.software/bin:$PATH
-export INCLUDE=$HOME/.software/include:$INCLUDE
-export LIBRARY_PATH=$HOME/.software/lib:$LIBRARY_PATH
-export LD_LIBRARY_PATH=$HOME/.software/lib:$LD_LIBRARY_PATH
+MY_PATH=$HOME/bin:$HOME/.local/bin:$PATH
+MY_INCLUDE=$HOME/.local/include:$INCLUDE
+MY_LIBRARY_PATH=$HOME/.local/lib:$LIBRARY_PATH
+MY_LD_LIBRARY_PATH=$HOME/.local/lib:$LD_LIBRARY_PATH
+export PATH=${MY_PATH%:}
+export INCLUDE=${MY_INCLUDE%:}
+export LIBRARY_PATH=${MY_LIBRARY_PATH%:}
+export LD_LIBRARY_PATH=${MY_LD_LIBRARY_PATH%:}
 if [ ! -z $LD_LIBRARY_PATH ];then
     export PRESERVE_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
 fi
 export LD_LIBRARY_PATH=$PRESERVE_LD_LIBRARY_PATH
-if [ -d $HOME/.texlive/texmf ]; then
-    export TEXMFHOME=$HOME/.texlive/texmf
-fi
 
 #--------------------------------------------------
 #others
 #--------------------------------------------------
-#extra
 if [ -f $HOME/.extrarc ];then
     . $HOME/.extrarc
 fi

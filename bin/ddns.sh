@@ -11,4 +11,4 @@ if [ -z $NEWIP ];then
 fi
 echo $NEWIP > $HOME/.ddns
 
-sed -i "/lainme-$HOSTS/{N;s/[0-9.]\+/$NEWIP/}" $HOME/Dropbox/home/.ssh/config
+sed -i "/remote-\*/{N;s/[0-9.]\+/$NEWIP/}" $HOME/Dropbox/home/.ssh/config
