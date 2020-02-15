@@ -234,6 +234,7 @@ function configure_base(){
 
     # install necessary packages
     pacman -S --noconfirm linux-headers sudo yajl yaourt
+    cp /tmp/Dropbox/system/common/makepkg.conf /etc/makepkg.conf
 
     #--------------------------------------------------
     # configure user
