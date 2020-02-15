@@ -16,3 +16,5 @@
         prompt = false
 [push]
 	default = matching
+[color]
+        diff = auto
