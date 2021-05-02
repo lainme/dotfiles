@@ -95,7 +95,7 @@ function setup_package(){
     $BUILDCMD -S ntfs-3g dosfstools gnome-disk-utility gparted # disk tools
     $BUILDCMD -S bash-completion cups xterm screen cron # other tools
     $BUILDCMD -S gcc-fortran cmake # development tools
-    $BUILDCMD -S fcitx fcitx-gtk2 fcitx-gtk3 fcitx-qt4 fcitx-qt5 fcitx-configtool # IME
+    $BUILDCMD -S ibus ibus-libpinyin # IME
     $BUILDCMD -S gvim ctags # text editor
     $BUILDCMD -S evince poppler-data mendeleydesktop masterpdfeditor # pdf
     $BUILDCMD -S file-roller p7zip cpio # archiver

@@ -126,7 +126,6 @@ Bundle 'gmarik/vundle'
 Bundle 'taglist.vim'
 Bundle 'The-NERD-Commenter'
 Bundle 'buftabs'
-Bundle 'fcitx.vim'
 Bundle 'LaTeX-Box'
 
 "----------taglist----------

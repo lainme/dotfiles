@@ -1,4 +1,4 @@
 XENVIRONMENT            DEFAULT=@{HOME}/.Xresources
-GTK_IM_MODULE           DEFAULT=fcitx
-QT_IM_MODULE            DEFAULT=fcitx
-XMODIFIERS              DEFAULT=@im=fcitx
+GTK_IM_MODULE           DEFAULT=ibus
+QT_IM_MODULE            DEFAULT=ibus
+XMODIFIERS              DEFAULT=@im=ibus

@@ -24,7 +24,7 @@ xterm*utf8Title: true
 xterm*renderFont: true
 xterm*preeditType: Root
 xterm*xftAntialias: true
-xterm*faceName: Inconsolata
+xterm*faceName: Inconsolata*
 xterm*faceNameDoublesize: WenQuanYi MicroHei Mono
 xterm*faceSize: 12
 
