@@ -14,14 +14,13 @@
 #   11. Sage (https://www.sagemath.org/download-linux.html)
 #   12. Texlive (https://www.tug.org/texlive/acquire-netinstall.html)
 #   13. Dropbox (upgradedropbox.sh)
-#   14. Aries
-#   15. Google chrome (https://www.google.com/chrome/)
-#   16. WPS (http://www.wps.cn/product/wpslinux/)
-#   17. Teamviewer (https://www.teamviewer.com/en-us/download/linux/)
-#   18. Skype (https://repo.skype.com/latest)
-#   19. Zoom (https://us02web.zoom.us/download)
-#   20. Mailspring (https://getmailspring.com/download)
-#   21. Graphical driver (epel-multimedia)
+#   14. Google chrome (https://www.google.com/chrome/)
+#   15. WPS (http://www.wps.cn/product/wpslinux/)
+#   16. Teamviewer (https://www.teamviewer.com/en-us/download/linux/)
+#   17. Skype (https://repo.skype.com/latest)
+#   18. Zoom (https://us02web.zoom.us/download)
+#   19. Mailspring (https://getmailspring.com/download)
+#   20. Graphical driver (epel-multimedia)
 
 #--------------------------------------------------
 # helper functions
@@ -252,15 +251,6 @@ function installer_dropbox() {
     $RUNASUSR stow util
 }
 
-function installer_aries() {
-    PKGNAME=aries
-
-    $RUNASUSR mkdir -p $USERHOME/software/util/bin
-    $RUNASUSR ln -sf $USERHOME/Dropbox/home/software/util/bin/aries_* $USERHOME/software/util/bin/
-    $RUNASUSR cd $USERHOME/software
-    $RUNASUSR stow util
-}
-
 function installer_chrome() {
     PKGNAME=google-chrome
 
@@ -339,18 +329,15 @@ function setup_package(){
     # others
     #--------------------------------------------------
     yum install file-roller-nautilus # desktop environment
-    yum install ufw shadowsocks-libev dnsmasq # network tools
+    yum install ufw shadowsocks-libev # network tools
     yum install ntfs-3g # disk tools
     yum install bash-completion-extras xterm screen # other tools
-    yum install gcc doxygen graphviz cmake3 openmpi3 # development tools
     yum install ibus ibus-gtk2 ibus-gtk3 ibus-qt ibus-libpinyin # IME
     yum install vim vim-X11 ctags # text editor
     yum install p7zip # archiver
-    yum install xplayer gstreamer1-libav # video and audio
-    yum install gimp inkscape # image
+    yum install gimp # image
     yum install firefox flash-plugin # browser
-    yum install libreoffice # office
-    yum install aria2 filezilla subversion subversion-gnome git-svn # file transfers
+    yum install filezilla subversion subversion-gnome git-svn # file transfers
     yum install xsel # script
 }
 
@@ -375,12 +362,12 @@ function setup_system(){
 
 function setup_person(){
     helper_symlink $USERHOME/Dropbox/home $USERHOME "/(\.config$|\.local$|\.cow$|\.ssh$|\.gitignore$|\.subversion$)/d;p"
-    helper_symlink $USERHOME/Dropbox/home/.local/share              $USERHOME/.local/share "/(data$)/d;p"
-    helper_symlink $USERHOME/Dropbox/home/.local/share/data         $USERHOME/.local/share/data
-    helper_symlink $USERHOME/Dropbox/home/.config                   $USERHOME/.config
-    helper_symlink $USERHOME/Dropbox/home/.cow                      $USERHOME/.cow
-    helper_symlink $USERHOME/Dropbox/home/.ssh                      $USERHOME/.ssh
-    helper_symlink $USERHOME/Dropbox/home/.subversion               $USERHOME/.subversion
+    helper_symlink $USERHOME/Dropbox/home/.local/share      $USERHOME/.local/share "/(data$|gnome-shell$|wesnoth$)/d;p"
+    helper_symlink $USERHOME/Dropbox/home/.local/share/data $USERHOME/.local/share/data
+    helper_symlink $USERHOME/Dropbox/home/.config           $USERHOME/.config "/(dconf$|fcitx$|mpd$|nautilus$)/d;p"
+    helper_symlink $USERHOME/Dropbox/home/.cow              $USERHOME/.cow
+    helper_symlink $USERHOME/Dropbox/home/.ssh              $USERHOME/.ssh
+    helper_symlink $USERHOME/Dropbox/home/.subversion       $USERHOME/.subversion
 
     # avatar
     mkdir -p /var/lib/AccountsService/icons/$USERHOME
@@ -404,7 +391,6 @@ function setup_person(){
 }
 
 function setup_homeserv(){
-    # sshd
     echo "SSH: port for ssh-server"
     read port
     ufw allow $port
@@ -415,10 +401,6 @@ function setup_homeserv(){
     conf="$conf\nSubsystem sftp /usr/lib/openssh/sftp-server"
     echo -e $conf > /etc/ssh/sshd_config
     systemctl restart sshd
-
-    # ddns (disable by now)
-    #command="*/5 * * * * $USERHOME/bin/ddns.sh &> /dev/null"
-    #(echo "$command") | crontab -u $USERNAME -
 }
 
 #--------------------------------------------------

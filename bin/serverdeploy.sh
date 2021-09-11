@@ -287,14 +287,37 @@ function configure_application_dokuwiki(){
 function configure_application_shadowsocks(){
     PORT=$1
 
-    aptitude install shadowsocks-libev
+    # install certificate
+    aptitude install socat
+    echo "Please enter your email for acme:"
+    read email
+    curl https://get.acme.sh | sh -s email=$email
+    echo "Please enter domain name for acme:"
+    read domain
+    bash /root/.acme.sh/acme.sh --issue --standalone -d $domain
 
+    # install v2ray-plugin
+    wget https://github.com/shadowsocks/v2ray-plugin/releases/download/v1.3.1/v2ray-plugin-linux-amd64-v1.3.1.tar.gz
+    tar -xzf v2ray-plugin-linux-amd64-v1.3.1.tar.gz
+    cp v2ray-plugin_linux_amd64 /usr/bin/v2ray-plugin
+
+    # install shadowsocks
+    aptitude install shadowsocks-libev
     addr=`curl --ipv4 -s icanhazip.com 2>/dev/null`
     echo "Please enter the server pass:"
-    read -s pass
-    conf="{\n\"server\":\"$addr\",\n\"server_port\":$PORT,\n\"password\":\"$pass\",\n\"timeout\":600,\n\"method\":\"aes-256-gcm\",\n}"
+    read pass
+    conf="{"
+    conf="$conf\n\"server\":\"$addr\","
+    conf="$conf\n\"server_port\":$PORT,"
+    conf="$conf\n\"password\":\"$pass\","
+    conf="$conf\n\"timeout\":600,"
+    conf="$conf\n\"method\":\"aes-256-gcm\","
+    conf="$conf\n\"plugin\":\"v2ray-plugin\","
+    conf="$conf\n\"plugin_opts\":\"server;tls;host=$domain\","
+    conf="$conf\n}"
     echo -e $conf > /etc/shadowsocks-libev/config.json
-
+    sed -i '/User=.*/d;/Group=.*/d'  /lib/systemd/system/shadowsocks-libev.service
+    systemctl daemon-reload
     systemctl restart shadowsocks-libev
 }
 
@@ -391,9 +414,13 @@ function configure_server_sites(){
 
 function configure_server_shadowsocks(){
     echo "Please enter the server port:"
-    read -s port
-    configure_protection_iptables "$port"
+    read port
+    configure_protection_iptables "80 $port"
     configure_application_shadowsocks "$port"
+}
+
+function configure_server_exchange(){
+    configure_protection_iptables
 }
 
 function configuration(){
@@ -407,10 +434,12 @@ USERNAME=lainme
 HTTPUSER=www-data
 HTTPHOME=/srv/http
 SSHDPORT=21
-# server choice
 HOSTNAME=server-sites
 
 echo "Please enter SSH port:"
 read SSHDPORT
+
+echo "Please enter hostname:"
+read HOSTNAME
 
 $@

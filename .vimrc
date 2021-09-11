@@ -22,6 +22,7 @@ set sessionoptions=buffers,sesdir,folds,tabpages,winsize,options "session设置
 set encoding=utf-8
 set fileencodings=ucs-bom,utf-8,gbk
 set runtimepath+=$HOME/.vim "设置runtimepath
+set path=.,, "设置path
 set spellsuggest=best,10 "最佳的10个拼写建议
 set spellfile=$HOME/.vim/spell/en.utf-8.add "设置拼写检查文件
 set undodir=$HOME/.vim-undo "设置undodir
@@ -39,9 +40,9 @@ if ! has("gui_running")
     endfor
     set ttimeoutlen=50
 
-    "避免终端退出时乱码
-    set t_fs=(B
-    set t_IE=(B
+    "避免终端退出时乱码(似乎反而会引起问题)
+    "set t_fs=(B
+    "set t_IE=(B
 else
     set guioptions=a  "去掉菜单等，自动复制选择的区域
     set guicursor=a:blinkwait600-blinkoff600-blinkon600 "光标闪烁频率
@@ -169,6 +170,9 @@ autocmd FileType tex
     \ setlocal makeprg=rubber\ --inplace\ -m\ xelatex\ --shell-escape\ -q\ % |
     \ nnoremap <buffer> <F6> :LatexView<CR> |
     \ inoremap <buffer> <F6> <ESC>:LatexView<CR>
+
+"----------Rmarkdown----------
+autocmd BufRead,BufNewFile *.Rmd set filetype=txt
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "其它

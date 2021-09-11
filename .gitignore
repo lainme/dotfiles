@@ -2,6 +2,12 @@ Documents
 Music
 Pictures
 software
+Templates/*.doc
+Templates/*.docx
+Templates/*.ppt
+Templates/*.pptx
+Templates/*.xls
+Templates/*.xlsx
 .config/autostart/
 .config/dconf/
 .config/nautilus/

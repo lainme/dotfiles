@@ -16,6 +16,7 @@ xterm*foreground: white
 xterm*cursorBlink: true
 xterm*cursorOffTime: 600
 xterm*cursorOnTime: 600
+XTerm*visualBell: false
 
 !语言和字体
 xterm*utf8: 1
@@ -26,7 +27,7 @@ xterm*preeditType: Root
 xterm*xftAntialias: true
 xterm*faceName: Inconsolata*
 xterm*faceNameDoublesize: WenQuanYi MicroHei Mono
-xterm*faceSize: 12
+xterm*faceSize: 12.5
 
 !tango颜色搭配
 xterm*color0: #1e1e1e
