@@ -25,7 +25,7 @@
 #--------------------------------------------------
 function helper_command(){
     echo -e "DESCRIPTION: Archlinux installation script. Most functionalities requires root permissions"
-    echo -e "USAGE: autoinstall.sh FUNCTION-NAME"
+    echo -e "USAGE: autoinstall-archlinux.sh FUNCTION-NAME"
     echo -e ""
     echo -e "\tconfigure_base   - configure system after chroot"
     echo -e "\tconfigure_post   - configure system after reboot"
@@ -123,7 +123,6 @@ function setup_package(){
 }
 
 function setup_system(){
-    # fonts
     cp -r $USERHOME/Dropbox/system/fontconfig/* /etc/fonts/conf.avail
     cp -r $USERHOME/Dropbox/system/fontconfig/* /etc/fonts/conf.d
 
@@ -151,20 +150,23 @@ function setup_system(){
     systemctl enable org.cups.cupsd.service
 }
 
-function setup_person(){
-    # update user directory
-    $RUNASUSR xdg-user-dirs-update
-
-    # symbol link
-    helper_symlink $USERHOME/Dropbox/home $USERHOME "/(\.config$|\.local$|\.cow$|\.ssh$|\.sage$|\.git$|\.gitignore$|\.subversion$|intel$)/d;p"
+function setup_person_symlink(){
+    helper_symlink $USERHOME/Dropbox/home $USERHOME "/(\.config$|\.local$|\.cow$|\.ssh$|\.sage$|\.git$|\.gitignore$|\.subversion$)/d;p"
+    helper_symlink $USERHOME/Dropbox/home/.config                   $USERHOME/.config
     helper_symlink $USERHOME/Dropbox/home/.local/share              $USERHOME/.local/share "/(data|gnome-shell$)/d;p"
     helper_symlink $USERHOME/Dropbox/home/.local/share/data         $USERHOME/.local/share/data
     helper_symlink $USERHOME/Dropbox/home/.local/share/gnome-shell  $USERHOME/.local/share/gnome-shell
-    helper_symlink $USERHOME/Dropbox/home/.config                   $USERHOME/.config
     helper_symlink $USERHOME/Dropbox/home/.cow                      $USERHOME/.cow
-    helper_symlink $USERHOME/Dropbox/home/.sage                     $USERHOME/.sage
     helper_symlink $USERHOME/Dropbox/home/.ssh                      $USERHOME/.ssh
+    helper_symlink $USERHOME/Dropbox/home/.sage                     $USERHOME/.sage
     helper_symlink $USERHOME/Dropbox/home/.subversion               $USERHOME/.subversion
+}
+
+function setup_person(){
+    $RUNASUSR xdg-user-dirs-update
+
+    # symbol link
+    setup_person_symlink
 
     # avatar
     cp $USERHOME/Dropbox/system/account/avatar-gnome.png /var/lib/AccountsService/icons/$USERNAME
@@ -209,10 +211,6 @@ function setup_homeserv(){
     conf="$conf\nSubsystem sftp /usr/lib/openssh/sftp-server"
     echo -e $conf > /etc/ssh/sshd_config
     systemctl restart sshd
-
-    # ddns
-    command="*/5 * * * * /home/$USERNAME/bin/ddns.sh &> /dev/null"
-    (echo "$command") | crontab -u $USERNAME -
 }
 
 #--------------------------------------------------
@@ -305,7 +303,7 @@ function configure_base(){
     # prepare Dropbox directory
     #--------------------------------------------------
     $RUNASUSR cp -r /tmp/Dropbox $USERHOME/Dropbox
-    $RUNASUSR cp /tmp/autoinstall.sh $USERHOME/
+    $RUNASUSR cp /tmp/autoinstall-archlinux.sh $USERHOME/
 }
 
 function configure_post(){

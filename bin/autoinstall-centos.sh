@@ -361,12 +361,12 @@ function setup_system(){
 }
 
 function setup_person(){
-    helper_symlink $USERHOME/Dropbox/home $USERHOME "/(\.config$|\.local$|\.cow$|\.ssh$|\.gitignore$|\.subversion$)/d;p"
-    helper_symlink $USERHOME/Dropbox/home/.local/share      $USERHOME/.local/share "/(data$|gnome-shell$|wesnoth$)/d;p"
-    helper_symlink $USERHOME/Dropbox/home/.local/share/data $USERHOME/.local/share/data
+    helper_symlink $USERHOME/Dropbox/home $USERHOME "/(\.config$|\.local$|\.cow$|\.ssh$|\.sage$|\.git$|\.gitignore$|\.subversion$)/d;p"
     helper_symlink $USERHOME/Dropbox/home/.config           $USERHOME/.config "/(dconf$|fcitx$|mpd$|nautilus$)/d;p"
+    helper_symlink $USERHOME/Dropbox/home/.local/share/data $USERHOME/.local/share/data
     helper_symlink $USERHOME/Dropbox/home/.cow              $USERHOME/.cow
     helper_symlink $USERHOME/Dropbox/home/.ssh              $USERHOME/.ssh
+    helper_symlink $USERHOME/Dropbox/home/.sage             $USERHOME/.sage
     helper_symlink $USERHOME/Dropbox/home/.subversion       $USERHOME/.subversion
 
     # avatar
