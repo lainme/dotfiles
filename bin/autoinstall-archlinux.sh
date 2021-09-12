@@ -151,7 +151,7 @@ function setup_system(){
 }
 
 function setup_person_symlink(){
-    helper_symlink $USERHOME/Dropbox/home $USERHOME "/(\.config$|\.local$|\.cow$|\.ssh$|\.sage$|\.git$|\.gitignore$|\.subversion$)/d;p"
+    helper_symlink $USERHOME/Dropbox/home $USERHOME "/(\.config$|\.local$|\.cow$|\.ssh$|\.sage$|\.git$|\.gitignore$|\.subversion$|software$)/d;p"
     helper_symlink $USERHOME/Dropbox/home/.config                   $USERHOME/.config
     helper_symlink $USERHOME/Dropbox/home/.local/share              $USERHOME/.local/share "/(data|gnome-shell$)/d;p"
     helper_symlink $USERHOME/Dropbox/home/.local/share/data         $USERHOME/.local/share/data

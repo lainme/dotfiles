@@ -360,14 +360,18 @@ function setup_system(){
     systemctl enable ufw
 }
 
-function setup_person(){
-    helper_symlink $USERHOME/Dropbox/home $USERHOME "/(\.config$|\.local$|\.cow$|\.ssh$|\.sage$|\.git$|\.gitignore$|\.subversion$)/d;p"
+function setup_person_symlink(){
+    helper_symlink $USERHOME/Dropbox/home $USERHOME "/(\.config$|\.local$|\.cow$|\.ssh$|\.sage$|\.git$|\.gitignore$|\.subversion$|software$)/d;p"
     helper_symlink $USERHOME/Dropbox/home/.config           $USERHOME/.config "/(dconf$|fcitx$|mpd$|nautilus$)/d;p"
     helper_symlink $USERHOME/Dropbox/home/.local/share/data $USERHOME/.local/share/data
     helper_symlink $USERHOME/Dropbox/home/.cow              $USERHOME/.cow
     helper_symlink $USERHOME/Dropbox/home/.ssh              $USERHOME/.ssh
     helper_symlink $USERHOME/Dropbox/home/.sage             $USERHOME/.sage
     helper_symlink $USERHOME/Dropbox/home/.subversion       $USERHOME/.subversion
+}
+
+function setup_person(){
+    setup_person_symlink
 
     # avatar
     mkdir -p /var/lib/AccountsService/icons/$USERHOME
