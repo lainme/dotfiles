@@ -112,7 +112,7 @@ function installer_stow() {
     $RUNASUSR mkdir -p $USERHOME/software/util/bin
     $RUNASUSR ln -sf $USERHOME/Dropbox/home/software/util/bin/$PKGNAME $USERHOME/software/util/bin/
     $RUNASUSR cd $USERHOME/software
-    $RUNASUSR stow util
+    $RUNASUSR $USERHOME/software/util/bin/stow util
 }
 
 function installer_cow() {
@@ -198,11 +198,6 @@ function installer_paraview() {
 
     echo "Installing $PKGNAME: please manual install from https://www.paraview.org/download/"
     read -p "Enter to continue"
-
-    $RUNASUSR mkdir -p $USERHOME/software/util/bin
-    $RUNASUSR ln -sf $USERHOME/Dropbox/home/software/util/bin/$PKGNAME $USERHOME/software/util/bin/
-    $RUNASUSR cd $USERHOME/software
-    $RUNASUSR stow util
 }
 
 function installer_rubber() {
@@ -280,7 +275,7 @@ function installer_skype() {
     yum install /tmp/skypeforlinux-64.rpm
 
     chmod 4755 /usr/share/skypeforlinux/chrome-sandbox
-    cp $USERHOME/Dropbox/software/skype/skypeforlinux /usr/bin/skypeforlinux
+    cp $USERHOME/Dropbox/home/software/skype/skypeforlinux /usr/bin/skypeforlinux
 }
 
 function installer_zoom() {
@@ -404,7 +399,26 @@ function setup_homeserv(){
     conf="$conf\nAllowGroups $USERNAME\nAllowUsers $USERNAME\n"
     conf="$conf\nSubsystem sftp /usr/lib/openssh/sftp-server"
     echo -e $conf > /etc/ssh/sshd_config
-    systemctl restart sshd
+    systemctl enable sshd
+    systemctl start sshd
+
+    # SSH tunnel
+    yum install autossh
+    $RUNASUSR ln -sf $USERHOME/Dropbox/home/software/util/bin/remote-exchange.sh $USERHOME/software/util/bin/
+    $RUNASUSR cd $USERHOME/software
+    $RUNASUSR stow $PKGNAME
+    cp $USERHOME/Dropbox/system/common/remote-exchange.service /etc/systemd/system/
+    systemctl enable remote-exchange.service
+    systemctl start remote-exchange.service
+
+    # Xrdp
+    yum install xrdp
+    yum install mate-desktop mate-settings-daemon
+    $RUNASUSR echo 'mate-session' > $USERHOME/.Xclients
+    cp $USERHOME/Dropbox/system/common/xrdp.ini /etc/xrdp/
+    cp $USERHOME/Dropbox/system/common/99-sysctl.conf /etc/sysctl.d/
+    systemctl enable xrdp
+    systemctl start xrdp
 }
 
 #--------------------------------------------------

@@ -25,4 +25,4 @@
 	proxy = socks5://127.0.0.1:1080
 	postBuffer = 2097152000
 [credential]
-	helper = gnome-keyring
+	helper = libsecret
