@@ -17,6 +17,23 @@ quitscr() {
     screen -X -S $1 quit
 }
 
+appendPath() {
+    if [ ! -d $2 ]; then
+        echo $1
+        return 0;
+    fi
+    if [ -z $1 ]; then
+        echo $2
+        return 0;
+    fi
+    result=$1
+    case ":$1:" in
+        *":$2:"*) :;; # already there
+        *) result="$2:$1";; # add to path
+    esac
+    echo $result
+}
+
 #--------------------------------------------------
 #environment variables
 #--------------------------------------------------
@@ -24,12 +41,17 @@ export PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "
 export TERM=xterm-256color
 export EDITOR=vim
 
-MY_PATH=$HOME/bin:$HOME/.local/bin:$PATH
-MY_INCLUDE=$HOME/.local/include:$INCLUDE
-MY_LIBRARY_PATH=$HOME/.local/lib:$LIBRARY_PATH
-MY_LD_LIBRARY_PATH=$HOME/.local/lib:$LD_LIBRARY_PATH
+MY_PATH=$(appendPath "$PATH" $HOME/bin)
+
+MY_PATH=$(appendPath "$PATH" $HOME/.local/bin)
+MY_LIBRARY_PATH=$(appendPath "$LIBRARY_PATH" $HOME/.local/lib)
+MY_LD_LIBRARY_PATH=$(appendPath "$LD_LIBRARY_PATH" $HOME/.local/lib)
+
+MY_PATH=$(appendPath "$PATH" /usr/local/bin)
+MY_LIBRARY_PATH=$(appendPath "$LIBRARY_PATH" /usr/local/lib)
+MY_LD_LIBRARY_PATH=$(appendPath "$LD_LIBRARY_PATH" /usr/local/lib)
+
 export PATH=${MY_PATH%:}
-export INCLUDE=${MY_INCLUDE%:}
 export LIBRARY_PATH=${MY_LIBRARY_PATH%:}
 export LD_LIBRARY_PATH=${MY_LD_LIBRARY_PATH%:}
 if [ ! -z $LD_LIBRARY_PATH ];then
