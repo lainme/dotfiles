@@ -101,18 +101,21 @@ function installer_stow() {
     $RUNASUSR wget -O /tmp/$PKGNAME.tar.gz https://ftp.gnu.org/gnu/$PKGNAME/$PKGNAME-latest.tar.gz
     $RUNASUSR tar -xf /tmp/$PKGNAME.tar.gz -C /tmp/$PKGNAME
 
-    $RUNASUSR mkdir -p $USERHOME/software
+    $RUNASUSR mkdir -p $USERHOME/software/$PKGNAME/share/$PKGNAME
     $RUNASUSR cd /tmp/$PKGNAME
     $RUNASUSR mkdir build
     $RUNASUSR cd build
-    $RUNASUSR ../configure --prefix=$USERHOME/software/$PKGNAME
+    $RUNASUSR ../configure --prefix=$USERHOME/software/$PKGNAME/share/$PKGNAME
     $RUNASUSR make
     $RUNASUSR make install
 
-    $RUNASUSR mkdir -p $USERHOME/software/util/bin
-    $RUNASUSR ln -sf $USERHOME/Dropbox/home/software/util/bin/$PKGNAME $USERHOME/software/util/bin/
+    $RUNASUSR mkdir -p $USERHOME/software/$PKGNAME/bin
+    $RUNASUSR echo '#!/bin/bash' > $USERHOME/software/$PKGNAME/bin/$PKGNAME
+    $RUNASUSR echo \\
+        '$HOME/software/stow/share/stow/bin/stow --target=$HOME/.local --ignore=INSTALL $@' \\
+        >> $USERHOME/software/$PKGNAME/bin/$PKGNAME
     $RUNASUSR cd $USERHOME/software
-    $RUNASUSR $USERHOME/software/util/bin/stow util
+    $RUNASUSR $USERHOME/software/$PKGNAME/bin/$PKGNAME $PKGNAME
 }
 
 function installer_cow() {
@@ -221,11 +224,6 @@ function installer_sage() {
 
     echo "Installing $PKGNAME: please manual install from http://mirror.hust.edu.cn/sagemath/linux/64bit/index.html"
     read -p "Enter to continue"
-
-    $RUNASUSR mkdir -p $USERHOME/software/util/bin
-    $RUNASUSR ln -sf $USERHOME/Dropbox/home/software/util/bin/$PKGNAME $USERHOME/software/util/bin/
-    $RUNASUSR cd $USERHOME/software
-    $RUNASUSR stow util
 }
 
 function installer_texlive() {
@@ -318,7 +316,7 @@ function setup_package(){
     #--------------------------------------------------
     yum install gdm nautilus xdg-user-dirs
     yum install gnome-backgrounds wqy-microhei-fonts dejavu-sans-mono-fonts
-    yum install gnome-tweak-tool gnome-shell-extension-top-icons
+    yum install gnome-tweak-tool
 
     #--------------------------------------------------
     # others

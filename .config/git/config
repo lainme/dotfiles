@@ -26,3 +26,5 @@
 	postBuffer = 2097152000
 [credential]
 	helper = libsecret
+[fetch]
+	prune = true

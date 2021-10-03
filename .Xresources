@@ -1,18 +1,18 @@
-!----------x配置----------
+!----------X配置----------
 Xft.dpi: 96
 Xft.rgba: rgb
 Xft.hinting: 1
 Xft.hintstyle: hintslight
 Xft.antialias: 1
 
-!----------xterm配置----------
+!----------Xterm配置----------
 !外观
 xterm*termName: xterm-256color
 xterm*geometry: 80x24
 xterm*scrollBar: false
 xterm*loginshell: false
-xterm*background: black
-xterm*foreground: white
+xterm*background: #2E3436
+xterm*foreground: #D3D7CF
 xterm*cursorBlink: true
 xterm*cursorOffTime: 600
 xterm*cursorOnTime: 600
@@ -25,9 +25,9 @@ xterm*utf8Title: true
 xterm*renderFont: true
 xterm*preeditType: Root
 xterm*xftAntialias: true
-xterm*faceName: Inconsolata*
+xterm*faceName: Inconsolata
 xterm*faceNameDoublesize: WenQuanYi MicroHei Mono
-xterm*faceSize: 14
+xterm*faceSize: 16
 
 !tango颜色搭配
 xterm*color0: #1e1e1e
