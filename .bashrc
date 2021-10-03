@@ -45,11 +45,15 @@ MY_PATH=$(appendPath "$PATH" $HOME/bin)
 
 MY_PATH=$(appendPath "$PATH" $HOME/.local/bin)
 MY_LIBRARY_PATH=$(appendPath "$LIBRARY_PATH" $HOME/.local/lib)
+MY_LIBRARY_PATH=$(appendPath "$LIBRARY_PATH" $HOME/.local/lib64)
 MY_LD_LIBRARY_PATH=$(appendPath "$LD_LIBRARY_PATH" $HOME/.local/lib)
+MY_LD_LIBRARY_PATH=$(appendPath "$LD_LIBRARY_PATH" $HOME/.local/lib64)
 
 MY_PATH=$(appendPath "$PATH" /usr/local/bin)
 MY_LIBRARY_PATH=$(appendPath "$LIBRARY_PATH" /usr/local/lib)
+MY_LIBRARY_PATH=$(appendPath "$LIBRARY_PATH" /usr/local/lib64)
 MY_LD_LIBRARY_PATH=$(appendPath "$LD_LIBRARY_PATH" /usr/local/lib)
+MY_LD_LIBRARY_PATH=$(appendPath "$LD_LIBRARY_PATH" /usr/local/lib64)
 
 export PATH=${MY_PATH%:}
 export LIBRARY_PATH=${MY_LIBRARY_PATH%:}
