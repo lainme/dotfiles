@@ -4,35 +4,35 @@
 #   1.  Inconsolata (https://www.archlinux.org/packages/community/any/ttf-inconsolata/)
 #   2.  Faenza-icon-theme (https://www.archlinux.org/packages/community/any/faenza-icon-theme/)
 #   3.  Stow (https://ftp.gnu.org/gnu/stow/stow-latest.tar.gz)
-#   4.  Cow (https://github.com/cyfdecyf/cow)
-#   5.  Doxygen (https://github.com/doxygen/doxygen.git)
-#   6.  GCC (http://mirror.bjtu.edu.cn/gnu/gcc)
-#   7.  GLIBC (https://ftp.gnu.org/gnu/glibc)
-#   8.  Mendeley (https://www.mendeley.com/download-desktop/)
-#   9.  Paraview (https://www.paraview.org/download/)
-#   10. Rubber (https://launchpad.net/rubber)
-#   11. Sage (https://www.sagemath.org/download-linux.html)
-#   12. Texlive (https://www.tug.org/texlive/acquire-netinstall.html)
-#   13. Dropbox (upgradedropbox.sh)
-#   14. Google chrome (https://www.google.com/chrome/)
-#   15. WPS (http://www.wps.cn/product/wpslinux/)
-#   16. Teamviewer (https://www.teamviewer.com/en-us/download/linux/)
-#   17. Skype (https://repo.skype.com/latest)
-#   18. Zoom (https://us02web.zoom.us/download)
-#   19. Mailspring (https://getmailspring.com/download)
-#   20. Graphical driver (epel-multimedia)
+#   4.  ADB (https://developer.android.com/studio/releases/platform-tools)
+#   5.  Cow (https://github.com/cyfdecyf/cow)
+#   6.  Doxygen (https://github.com/doxygen/doxygen.git)
+#   7.  GCC (http://mirror.bjtu.edu.cn/gnu/gcc)
+#   8.  GLIBC (https://ftp.gnu.org/gnu/glibc)
+#   9.  Mendeley (https://www.mendeley.com/download-desktop/)
+#   10  Paraview (https://www.paraview.org/download/)
+#   11. Rubber (https://launchpad.net/rubber)
+#   12. Sage (https://www.sagemath.org/download-linux.html)
+#   13. Texlive (https://www.tug.org/texlive/acquire-netinstall.html)
+#   14. Dropbox (upgradedropbox.sh)
+#   15. Google chrome (https://www.google.com/chrome/)
+#   16. WPS (http://www.wps.cn/product/wpslinux/)
+#   17. Teamviewer (https://www.teamviewer.com/en-us/download/linux/)
+#   18. Skype (https://repo.skype.com/latest)
+#   19. Zoom (https://us02web.zoom.us/download)
+#   20. Mailspring (https://getmailspring.com/download)
 
 #--------------------------------------------------
 # helper functions
 #--------------------------------------------------
-function helper_command(){
+function helper_command() {
     echo -e "DESCRIPTION: CentOS installation script. Most functionalities requires root permissions"
     echo -e "USAGE: autoinstall-centos.sh FUNCTION-NAME"
     echo -e ""
     echo -e "\tconfigure   - configure system"
 }
 
-function helper_symlink(){
+function helper_symlink() {
     args=("$@")
 
     if [ -z $3 ];then
@@ -68,7 +68,7 @@ function helper_symlink(){
 #--------------------------------------------------
 # functions for manual installation
 #--------------------------------------------------
-function installer_ttf-inconsolata(){
+function installer_ttf-inconsolata() {
     PKGNAME=ttf-inconsolata
 
     rm -rf /tmp/$PKGNAME*
@@ -80,7 +80,7 @@ function installer_ttf-inconsolata(){
     cp -r /tmp/$PKGNAME/usr/share/fonts/* /usr/share/fonts/
 }
 
-function installer_faenza-icon-theme(){
+function installer_faenza-icon-theme() {
     PKGNAME=faenza-icon-theme
 
     rm -rf /tmp/$PKGNAME*
@@ -96,26 +96,30 @@ function installer_faenza-icon-theme(){
 function installer_stow() {
     PKGNAME=stow
 
-    $RUNASUSR rm -rf /tmp/$PKGNAME*
-    $RUNASUSR mkdir -p /tmp/$PKGNAME
-    $RUNASUSR wget -O /tmp/$PKGNAME.tar.gz https://ftp.gnu.org/gnu/$PKGNAME/$PKGNAME-latest.tar.gz
-    $RUNASUSR tar -xf /tmp/$PKGNAME.tar.gz -C /tmp/$PKGNAME
+    $RUNASUSR mkdir -p $USERHOME/software/util/bin
+    $RUNASUSR ln -sf $USERHOME/Dropbox/home/software/util/bin/$PKGNAME $USERHOME/software/util/bin/
+    $RUNASUSR cd $USERHOME/software
+    $RUNASUSR util/bin/$PKGNAME util
+}
 
-    $RUNASUSR mkdir -p $USERHOME/software/$PKGNAME/share/$PKGNAME
-    $RUNASUSR cd /tmp/$PKGNAME
-    $RUNASUSR mkdir build
-    $RUNASUSR cd build
-    $RUNASUSR ../configure --prefix=$USERHOME/software/$PKGNAME/share/$PKGNAME
-    $RUNASUSR make
-    $RUNASUSR make install
+function installer_android() {
+    PKGNAME=android
+
+    snap install scrcpy
 
     $RUNASUSR mkdir -p $USERHOME/software/$PKGNAME/bin
-    $RUNASUSR echo '#!/bin/bash' > $USERHOME/software/$PKGNAME/bin/$PKGNAME
-    $RUNASUSR echo \\
-        '$HOME/software/stow/share/stow/bin/stow --target=$HOME/.local --ignore=INSTALL $@' \\
-        >> $USERHOME/software/$PKGNAME/bin/$PKGNAME
+    $RUNASUSR mkdir -p $USERHOME/software/$PKGNAME/share/$PKGNAME
+    $RUNASUSR echo '#!/bin/bash' > $USERHOME/software/$PKGNAME/bin/adb
+    $RUNASUSR echo '$HOME/software/android/share/android/adb $@' >> $USERHOME/software/$PKGNAME/bin/adb
+    $RUNASUSR echo '#!/bin/bash' > $USERHOME/software/$PKGNAME/bin/android-connect
+    $RUNASUSR echo 'ADB=$HOME/software/android/share/android/adb scrcpy $@' >> $USERHOME/software/$PKGNAME/bin/android-connect
     $RUNASUSR cd $USERHOME/software
-    $RUNASUSR $USERHOME/software/$PKGNAME/bin/$PKGNAME $PKGNAME
+    $RUNASUSR stow $PKGNAME
+
+    echo "Installing $PKGNAME: please install the package manually"
+    echo "PATH: $USERHOME/software/$PKGNAME/share/$PKGNAME"
+    echo "URL: https://developer.android.com/studio/releases/platform-tools"
+    read -p "Enter to continue"
 }
 
 function installer_cow() {
@@ -199,8 +203,22 @@ function installer_mendeley() {
 function installer_paraview() {
     PKGNAME=paraview
 
-    echo "Installing $PKGNAME: please manual install from https://www.paraview.org/download/"
+    $RUNASUSR mkdir -p $USERHOME/software/$PKGNAME/bin
+    $RUNASUSR mkdir -p $USERHOME/software/$PKGNAME/share/$PKGNAME
+    $RUNASUSR echo '#!/bin/bash' > $USERHOME/software/$PKGNAME/bin/$PKGNAME
+    $RUNASUSR echo 'cd $HOME/software/paraview/share/paraview/bin/' >> $USERHOME/software/$PKGNAME/bin/$PKGNAME
+    $RUNASUSR echo './paraview $@' >> $USERHOME/software/$PKGNAME/bin/$PKGNAME
+
+    echo "Installing $PKGNAME: please install the package manually"
+    echo "PATH: $USERHOME/software/$PKGNAME/share/$PKGNAME"
+    echo "URL: https://www.paraview.org/download/"
     read -p "Enter to continue"
+
+    $RUNASUSR cd $USERHOME/software/$PKGNAME/share
+    $RUNASUSR ln -s $PKGNAME/share/applications .
+    $RUNASUSR ln -s $PKGNAME/share/icons .
+    $RUNASUSR cd $USERHOME/software
+    $RUNASUSR stow $PKGNAME
 }
 
 function installer_rubber() {
@@ -222,14 +240,23 @@ function installer_rubber() {
 function installer_sage() {
     PKGNAME=sage
 
-    echo "Installing $PKGNAME: please manual install from http://mirror.hust.edu.cn/sagemath/linux/64bit/index.html"
+    $RUNASUSR mkdir -p $USERHOME/software/$PKGNAME/bin
+    $RUNASUSR mkdir -p $USERHOME/software/$PKGNAME/share/$PKGNAME
+    $RUNASUSR echo '#!/bin/bash' > $USERHOME/software/$PKGNAME/bin/$PKGNAME
+    $RUNASUSR echo '$HOME/software/sage/share/sage/bin/sage $@' >> $USERHOME/software/$PKGNAME/bin/$PKGNAME
+
+    echo "Installing $PKGNAME: please install the package manually"
+    echo "PATH: $USERHOME/software/$PKGNAME/share/$PKGNAME"
+    echo "URL: http://mirror.hust.edu.cn/sagemath/linux/64bit/index.html"
     read -p "Enter to continue"
 }
 
 function installer_texlive() {
     PKGNAME=texlive
 
-    echo "Installing $PKGNAME: please manual install from https://www.tug.org/texlive/acquire-netinstall.html"
+    echo "Installing $PKGNAME: please install the package manually"
+    echo "PATH: $USERHOME/software/$PKGNAME"
+    echo "URL: https://www.tug.org/texlive/acquire-netinstall.html"
     read -p "Enter to continue"
 }
 
@@ -247,21 +274,24 @@ function installer_dropbox() {
 function installer_chrome() {
     PKGNAME=google-chrome
 
-    echo "Installing $PKGNAME: please manual install from https://www.google.com/chrome/"
+    echo "Installing $PKGNAME: please install the package manually"
+    echo "URL: https://www.google.com/chrome/"
     read -p "Enter to continue"
 }
 
 function installer_wps() {
     PKGNAME=wps-office
 
-    echo "Installing $PKGNAME: please manual install from http://www.wps.cn/product/wpslinux/"
+    echo "Installing $PKGNAME: please install the package manually"
+    echo "URL: http://www.wps.cn/product/wpslinux/"
     read -p "Enter to continue"
 }
 
 function installer_teamviewer() {
     PKGNAME=teamviewer
 
-    echo "Installing $PKGNAME: please manual install from https://www.teamviewer.com/en-us/download/linux/"
+    echo "Installing $PKGNAME: please install the package manually"
+    echo "URL: https://www.teamviewer.com/en-us/download/linux/"
     read -p "Enter to continue"
 }
 
@@ -279,14 +309,16 @@ function installer_skype() {
 function installer_zoom() {
     PKGNAME=zoom
 
-    echo "Installing $PKGNAME: please manual install from https://us02web.zoom.us/download"
+    echo "Installing $PKGNAME: please install the package manually"
+    echo "URL: https://us02web.zoom.us/download"
     read -p "Enter to continue"
 }
 
 function installer_mailspring() {
     PKGNAME=mailspring
 
-    echo "Installing $PKGNAME: please manual install from https://getmailspring.com/download"
+    echo "Installing $PKGNAME: please install the package manually"
+    echo "URL: https://getmailspring.com/download"
     read -p "Enter to continue"
 }
 
@@ -332,6 +364,7 @@ function setup_package(){
     yum install firefox flash-plugin # browser
     yum install filezilla subversion subversion-gnome git-svn # file transfers
     yum install xsel # script
+    yum install stow snapd # package management
 }
 
 function setup_system(){
@@ -348,9 +381,11 @@ function setup_system(){
     # ufw
     ufw enable
     ufw default deny
-
-    # systemd services
     systemctl enable ufw
+
+    # snapd
+    systemctl enable --now snapd.socket
+    ln -s /var/lib/snapd/snap /snap
 }
 
 function setup_person_symlink(){
