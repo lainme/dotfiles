@@ -450,7 +450,8 @@ function setup_homeserv(){
     yum install xrdp
     yum install mate-desktop mate-settings-daemon
     $RUNASUSR echo 'mate-session' > $USERHOME/.Xclients
-    cp $USERHOME/Dropbox/system/common/xrdp.ini /etc/xrdp/
+    cp $USERHOME/Dropbox/system/xrdp/xrdp.ini /etc/xrdp/
+    cp $USERHOME/Dropbox/system/xrdp/sesman.ini /etc/xrdp/
     cp $USERHOME/Dropbox/system/common/99-sysctl.conf /etc/sysctl.d/
     systemctl enable xrdp
     systemctl start xrdp
