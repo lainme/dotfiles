@@ -29,3 +29,6 @@ ln -s /lib64/libXxf86vm.so.1 $dir
 ln -s /lib64/libpcre.so.1 $dir
 ln -s /lib64/libselinux.so.1 $dir
 ln -s /lib64/libXau.so.6 $dir
+
+killall dropbox
+dropboxd
