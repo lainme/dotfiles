@@ -299,11 +299,13 @@ function installer_skype() {
     PKGNAME=skype
 
     $RUNASUSR wget -O /tmp/skypeforlinux-64.rpm https://repo.skype.com/latest/skypeforlinux-64.rpm
-
     yum install /tmp/skypeforlinux-64.rpm
 
     chmod 4755 /usr/share/skypeforlinux/chrome-sandbox
-    cp $USERHOME/Dropbox/home/software/skype/skypeforlinux /usr/bin/skypeforlinux
+
+    $RUNASUSR ln -sf $USERHOME/Dropbox/home/software/$PKGNAME $USERHOME/software/
+    $RUNASUSR cd $USERHOME/software
+    $RUNASUSR stow $PKGNAME
 }
 
 function installer_zoom() {
