@@ -13,12 +13,12 @@
 #   10  Paraview (https://www.paraview.org/download/)
 #   11. Rubber (https://launchpad.net/rubber)
 #   12. Sage (https://www.sagemath.org/download-linux.html)
-#   13. Texlive (https://www.tug.org/texlive/acquire-netinstall.html)
-#   14. Dropbox (upgradedropbox.sh)
-#   15. Google chrome (https://www.google.com/chrome/)
-#   16. WPS (http://www.wps.cn/product/wpslinux/)
-#   17. Teamviewer (https://www.teamviewer.com/en-us/download/linux/)
-#   18. Skype (https://repo.skype.com/latest)
+#   13. Skype (https://repo.skype.com/latest)
+#   14. Texlive (https://www.tug.org/texlive/acquire-netinstall.html)
+#   15. Dropbox (upgradedropbox.sh)
+#   16. Google chrome (https://www.google.com/chrome/)
+#   17. WPS (http://www.wps.cn/product/wpslinux/)
+#   18. Teamviewer (https://www.teamviewer.com/en-us/download/linux/)
 #   19. Zoom (https://us02web.zoom.us/download)
 #   20. Mailspring (https://getmailspring.com/download)
 
@@ -251,6 +251,19 @@ function installer_sage() {
     read -p "Enter to continue"
 }
 
+function installer_skype() {
+    PKGNAME=skype
+
+    $RUNASUSR wget -O /tmp/skypeforlinux-64.rpm https://repo.skype.com/latest/skypeforlinux-64.rpm
+    yum install /tmp/skypeforlinux-64.rpm
+
+    chmod 4755 /usr/share/skypeforlinux/chrome-sandbox
+
+    $RUNASUSR ln -sf $USERHOME/Dropbox/home/software/$PKGNAME $USERHOME/software/
+    $RUNASUSR cd $USERHOME/software
+    $RUNASUSR stow $PKGNAME
+}
+
 function installer_texlive() {
     PKGNAME=texlive
 
@@ -293,19 +306,6 @@ function installer_teamviewer() {
     echo "Installing $PKGNAME: please install the package manually"
     echo "URL: https://www.teamviewer.com/en-us/download/linux/"
     read -p "Enter to continue"
-}
-
-function installer_skype() {
-    PKGNAME=skype
-
-    $RUNASUSR wget -O /tmp/skypeforlinux-64.rpm https://repo.skype.com/latest/skypeforlinux-64.rpm
-    yum install /tmp/skypeforlinux-64.rpm
-
-    chmod 4755 /usr/share/skypeforlinux/chrome-sandbox
-
-    $RUNASUSR ln -sf $USERHOME/Dropbox/home/software/$PKGNAME $USERHOME/software/
-    $RUNASUSR cd $USERHOME/software
-    $RUNASUSR stow $PKGNAME
 }
 
 function installer_zoom() {
