@@ -17,6 +17,19 @@ quitscr() {
     screen -X -S $1 quit
 }
 
+removePath() {
+    if [ ! -d $2 ]; then
+        echo $1
+        return 0;
+    fi
+    if [ -z $1 ]; then
+        echo $2
+        return 0;
+    fi
+    parsed=$(echo "$1" | sed -e "s|:$2[^:]*||g")
+    echo $parsed
+}
+
 appendPath() {
     if [ ! -d $2 ]; then
         echo $1
