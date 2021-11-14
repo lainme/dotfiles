@@ -26,7 +26,7 @@ set path=.,, "设置path
 set spellsuggest=best,10 "最佳的10个拼写建议
 set spellfile=$HOME/.vim/spell/en.utf-8.add "设置拼写检查文件
 set undodir=$HOME/.vim-undo "设置undodir
-set directory=/tmp "设置swp文件目录
+set directory=$HOME/.tmp "设置swp文件目录
 set formatoptions+=m "中文断行
 set t_ut= "禁用背景色刷新
 let mapleader="," "设置leader键
@@ -55,7 +55,7 @@ set statusline=%<%h%m%r\ %f%=[%{&filetype},%{&fileencoding},%{&fileformat}]%k\ %
 
 "备份设置
 set backup
-set backupdir=/tmp
+set backupdir=$HOME/.tmp
 
 "用四个空格代替<tab>
 set expandtab smarttab
@@ -158,7 +158,7 @@ let fortran_free_source=1
 
 autocmd FileType fortran
     \ setlocal foldmethod=syntax |
-    \ setlocal makeprg=gfortran\ -ffree-line-length-0\ -o\ %<\ %\ -J\ /tmp |
+    \ setlocal makeprg=gfortran\ -ffree-line-length-0\ -o\ %<\ %\ -J\ $HOME/.tmp |
     \ setlocal efm=%E%f:%l.%c:,%E%f:%l:,%C,%C%p%*[0123456789^],%ZError:\ %m,%C%.%#
 
 "----------Python----------
