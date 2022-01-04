@@ -18,12 +18,6 @@
 	default = matching
 [color]
         diff = auto
-[http]
-	proxy = http://127.0.0.1:8707
-	postBuffer = 2097152000
-[https]
-	proxy = http://127.0.0.1:8707
-	postBuffer = 2097152000
 [credential]
 	helper = libsecret
 [fetch]
