@@ -56,14 +56,12 @@ export LIBRARY_PATH=$(appendPath "$LIBRARY_PATH" /usr/local/lib)
 export LIBRARY_PATH=$(appendPath "$LIBRARY_PATH" /usr/local/lib64)
 export LD_LIBRARY_PATH=$(appendPath "$LD_LIBRARY_PATH" /usr/local/lib)
 export LD_LIBRARY_PATH=$(appendPath "$LD_LIBRARY_PATH" /usr/local/lib64)
-export XDG_DATA_DIRS=$(appendPath "$XDG_DATA_DIRS" /usr/local/share)
 
 export PATH=$(appendPath "$PATH" $HOME/.local/bin)
 export LIBRARY_PATH=$(appendPath "$LIBRARY_PATH" $HOME/.local/lib)
 export LIBRARY_PATH=$(appendPath "$LIBRARY_PATH" $HOME/.local/lib64)
 export LD_LIBRARY_PATH=$(appendPath "$LD_LIBRARY_PATH" $HOME/.local/lib)
 export LD_LIBRARY_PATH=$(appendPath "$LD_LIBRARY_PATH" $HOME/.local/lib64)
-export XDG_DATA_DIRS=$(appendPath "$XDG_DATA_DIRS" $HOME/.local/share)
 
 export PATH=$(appendPath "$PATH" $HOME/bin)
 
