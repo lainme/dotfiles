@@ -7,9 +7,9 @@
 # 05. Copy pacman files to the target (offline only)
 # 06. Install package: pacstrap /mnt base base-devel
 # 07. Generate fstab: genfstab -U /mnt >> /mnt/etc/fstab
-# 08. Copy Dropbox folder and this script to /mnt with cp -rp
+# 08. Copy Config folder and this script to /mnt with cp -rp
 # 09. Chroot: arch-chroot /mnt
-# 10. Move Dropbox folder and this cript to /mnt/tmp
+# 10. Move Config folder and this cript to /mnt/tmp
 # 11. Modify this script as appropriate.
 # 12. Run configure_base.
 # 13. Exit chroot and reboot
@@ -103,7 +103,7 @@ function setup_package(){
     $BUILDCMD -S eog gimp inkscape # image
     $BUILDCMD -S firefox google-chrome flashplugin # browser
     $BUILDCMD -S texlive-latexextra texlive-pictures texlive-publishers wps-office # office
-    $BUILDCMD -S dropbox dropbox-cli nautilus-dropbox rsync wget aria2 git gvfs-mtp # file transfers
+    $BUILDCMD -S rsync wget aria2 git gvfs-mtp # file transfers
     $BUILDCMD -S scrot xsel setconf # script
     $BUILDCMD -S wine wine-mono wine_gecko winetricks # wine
     $BUILDCMD -S sagemath sage-notebook # sage
@@ -123,13 +123,13 @@ function setup_package(){
 }
 
 function setup_system(){
-    cp -r $USERHOME/Dropbox/system/fontconfig/* /etc/fonts/conf.avail
-    cp -r $USERHOME/Dropbox/system/fontconfig/* /etc/fonts/conf.d
+    cp -r $USERHOME/Config/system/fontconfig/* /etc/fonts/conf.avail
+    cp -r $USERHOME/Config/system/fontconfig/* /etc/fonts/conf.d
 
     # other
-    cp $USERHOME/Dropbox/system/common/nobeep.conf /etc/modprobe.d/nobeep.conf
-    cp $USERHOME/Dropbox/system/common/netfilter.conf /etc/modules-load.d/netfilter.conf
-    cp $USERHOME/Dropbox/system/common/wgetrc /etc/wgetrc
+    cp $USERHOME/Config/system/common/nobeep.conf /etc/modprobe.d/nobeep.conf
+    cp $USERHOME/Config/system/common/netfilter.conf /etc/modules-load.d/netfilter.conf
+    cp $USERHOME/Config/system/common/wgetrc /etc/wgetrc
 
     # tranditional network name
     ln -s /dev/null /etc/udev/rules.d/80-net-setup-link.rules
@@ -151,15 +151,14 @@ function setup_system(){
 }
 
 function setup_person_symlink(){
-    helper_symlink $USERHOME/Dropbox/home $USERHOME "/(\.config$|\.cow$|\.git$|\.gitignore$|\.local$|\.sage$|software$|\.ssh$|\.subversion$)/d;p"
-    helper_symlink $USERHOME/Dropbox/home/.config                   $USERHOME/.config
-    helper_symlink $USERHOME/Dropbox/home/.cow                      $USERHOME/.cow
-    helper_symlink $USERHOME/Dropbox/home/.local/share              $USERHOME/.local/share "/(data$|Steam$|gnome-shell$)/d;p"
-    helper_symlink $USERHOME/Dropbox/home/.local/share/data         $USERHOME/.local/share/data
-    helper_symlink $USERHOME/Dropbox/home/.local/share/gnome-shell  $USERHOME/.local/share/gnome-shell
-    helper_symlink $USERHOME/Dropbox/home/.sage                     $USERHOME/.sage
-    helper_symlink $USERHOME/Dropbox/home/.ssh                      $USERHOME/.ssh
-    helper_symlink $USERHOME/Dropbox/home/.subversion               $USERHOME/.subversion
+    helper_symlink $USERHOME/Config/home $USERHOME "/(\.config$|\.cow$|\.git$|\.gitignore$|\.local$|\.sage$|software$|\.ssh$|\.subversion$)/d;p"
+    helper_symlink $USERHOME/Config/home/.config                   $USERHOME/.config
+    helper_symlink $USERHOME/Config/home/.cow                      $USERHOME/.cow
+    helper_symlink $USERHOME/Config/home/.local/share              $USERHOME/.local/share "/(gnome-shell$)/d;p"
+    helper_symlink $USERHOME/Config/home/.local/share/gnome-shell  $USERHOME/.local/share/gnome-shell
+    helper_symlink $USERHOME/Config/home/.sage                     $USERHOME/.sage
+    helper_symlink $USERHOME/Config/home/.ssh                      $USERHOME/.ssh
+    helper_symlink $USERHOME/Config/home/.subversion               $USERHOME/.subversion
 }
 
 function setup_person(){
@@ -169,8 +168,8 @@ function setup_person(){
     setup_person_symlink
 
     # avatar
-    cp $USERHOME/Dropbox/system/account/avatar-gnome.png /var/lib/AccountsService/icons/$USERNAME
-    cp $USERHOME/Dropbox/system/account/gnome-account.conf /var/lib/AccountsService/users/$USERNAME
+    cp $USERHOME/Config/system/account/avatar-gnome.png /var/lib/AccountsService/icons/$USERNAME
+    cp $USERHOME/Config/system/account/gnome-account.conf /var/lib/AccountsService/users/$USERNAME
 
     # fix background locating
     ln -sf $USERHOME/Pictures/Wallpapers $USERHOME/.cache/gnome-control-center/backgrounds
@@ -222,7 +221,7 @@ function configure_base(){
     #--------------------------------------------------
     # configuration files
     pacman -S --noconfirm wget
-    cp /tmp/Dropbox/system/common/pacman.conf /etc/pacman.conf
+    cp /tmp/Config/system/common/pacman.conf /etc/pacman.conf
     vi /etc/pacman.d/mirrorlist
 
     # architecture change
@@ -232,7 +231,7 @@ function configure_base(){
 
     # install necessary packages
     pacman -S --noconfirm linux-headers sudo yajl yaourt
-    cp /tmp/Dropbox/system/common/makepkg.conf /etc/makepkg.conf
+    cp /tmp/Config/system/common/makepkg.conf /etc/makepkg.conf
 
     #--------------------------------------------------
     # configure user
@@ -295,14 +294,14 @@ function configure_base(){
         grub-install --target=i386-pc --recheck $GRUBDEVI
 
         # configure
-        cp /tmp/Dropbox/system/common/grub.conf /etc/default/grub
+        cp /tmp/Config/system/common/grub.conf /etc/default/grub
         grub-mkconfig -o /boot/grub/grub.cfg
     fi
 
     #--------------------------------------------------
-    # prepare Dropbox directory
+    # prepare Config directory
     #--------------------------------------------------
-    $RUNASUSR cp -r /tmp/Dropbox $USERHOME/Dropbox
+    $RUNASUSR cp -r /tmp/Config $USERHOME/Config
     $RUNASUSR cp /tmp/autoinstall-archlinux.sh $USERHOME/
 }
 

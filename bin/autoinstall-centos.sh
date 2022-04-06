@@ -15,12 +15,11 @@
 #   12. Sage (https://www.sagemath.org/download-linux.html)
 #   13. Skype (https://repo.skype.com/latest)
 #   14. Texlive (https://www.tug.org/texlive/acquire-netinstall.html)
-#   15. Dropbox (upgradedropbox.sh)
-#   16. Google chrome (https://www.google.com/chrome/)
-#   17. WPS (http://www.wps.cn/product/wpslinux/)
-#   18. Teamviewer (https://www.teamviewer.com/en-us/download/linux/)
-#   19. Zoom (https://us02web.zoom.us/download)
-#   20. Mailspring (https://getmailspring.com/download)
+#   15. Google chrome (https://www.google.com/chrome/)
+#   16. WPS (http://www.wps.cn/product/wpslinux/)
+#   17. Teamviewer (https://www.teamviewer.com/en-us/download/linux/)
+#   18. Zoom (https://us02web.zoom.us/download)
+#   19. Mailspring (https://getmailspring.com/download)
 
 #--------------------------------------------------
 # helper functions
@@ -97,7 +96,7 @@ function installer_stow() {
     PKGNAME=stow
 
     $RUNASUSR mkdir -p $USERHOME/software/util/bin
-    $RUNASUSR ln -sf $USERHOME/Dropbox/home/software/util/bin/$PKGNAME $USERHOME/software/util/bin/
+    $RUNASUSR ln -sf $USERHOME/Config/home/software/util/bin/$PKGNAME $USERHOME/software/util/bin/
     $RUNASUSR cd $USERHOME/software
     $RUNASUSR util/bin/$PKGNAME util
 }
@@ -170,7 +169,7 @@ function installer_gcc() {
     $RUNASUSR make install
 
     $RUNASUSR mkdir -p $USERHOME/software/modulefiles/compiler
-    $RUNASUSR ln -sf $USERHOME/Dropbox/home/software/modulefiles/compiler/$PKGNAME $USERHOME/software/modulefiles/compiler/
+    $RUNASUSR ln -sf $USERHOME/Config/home/software/modulefiles/compiler/$PKGNAME $USERHOME/software/modulefiles/compiler/
 }
 
 function installer_glibc() {
@@ -259,7 +258,7 @@ function installer_skype() {
 
     chmod 4755 /usr/share/skypeforlinux/chrome-sandbox
 
-    $RUNASUSR ln -sf $USERHOME/Dropbox/home/software/$PKGNAME $USERHOME/software/
+    $RUNASUSR ln -sf $USERHOME/Config/home/software/$PKGNAME $USERHOME/software/
     $RUNASUSR cd $USERHOME/software
     $RUNASUSR stow $PKGNAME
 }
@@ -271,17 +270,6 @@ function installer_texlive() {
     echo "PATH: $USERHOME/software/$PKGNAME"
     echo "URL: https://www.tug.org/texlive/acquire-netinstall.html"
     read -p "Enter to continue"
-}
-
-function installer_dropbox() {
-    PKGNAME=dropbox
-
-    $RUNASUSR $USERHOME/bin/upgradedropbox.sh
-
-    $RUNASUSR mkdir -p $USERHOME/software/util/bin
-    $RUNASUSR ln -sf $USERHOME/Dropbox/home/software/util/bin/dropboxd $USERHOME/software/util/bin/
-    $RUNASUSR cd $USERHOME/software
-    $RUNASUSR stow util
 }
 
 function installer_chrome() {
@@ -370,8 +358,8 @@ function setup_package(){
 }
 
 function setup_system(){
-    cp -r $USERHOME/Dropbox/system/fontconfig/* /etc/fonts/conf.d
-    cp -r $USERHOME/Dropbox/system/common/wgetrc /etc/wgetrc
+    cp -r $USERHOME/Config/system/fontconfig/* /etc/fonts/conf.d
+    cp -r $USERHOME/Config/system/common/wgetrc /etc/wgetrc
 
     # network
     sed -i "s/\(GRUB_CMDLINE_LINUX.*\)\"/\1 net.ifnames=0 biosdevname=0\"/" /etc/default/grub
@@ -391,13 +379,12 @@ function setup_system(){
 }
 
 function setup_person_symlink(){
-    helper_symlink $USERHOME/Dropbox/home $USERHOME "/(\.config$|\.cow$|\.git$|\.gitignore$|\.local$|\.sage$|software$|\.ssh$|\.subversion$)/d;p"
-    helper_symlink $USERHOME/Dropbox/home/.config           $USERHOME/.config "/(dconf$|fcitx$|mpd$|nautilus$)/d;p"
-    helper_symlink $USERHOME/Dropbox/home/.cow              $USERHOME/.cow
-    helper_symlink $USERHOME/Dropbox/home/.local/share/data $USERHOME/.local/share/data
-    helper_symlink $USERHOME/Dropbox/home/.sage             $USERHOME/.sage
-    helper_symlink $USERHOME/Dropbox/home/.ssh              $USERHOME/.ssh
-    helper_symlink $USERHOME/Dropbox/home/.subversion       $USERHOME/.subversion
+    helper_symlink $USERHOME/Config/home $USERHOME "/(\.config$|\.cow$|\.git$|\.gitignore$|\.local$|\.sage$|software$|\.ssh$|\.subversion$)/d;p"
+    helper_symlink $USERHOME/Config/home/.config           $USERHOME/.config "/(dconf$|fcitx$|mpd$|nautilus$)/d;p"
+    helper_symlink $USERHOME/Config/home/.cow              $USERHOME/.cow
+    helper_symlink $USERHOME/Config/home/.sage             $USERHOME/.sage
+    helper_symlink $USERHOME/Config/home/.ssh              $USERHOME/.ssh
+    helper_symlink $USERHOME/Config/home/.subversion       $USERHOME/.subversion
 }
 
 function setup_person(){
@@ -405,7 +392,7 @@ function setup_person(){
 
     # avatar
     mkdir -p /var/lib/AccountsService/icons/$USERHOME
-    cp $USERHOME/Dropbox/home/Pictures/avatar/avatar-gnome.png /var/lib/AccountsService/icons/$USERNAME
+    cp $USERHOME/Pictures/avatar/avatar-gnome.png /var/lib/AccountsService/icons/$USERNAME
 
     # fix background locating
     $RUNASUSR mkdir -p $USERHOME/.cache/gnome-control-center
@@ -421,7 +408,7 @@ function setup_person(){
 
     # shadowsocks addon
     $RUNASUSR mkdir -p $USERHOME/software/
-    $RUNASUSR ln -sf $USERHOME/Dropbox/home/software/v2ray-plugin $USERHOME/software/
+    $RUNASUSR ln -sf $USERHOME/Config/home/software/v2ray-plugin $USERHOME/software/
 }
 
 function setup_homeserv(){
@@ -439,10 +426,10 @@ function setup_homeserv(){
 
     # SSH tunnel
     yum install autossh
-    $RUNASUSR ln -sf $USERHOME/Dropbox/home/software/util/bin/remote-exchange.sh $USERHOME/software/util/bin/
+    $RUNASUSR ln -sf $USERHOME/Config/home/software/util/bin/remote-exchange.sh $USERHOME/software/util/bin/
     $RUNASUSR cd $USERHOME/software
     $RUNASUSR stow $PKGNAME
-    cp $USERHOME/Dropbox/system/common/remote-exchange.service /etc/systemd/system/
+    cp $USERHOME/Config/system/common/remote-exchange.service /etc/systemd/system/
     systemctl enable remote-exchange.service
     systemctl start remote-exchange.service
 
@@ -450,9 +437,9 @@ function setup_homeserv(){
     yum install xrdp
     yum install mate-desktop mate-settings-daemon
     $RUNASUSR echo 'mate-session' > $USERHOME/.Xclients
-    cp $USERHOME/Dropbox/system/xrdp/xrdp.ini /etc/xrdp/
-    cp $USERHOME/Dropbox/system/xrdp/sesman.ini /etc/xrdp/
-    cp $USERHOME/Dropbox/system/common/99-sysctl.conf /etc/sysctl.d/
+    cp $USERHOME/Config/system/xrdp/xrdp.ini /etc/xrdp/
+    cp $USERHOME/Config/system/xrdp/sesman.ini /etc/xrdp/
+    cp $USERHOME/Config/system/common/99-sysctl.conf /etc/sysctl.d/
     systemctl enable xrdp
     systemctl start xrdp
 }
