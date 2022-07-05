@@ -68,8 +68,9 @@ autocmd BufReadPost *
         \ exe "normal g`\"" |
     \ endif
 
-"自动删除多余的空格
-autocmd BufWritePre * :%s/\s\+$//e
+"删除多余的空格
+"autocmd BufWritePre * :%s/\s\+$//e
+nnoremap <Leader>ss :%s/\s\+$//e<CR>
 
 "quickfix设置
 autocmd QuickFixCmdPost * :cw

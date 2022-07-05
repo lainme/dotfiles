@@ -7,19 +7,18 @@
 #   4.  ADB (https://developer.android.com/studio/releases/platform-tools)
 #   5.  Cow (https://github.com/cyfdecyf/cow)
 #   6.  Doxygen (https://github.com/doxygen/doxygen.git)
-#   7.  GCC (http://mirror.bjtu.edu.cn/gnu/gcc)
-#   8.  GLIBC (https://ftp.gnu.org/gnu/glibc)
-#   9.  Mendeley (https://www.mendeley.com/download-desktop/)
-#   10  Paraview (https://www.paraview.org/download/)
-#   11. Rubber (https://launchpad.net/rubber)
-#   12. Sage (https://www.sagemath.org/download-linux.html)
-#   13. Skype (https://repo.skype.com/latest)
-#   14. Texlive (https://www.tug.org/texlive/acquire-netinstall.html)
-#   15. Google chrome (https://www.google.com/chrome/)
-#   16. WPS (http://www.wps.cn/product/wpslinux/)
-#   17. Teamviewer (https://www.teamviewer.com/en-us/download/linux/)
-#   18. Zoom (https://us02web.zoom.us/download)
-#   19. Mailspring (https://getmailspring.com/download)
+#   7.  GLIBC (https://ftp.gnu.org/gnu/glibc)
+#   8.  Mendeley (https://www.mendeley.com/download-desktop/)
+#   9.  Paraview (https://www.paraview.org/download/)
+#   10. Rubber (https://launchpad.net/rubber)
+#   11. Sage (https://www.sagemath.org/download-linux.html)
+#   12. Skype (https://repo.skype.com/latest)
+#   13. Texlive (https://www.tug.org/texlive/acquire-netinstall.html)
+#   14. Google chrome (https://www.google.com/chrome/)
+#   15. WPS (http://www.wps.cn/product/wpslinux/)
+#   16. Teamviewer (https://www.teamviewer.com/en-us/download/linux/)
+#   17. Zoom (https://us02web.zoom.us/download)
+#   18. Mailspring (https://getmailspring.com/download)
 
 #--------------------------------------------------
 # helper functions
@@ -150,26 +149,6 @@ function installer_doxygen() {
 
     $RUNASUSR cd $USERHOME/software
     $RUNASUSR stow $PKGNAME
-}
-
-function installer_gcc() {
-    PKGNAME=gcc-8.2.0
-
-    $RUNASUSR rm -rf /tmp/$PKGNAME*
-    $RUNASUSR mkdir -p /tmp/$PKGNAME
-    $RUNASUSR wget -O /tmp/$PKGNAME.tar.gz https://mirror.bjtu.edu.cn/gnu/gcc/$PKGNAME/$PKGNAME.tar.gz
-    $RUNASUSR tar -xf /tmp/$PKGNAME.tar.gz -C /tmp/$PKGNAME
-
-    $RUNASUSR mkdir -p $USERHOME/software
-    $RUNASUSR cd /tmp/$PKGNAME
-    $RUNASUSR mkdir build
-    $RUNASUSR cd build
-    $RUNASUSR ../configure --enable-languages=c,c++,fortran --prefix=$USERHOME/software/$PKGNAME
-    $RUNASUSR make
-    $RUNASUSR make install
-
-    $RUNASUSR mkdir -p $USERHOME/software/modulefiles/compiler
-    $RUNASUSR ln -sf $USERHOME/Config/home/software/modulefiles/compiler/$PKGNAME $USERHOME/software/modulefiles/compiler/
 }
 
 function installer_glibc() {
