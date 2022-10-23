@@ -22,3 +22,7 @@
 	helper = libsecret
 [fetch]
 	prune = true
+[http]
+[http "https://github.com"]
+	proxy = socks5://127.0.0.1:1080
+	sslVerify = false
