@@ -1,8 +1,10 @@
 #!/bin/bash
 
-DOMAINS=("lainme.com")
+DOMAINS=("lainme.com" "demxs.com")
 for domain in ${DOMAINS[*]}; do
-    cd $HOME/archive/$domain
-    git fetch
-    git pull
+    if [ -d $HOME/archive/$domain ]; then
+        cd $HOME/archive/$domain
+        git fetch
+        git pull
+    fi
 done
