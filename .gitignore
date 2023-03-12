@@ -1,5 +1,6 @@
 bin/steam-category-backup.sh
 bin/code-backup.sh
+bin/serverbackup.sh
 Documents
 Music
 Pictures

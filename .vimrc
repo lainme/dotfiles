@@ -32,6 +32,12 @@ set t_ut= "禁用背景色刷新
 let mapleader="," "设置leader键
 colorscheme lucius "配色主题
 
+"Fix strange issue in 9.0
+if v:version >= 900
+    set keyprotocol=
+    let &term=&term
+endif
+
 if ! has("gui_running")
     "修复ALT键
     for i in range(97,122)
