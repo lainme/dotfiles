@@ -69,7 +69,7 @@ if __name__ == '__main__':
     if args.config:
         try:
             # Read from configuration file
-            config = configparser.ConfigParser()
+            config = configparser.ConfigParser({'keyring': False, 'active': False, 'remote': '/'})
             config.read(args.config)
             host = config.get("Server", "host")
             username = config.get("Server", "username")

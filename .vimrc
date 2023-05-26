@@ -29,12 +29,15 @@ set undodir=$HOME/.vim-undo "设置undodir
 set directory=$HOME/.tmp "设置swp文件目录
 set formatoptions+=m "中文断行
 set t_ut= "禁用背景色刷新
+set ttymouse=sgr "设置终端鼠标
 let mapleader="," "设置leader键
 colorscheme lucius "配色主题
 
 "Fix strange issue in 9.0
 if v:version >= 900
-    set keyprotocol=
+    if exists('&keyprotocol')
+        set keyprotocol=
+    endif
     let &term=&term
 endif
 
@@ -155,6 +158,16 @@ let g:buftabs_only_basename=1
 let g:buftabs_in_statusline=1
 let g:buftabs_active_highlight_group="Visual"
 
+"----------built-in----------
+if v:version >= 810
+    packadd! termdebug
+    if !empty(glob("/home/lainme/software/gdb/bin/gdb"))
+        let g:termdebugger='/home/lainme/software/gdb/bin/gdb'
+    elseif !empty(glob("/usr/local/bin/gdb"))
+        let g:termdebugger='/usr/local/bin/gdb'
+    endif
+endif
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "分类设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -186,3 +199,7 @@ autocmd BufRead,BufNewFile *.Rmd set filetype=txt
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 filetype plugin indent on "开启文件类型支持
 syntax on "开启语法高亮
+
+"使用行内注释的时候不要自动缩进
+autocmd FileType c,cpp setlocal comments-=:// comments-=:///
+
