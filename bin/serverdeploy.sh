@@ -202,9 +202,16 @@ function configure_http_php(){
         aptitude install php-mysqlnd
     fi
 
-    rm -rf /etc/php/7.0/*
-    cp -r /home/$USERNAME/repository/system/php/* /etc/php/7.0/
-    systemctl restart php7.0-fpm
+    PHPVER=`dpkg -l | grep php[0-9].*cgi | awk '{print $3}' | grep -oP '\d+\.\d+'`
+    rm -rf /etc/php/$PHPVER/*
+    cp -r /home/$USERNAME/repository/system/php/* /etc/php/$PHPVER/
+    mkdir /etc/php/$PHPVER/cgi/conf.d
+    mkdir /etc/php/$PHPVER/cli/conf.d
+    mkdir /etc/php/$PHPVER/fpm/conf.d
+    ln -s /etc/php/$PHPVER/mods-avaliable/* /etc/php/$PHPVER/cgi/conf.d
+    ln -s /etc/php/$PHPVER/mods-avaliable/* /etc/php/$PHPVER/cli/conf.d
+    ln -s /etc/php/$PHPVER/mods-avaliable/* /etc/php/$PHPVER/fpm/conf.d
+    systemctl restart php$PHPVER-fpm
 }
 
 function configure_http_nginx(){
@@ -313,7 +320,7 @@ function configure_application_shadowsocks(){
     conf="$conf\n\"timeout\":600,"
     conf="$conf\n\"method\":\"aes-256-gcm\","
     conf="$conf\n\"plugin\":\"v2ray-plugin\","
-    conf="$conf\n\"plugin_opts\":\"server;tls;host=$domain\","
+    conf="$conf\n\"plugin_opts\":\"server;tls;host=$domain\""
     conf="$conf\n}"
     echo -e $conf > /etc/shadowsocks-libev/config.json
     sed -i '/User=.*/d;/Group=.*/d'  /lib/systemd/system/shadowsocks-libev.service
